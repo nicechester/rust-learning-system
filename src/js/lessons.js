@@ -286,10 +286,16 @@ export async function loadMicroLesson(index) {
     
     try {
       content = await invoke('read_resource', { path: mdPath });
-      
+
       if (micro.start_line !== undefined && micro.end_line !== undefined) {
         const lines = content.split('\n');
+        // Extract reference link definitions from the full file before slicing,
+        // otherwise marked can't resolve reference-style links like [Chapter 6][enums]
+        const refDefs = lines
+          .filter(line => /^\[[\w-]+\]:\s+\S/.test(line))
+          .join('\n');
         content = lines.slice(micro.start_line, micro.end_line + 1).join('\n');
+        if (refDefs) content += '\n\n' + refDefs;
       }
       
       content = await resolveIncludes(content);
@@ -312,7 +318,9 @@ export async function loadMicroLesson(index) {
         ${html}
       </div>
     `;
-    
+
+    wireInternalLinks(contentEl);
+
     await markLessonViewed(currentLesson.id, index);
     
     const isLastMicro = index === currentLesson.micro_lessons.length - 1;
@@ -335,6 +343,39 @@ export async function loadMicroLesson(index) {
       </div>
     `;
   }
+}
+
+function wireInternalLinks(container) {
+  container.querySelectorAll('a[href]').forEach(link => {
+    const href = link.getAttribute('href');
+
+    // Internal: Rust Book chapter hrefs like "ch04-01-what-is-ownership.html"
+    const internalMatch = href.match(/^(ch\d+-\d+[^#.]*)(?:\.html)?(#.*)?$/);
+    if (internalMatch) {
+      const lessonId = internalMatch[1];
+      link.classList.add('internal-link');
+      link.removeAttribute('target');
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const lesson = findLessonById(lessonId);
+        if (lesson) {
+          loadLesson(lesson);
+          highlightLessonInSidebar(lesson.id);
+        } else {
+          console.warn('Internal link target not found:', lessonId);
+        }
+      });
+      return;
+    }
+
+    // External: open in the system browser
+    if (href.startsWith('http://') || href.startsWith('https://')) {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.__TAURI__.opener.openUrl(href);
+      });
+    }
+  });
 }
 
 function updateTabsActive(activeIndex) {

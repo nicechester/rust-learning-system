@@ -71,25 +71,35 @@ async function loadProgressMap() {
   }
 }
 
+function getChapterLabel(moduleId) {
+  const match = moduleId.match(/^ch(\d+)-/);
+  if (match) return `${parseInt(match[1], 10)}.`;
+  const appendixMatch = moduleId.match(/^appendix-(\w+)/);
+  if (appendixMatch) return `App.`;
+  return null;
+}
+
 function renderLessonTree(data) {
   const treeEl = document.getElementById('lesson-tree');
   treeEl.innerHTML = '';
-  
+
   if (!data.modules || data.modules.length === 0) {
     treeEl.innerHTML = '<div class="text-gray-500 text-sm">No lessons available</div>';
     return;
   }
-  
+
   data.modules.forEach((module, moduleIndex) => {
     const moduleEl = document.createElement('div');
     moduleEl.className = 'module mb-2';
-    
+
     const headerEl = document.createElement('div');
     headerEl.className = 'module-header';
+    const chapterLabel = getChapterLabel(module.id);
     headerEl.innerHTML = `
       <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
       </svg>
+      ${chapterLabel ? `<span class="chapter-badge">${chapterLabel}</span>` : ''}
       <span class="text-sm">${module.title}</span>
     `;
     

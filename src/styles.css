@@ -291,6 +291,15 @@ html, body {
   transform: rotate(90deg);
 }
 
+.chapter-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--gray-500);
+  min-width: 1.5rem;
+  text-align: right;
+  flex-shrink: 0;
+}
+
 .module-lessons {
   padding-left: 1.5rem;
 }
@@ -623,4 +632,13 @@ button:disabled {
 
 .lesson-html a:hover {
   color: var(--rust-dark);
+}
+
+.lesson-html a.internal-link {
+  color: var(--blue-400);
+  cursor: pointer;
+}
+
+.lesson-html a.internal-link:hover {
+  color: #93c5fd;
 }
