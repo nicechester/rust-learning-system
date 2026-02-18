@@ -45,7 +45,7 @@
       <div id="divider-sidebar" class="divider divider-vertical" data-min="200" data-max="500" data-target="sidebar"></div>
 
       <!-- Content Area -->
-      <div class="flex-1 flex flex-col overflow-hidden min-w-0">
+      <div id="content-wrapper" class="flex-1 flex flex-col overflow-hidden min-w-0">
         <!-- Top Section: Lesson + Editor -->
         <div id="panels-container" class="flex-1 flex overflow-hidden min-h-0">
           <!-- Lesson Panel -->
@@ -61,12 +61,18 @@
             
             <!-- Lesson Content -->
             <div id="lesson-content" class="flex-1 overflow-y-auto p-6">
-              <div class="text-center py-12">
+              <div id="welcome-screen" class="text-center py-12">
                 <svg class="w-16 h-16 mx-auto text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                 </svg>
                 <h2 class="text-xl font-semibold text-gray-400 mb-2">Welcome to Rust Learning System</h2>
-                <p class="text-gray-500">Select a lesson from the sidebar to begin learning Rust.</p>
+                <p class="text-gray-500 mb-6">Select a lesson from the sidebar to begin learning Rust.</p>
+                <button id="btn-start-learning" class="px-6 py-3 bg-rust hover:bg-rust-dark text-white font-medium rounded-lg transition-colors inline-flex items-center gap-2">
+                  Start Learning
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                  </svg>
+                </button>
               </div>
             </div>
             
@@ -88,12 +94,17 @@
           <!-- Editor Panel -->
           <div id="editor-panel" class="flex-1 flex flex-col overflow-hidden min-w-0">
             <!-- Editor Toolbar -->
-            <div class="bg-gray-800 border-b border-gray-700 px-4 py-2 flex items-center justify-between shrink-0">
+            <div id="editor-toolbar" class="bg-gray-800 border-b border-gray-700 px-4 py-2 flex items-center justify-between shrink-0">
               <div class="flex items-center gap-4">
+                <button id="btn-collapse-editor" class="text-gray-400 hover:text-white transition-colors" title="Collapse Editor">
+                  <svg class="collapse-icon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </button>
                 <span class="text-sm text-gray-400">Code Editor</span>
                 <div id="exercise-info"></div>
               </div>
-              <div class="flex gap-2">
+              <div id="editor-buttons" class="flex gap-2">
                 <button id="btn-reset" class="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-gray-300 text-sm rounded transition-colors hidden">
                   Reset
                 </button>
@@ -151,6 +162,13 @@
     <button id="btn-expand-sidebar" class="expand-sidebar-btn hidden" title="Expand sidebar">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+      </svg>
+    </button>
+
+    <!-- Collapsed Editor Button -->
+    <button id="btn-expand-editor" class="expand-editor-btn hidden" title="Expand editor">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7M19 19l-7-7 7-7"/>
       </svg>
     </button>
 

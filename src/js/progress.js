@@ -49,7 +49,7 @@ export async function markLessonViewed(lessonId, microIndex = 0) {
     `INSERT INTO lesson_progress (lesson_id, status, current_micro, last_viewed)
      VALUES (?, 'in_progress', ?, ?)
      ON CONFLICT(lesson_id) DO UPDATE SET
-       current_micro = MAX(current_micro, ?),
+       current_micro = ?,
        last_viewed = ?`,
     [lessonId, microIndex, now, microIndex, now]
   );

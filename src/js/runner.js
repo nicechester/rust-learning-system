@@ -1,4 +1,6 @@
 import { getValue } from './editor.js';
+import { expandConsole } from './resize.js';
+import { onExerciseCompleted, getCurrentExercise, isExerciseComplete } from './exercises.js';
 
 function invoke(cmd, args) {
   return window.__TAURI__.core.invoke(cmd, args);
@@ -7,7 +9,6 @@ function invoke(cmd, args) {
 function listen(event, handler) {
   return window.__TAURI__.event.listen(event, handler);
 }
-import { onExerciseCompleted, getCurrentExercise, isExerciseComplete } from './exercises.js';
 
 let isRunning = false;
 let currentJobId = null;
@@ -113,6 +114,8 @@ async function setupListeners() {
 
 export async function runCode(mode = 'run') {
   if (isRunning) return;
+  
+  expandConsole();
   
   const { output, status } = getElements();
   const code = getValue().trim();

@@ -61,11 +61,19 @@ function getExercisePath(exerciseId) {
 
 export async function loadExercise(exerciseId) {
   try {
-    const path = `rustlings/exercises/${getExercisePath(exerciseId)}`;
+    let path;
+    if (exerciseId.includes('/')) {
+      path = `rustlings/exercises/${exerciseId}`;
+    } else {
+      path = `rustlings/exercises/${getExercisePath(exerciseId)}`;
+    }
+    
     const code = await invoke('read_resource', { path });
     
+    const displayName = exerciseId.split('/').pop().replace('.rs', '');
+    
     currentExercise = {
-      id: exerciseId,
+      id: displayName,
       path: path,
       originalCode: code,
     };

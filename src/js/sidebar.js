@@ -96,8 +96,19 @@ function renderLessonTree(data) {
     const lessonsEl = document.createElement('div');
     lessonsEl.className = 'module-lessons hidden';
     
-    if (module.lessons && module.lessons.length > 0) {
-      module.lessons.forEach((lesson) => {
+    let lessonsToRender = module.lessons || [];
+    
+    if (lessonsToRender.length === 0 && module.intro_lessons && module.intro_lessons.length > 0) {
+      const syntheticLesson = {
+        id: module.id,
+        title: module.title,
+        micro_lessons: module.intro_lessons
+      };
+      lessonsToRender = [syntheticLesson];
+    }
+    
+    if (lessonsToRender.length > 0) {
+      lessonsToRender.forEach((lesson) => {
         const lessonEl = document.createElement('div');
         lessonEl.className = 'lesson-item text-sm text-gray-300';
         

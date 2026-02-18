@@ -140,6 +140,8 @@ function initCollapse() {
   const btnCollapseSidebar = document.getElementById('btn-collapse-sidebar');
   const btnExpandSidebar = document.getElementById('btn-expand-sidebar');
   const btnCollapseConsole = document.getElementById('btn-collapse-console');
+  const btnCollapseEditor = document.getElementById('btn-collapse-editor');
+  const btnExpandEditor = document.getElementById('btn-expand-editor');
   
   if (btnCollapseSidebar) {
     btnCollapseSidebar.addEventListener('click', () => toggleSidebar(false));
@@ -153,6 +155,14 @@ function initCollapse() {
     btnCollapseConsole.addEventListener('click', toggleConsole);
   }
   
+  if (btnCollapseEditor) {
+    btnCollapseEditor.addEventListener('click', toggleEditor);
+  }
+  
+  if (btnExpandEditor) {
+    btnExpandEditor.addEventListener('click', toggleEditor);
+  }
+  
   const savedCollapsed = loadSavedSizes();
   if (savedCollapsed.sidebarCollapsed) {
     toggleSidebar(false, true);
@@ -160,12 +170,19 @@ function initCollapse() {
   if (savedCollapsed.consoleCollapsed) {
     toggleConsole(null, true);
   }
+  if (savedCollapsed.savedLessonPanelWidth) {
+    savedLessonPanelWidth = savedCollapsed.savedLessonPanelWidth;
+  }
+  if (savedCollapsed.editorCollapsed) {
+    toggleEditor(null, true);
+  }
 }
 
 function toggleSidebar(expand, skipSave = false) {
   const sidebar = document.getElementById('sidebar');
   const divider = document.getElementById('divider-sidebar');
   const expandBtn = document.getElementById('btn-expand-sidebar');
+  const contentWrapper = document.getElementById('content-wrapper');
   
   if (!sidebar || !divider || !expandBtn) return;
   
@@ -175,11 +192,13 @@ function toggleSidebar(expand, skipSave = false) {
     sidebar.classList.remove('collapsed');
     divider.classList.remove('hidden');
     expandBtn.classList.add('hidden');
+    if (contentWrapper) contentWrapper.classList.remove('sidebar-collapsed');
   } else {
     sidebar.classList.add('collapsed');
     sidebar.style.width = '0px';
     divider.classList.add('hidden');
     expandBtn.classList.remove('hidden');
+    if (contentWrapper) contentWrapper.classList.add('sidebar-collapsed');
   }
   
   if (!skipSave) {
@@ -233,7 +252,7 @@ function restoreSavedSizes() {
     if (sidebar) sidebar.style.width = `${sizes.sidebar}px`;
   }
   
-  if (sizes['lesson-panel']) {
+  if (sizes['lesson-panel'] && !sizes.editorCollapsed) {
     const lessonPanel = document.getElementById('lesson-panel');
     if (lessonPanel) {
       const parent = lessonPanel.parentElement;
@@ -254,4 +273,81 @@ export function isSidebarCollapsed() {
 
 export function isConsoleCollapsed() {
   return consoleCollapsed;
+}
+
+export function expandConsole() {
+  if (consoleCollapsed) {
+    const console = document.getElementById('console-panel');
+    const divider = document.getElementById('divider-console');
+    const icon = document.querySelector('#btn-collapse-console .collapse-icon');
+    
+    if (!console || !divider) return;
+    
+    console.style.height = `${savedConsoleHeight}px`;
+    console.classList.remove('collapsed');
+    divider.classList.remove('hidden');
+    if (icon) icon.style.transform = '';
+    consoleCollapsed = false;
+    
+    const sizes = loadSavedSizes();
+    sizes.consoleCollapsed = false;
+    saveSizes(sizes);
+    
+    window.dispatchEvent(new Event('resize'));
+  }
+}
+
+let editorCollapsed = false;
+let savedLessonPanelWidth = null;
+
+function toggleEditor(e, skipSave = false) {
+  const editor = document.getElementById('editor-panel');
+  const lessonPanel = document.getElementById('lesson-panel');
+  const divider = document.getElementById('divider-editor');
+  const expandBtn = document.getElementById('btn-expand-editor');
+  
+  if (!editor || !divider || !expandBtn || !lessonPanel) return;
+  
+  if (editorCollapsed) {
+    if (savedLessonPanelWidth) {
+      lessonPanel.style.width = savedLessonPanelWidth;
+    } else {
+      lessonPanel.style.width = '50%';
+    }
+    editor.style.flex = '1';
+    editor.classList.remove('collapsed');
+    lessonPanel.classList.remove('editor-collapsed');
+    divider.classList.remove('hidden');
+    expandBtn.classList.add('hidden');
+    editorCollapsed = false;
+  } else {
+    if (!savedLessonPanelWidth) {
+      savedLessonPanelWidth = lessonPanel.style.width || '50%';
+    }
+    lessonPanel.style.width = '100%';
+    editor.classList.add('collapsed');
+    lessonPanel.classList.add('editor-collapsed');
+    divider.classList.add('hidden');
+    expandBtn.classList.remove('hidden');
+    editorCollapsed = true;
+  }
+  
+  if (!skipSave) {
+    const sizes = loadSavedSizes();
+    sizes.editorCollapsed = editorCollapsed;
+    sizes.savedLessonPanelWidth = savedLessonPanelWidth;
+    saveSizes(sizes);
+  }
+  
+  window.dispatchEvent(new Event('resize'));
+}
+
+export function isEditorCollapsed() {
+  return editorCollapsed;
+}
+
+export function expandEditor() {
+  if (editorCollapsed) {
+    toggleEditor(null, false);
+  }
 }
