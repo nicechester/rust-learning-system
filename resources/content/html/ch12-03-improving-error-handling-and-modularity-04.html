@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Splitting Code into a Library Crate</title>
+</head>
+<body>
+<h1>Splitting Code into a Library Crate</h1>
+<p>Our <code>minigrep</code> project is looking good so far! Now we’ll split the
+<em>src/main.rs</em> file and put some code into the <em>src/lib.rs</em> file. That way, we
+can test the code and have a <em>src/main.rs</em> file with fewer responsibilities.</p>
+<p>Let’s define the code responsible for searching text in <em>src/lib.rs</em> rather
+than in <em>src/main.rs</em>, which will let us (or anyone else using our
+<code>minigrep</code> library) call the searching function from more contexts than our
+<code>minigrep</code> binary.</p>
+<p>First, let’s define the <code>search</code> function signature in <em>src/lib.rs</em> as shown in
+Listing 12-13, with a body that calls the <code>unimplemented!</code> macro. We’ll explain
+the signature in more detail when we fill in the implementation.</p>
+<p><Listing number="12-13" file-name="src/lib.rs" caption="Defining the <code>search</code> function in *src/lib.rs*"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-13/src/lib.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+We’ve used the `pub` keyword on the function definition to designate `search`
+as part of our library crate’s public API. We now have a library crate that we
+can use from our binary crate and that we can test!
+
+Now we need to bring the code defined in _src/lib.rs_ into the scope of the
+binary crate in _src/main.rs_ and call it, as shown in Listing 12-14.
+
+&lt;Listing number=&quot;12-14&quot; file-name=&quot;src/main.rs&quot; caption=&quot;Using the `minigrep` library crate’s `search` function in *src/main.rs*&quot;&gt;
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-14/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>We add a <code>use minigrep::search</code> line to bring the <code>search</code> function from
+the library crate into the binary crate’s scope. Then, in the <code>run</code> function,
+rather than printing out the contents of the file, we call the <code>search</code>
+function and pass the <code>config.query</code> value and <code>contents</code> as arguments. Then,
+<code>run</code> will use a <code>for</code> loop to print each line returned from <code>search</code> that
+matched the query. This is also a good time to remove the <code>println!</code> calls in
+the <code>main</code> function that displayed the query and the file path so that our
+program only prints the search results (if no errors occur).</p>
+<p>Note that the search function will be collecting all the results into a vector
+it returns before any printing happens. This implementation could be slow to
+display results when searching large files, because results aren’t printed as
+they’re found; we’ll discuss a possible way to fix this using iterators in
+Chapter 13.</p>
+<p>Whew! That was a lot of work, but we’ve set ourselves up for success in the
+future. Now it’s much easier to handle errors, and we’ve made the code more
+modular. Almost all of our work will be done in <em>src/lib.rs</em> from here on out.</p>
+<p>Let’s take advantage of this newfound modularity by doing something that would
+have been difficult with the old code but is easy with the new code: We’ll
+write some tests!</p>
+</body>
+</html>

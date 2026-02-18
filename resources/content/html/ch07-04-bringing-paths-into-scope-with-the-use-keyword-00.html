@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Introduction</title>
+</head>
+<body>
+<h1>Introduction</h1>
+<h2>Bringing Paths into Scope with the <code>use</code> Keyword</h2>
+<p>Having to write out the paths to call functions can feel inconvenient and
+repetitive. In Listing 7-7, whether we chose the absolute or relative path to
+the <code>add_to_waitlist</code> function, every time we wanted to call <code>add_to_waitlist</code>
+we had to specify <code>front_of_house</code> and <code>hosting</code> too. Fortunately, there’s a
+way to simplify this process: We can create a shortcut to a path with the <code>use</code>
+keyword once and then use the shorter name everywhere else in the scope.</p>
+<p>In Listing 7-11, we bring the <code>crate::front_of_house::hosting</code> module into the
+scope of the <code>eat_at_restaurant</code> function so that we only have to specify
+<code>hosting::add_to_waitlist</code> to call the <code>add_to_waitlist</code> function in
+<code>eat_at_restaurant</code>.</p>
+<p><Listing number="7-11" file-name="src/lib.rs" caption="Bringing a module into scope with <code>use</code>"></p>
+<p>```rust,noplayground,test_harness
+{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-11/src/lib.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+Adding `use` and a path in a scope is similar to creating a symbolic link in
+the filesystem. By adding `use crate::front_of_house::hosting` in the crate
+root, `hosting` is now a valid name in that scope, just as though the `hosting`
+module had been defined in the crate root. Paths brought into scope with `use`
+also check privacy, like any other paths.
+
+Note that `use` only creates the shortcut for the particular scope in which the
+`use` occurs. Listing 7-12 moves the `eat_at_restaurant` function into a new
+child module named `customer`, which is then a different scope than the `use`
+statement, so the function body won’t compile.
+
+&lt;Listing number=&quot;7-12&quot; file-name=&quot;src/lib.rs&quot; caption=&quot;A `use` statement only applies in the scope it’s in.&quot;&gt;
+
+```rust,noplayground,test_harness,does_not_compile,ignore
+{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-12/src/lib.rs}}
+</code></pre>
+<p></Listing></p>
+<p>The compiler error shows that the shortcut no longer applies within the
+<code>customer</code> module:</p>
+<pre><code class="language-console">{{#include ../listings/ch07-managing-growing-projects/listing-07-12/output.txt}}
+</code></pre>
+<p>Notice there’s also a warning that the <code>use</code> is no longer used in its scope! To
+fix this problem, move the <code>use</code> within the <code>customer</code> module too, or reference
+the shortcut in the parent module with <code>super::hosting</code> within the child
+<code>customer</code> module.</p>
+</body>
+</html>

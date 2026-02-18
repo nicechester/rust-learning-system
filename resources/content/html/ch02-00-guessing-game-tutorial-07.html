@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Generating a Random Number</title>
+</head>
+<body>
+<h1>Generating a Random Number</h1>
+<p>Let’s start using <code>rand</code> to generate a number to guess. The next step is to
+update <em>src/main.rs</em>, as shown in Listing 2-3.</p>
+<p><Listing number="2-3" file-name="src/main.rs" caption="Adding code to generate a random number"></p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-03/src/main.rs:all}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+First, we add the line `use rand::Rng;`. The `Rng` trait defines methods that
+random number generators implement, and this trait must be in scope for us to
+use those methods. Chapter 10 will cover traits in detail.
+
+Next, we’re adding two lines in the middle. In the first line, we call the
+`rand::thread_rng` function that gives us the particular random number
+generator we’re going to use: one that is local to the current thread of
+execution and is seeded by the operating system. Then, we call the `gen_range`
+method on the random number generator. This method is defined by the `Rng`
+trait that we brought into scope with the `use rand::Rng;` statement. The
+`gen_range` method takes a range expression as an argument and generates a
+random number in the range. The kind of range expression we’re using here takes
+the form `start..=end` and is inclusive on the lower and upper bounds, so we
+need to specify `1..=100` to request a number between 1 and 100.
+
+&gt; Note: You won’t just know which traits to use and which methods and functions
+&gt; to call from a crate, so each crate has documentation with instructions for
+&gt; using it. Another neat feature of Cargo is that running the `cargo doc
+&gt; --open` command will build documentation provided by all your dependencies
+&gt; locally and open it in your browser. If you’re interested in other
+&gt; functionality in the `rand` crate, for example, run `cargo doc --open` and
+&gt; click `rand` in the sidebar on the left.
+
+The second new line prints the secret number. This is useful while we’re
+developing the program to be able to test it, but we’ll delete it from the
+final version. It’s not much of a game if the program prints the answer as soon
+as it starts!
+
+Try running the program a few times:
+
+&lt;!-- manual-regeneration
+cd listings/ch02-guessing-game-tutorial/listing-02-03/
+cargo run
+4
+cargo run
+5
+--&gt;
+
+```console
+$ cargo run
+   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running `target/debug/guessing_game`
+Guess the number!
+The secret number is: 7
+Please input your guess.
+4
+You guessed: 4
+
+$ cargo run
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+     Running `target/debug/guessing_game`
+Guess the number!
+The secret number is: 83
+Please input your guess.
+5
+You guessed: 5
+</code></pre>
+<p>You should get different random numbers, and they should all be numbers between
+1 and 100. Great job!</p>
+<h2>Comparing the Guess to the Secret Number</h2>
+<p>Now that we have user input and a random number, we can compare them. That step
+is shown in Listing 2-4. Note that this code won’t compile just yet, as we will
+explain.</p>
+<p><Listing number="2-4" file-name="src/main.rs" caption="Handling the possible return values of comparing two numbers"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-04/src/main.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+First, we add another `use` statement, bringing a type called
+`std::cmp::Ordering` into scope from the standard library. The `Ordering` type
+is another enum and has the variants `Less`, `Greater`, and `Equal`. These are
+the three outcomes that are possible when you compare two values.
+
+Then, we add five new lines at the bottom that use the `Ordering` type. The
+`cmp` method compares two values and can be called on anything that can be
+compared. It takes a reference to whatever you want to compare with: Here, it’s
+comparing `guess` to `secret_number`. Then, it returns a variant of the
+`Ordering` enum we brought into scope with the `use` statement. We use a
+[`match`][match]&lt;!-- ignore --&gt; expression to decide what to do next based on
+which variant of `Ordering` was returned from the call to `cmp` with the values
+in `guess` and `secret_number`.
+
+A `match` expression is made up of _arms_. An arm consists of a _pattern_ to
+match against, and the code that should be run if the value given to `match`
+fits that arm’s pattern. Rust takes the value given to `match` and looks
+through each arm’s pattern in turn. Patterns and the `match` construct are
+powerful Rust features: They let you express a variety of situations your code
+might encounter, and they make sure you handle them all. These features will be
+covered in detail in Chapter 6 and Chapter 19, respectively.
+
+Let’s walk through an example with the `match` expression we use here. Say that
+the user has guessed 50 and the randomly generated secret number this time is
+38.
+
+When the code compares 50 to 38, the `cmp` method will return
+`Ordering::Greater` because 50 is greater than 38. The `match` expression gets
+the `Ordering::Greater` value and starts checking each arm’s pattern. It looks
+at the first arm’s pattern, `Ordering::Less`, and sees that the value
+`Ordering::Greater` does not match `Ordering::Less`, so it ignores the code in
+that arm and moves to the next arm. The next arm’s pattern is
+`Ordering::Greater`, which _does_ match `Ordering::Greater`! The associated
+code in that arm will execute and print `Too big!` to the screen. The `match`
+expression ends after the first successful match, so it won’t look at the last
+arm in this scenario.
+
+However, the code in Listing 2-4 won’t compile yet. Let’s try it:
+
+&lt;!--
+The error numbers in this output should be that of the code **WITHOUT** the
+anchor or snip comments
+--&gt;
+
+```console
+{{#include ../listings/ch02-guessing-game-tutorial/listing-02-04/output.txt}}
+</code></pre>
+<p>The core of the error states that there are <em>mismatched types</em>. Rust has a
+strong, static type system. However, it also has type inference. When we wrote
+<code>let mut guess = String::new()</code>, Rust was able to infer that <code>guess</code> should be
+a <code>String</code> and didn’t make us write the type. The <code>secret_number</code>, on the other
+hand, is a number type. A few of Rust’s number types can have a value between 1
+and 100: <code>i32</code>, a 32-bit number; <code>u32</code>, an unsigned 32-bit number; <code>i64</code>, a
+64-bit number; as well as others. Unless otherwise specified, Rust defaults to
+an <code>i32</code>, which is the type of <code>secret_number</code> unless you add type information
+elsewhere that would cause Rust to infer a different numerical type. The reason
+for the error is that Rust cannot compare a string and a number type.</p>
+<p>Ultimately, we want to convert the <code>String</code> the program reads as input into a
+number type so that we can compare it numerically to the secret number. We do
+so by adding this line to the <code>main</code> function body:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/no-listing-03-convert-string-to-number/src/main.rs:here}}</p>
+<pre><code>
+The line is:
+
+```rust,ignore
+let guess: u32 = guess.trim().parse().expect(&quot;Please type a number!&quot;);
+</code></pre>
+<p>We create a variable named <code>guess</code>. But wait, doesn’t the program already have
+a variable named <code>guess</code>? It does, but helpfully Rust allows us to shadow the
+previous value of <code>guess</code> with a new one. <em>Shadowing</em> lets us reuse the <code>guess</code>
+variable name rather than forcing us to create two unique variables, such as
+<code>guess_str</code> and <code>guess</code>, for example. We’ll cover this in more detail in
+[Chapter 3][shadowing]<!-- ignore -->, but for now, know that this feature is
+often used when you want to convert a value from one type to another type.</p>
+<p>We bind this new variable to the expression <code>guess.trim().parse()</code>. The <code>guess</code>
+in the expression refers to the original <code>guess</code> variable that contained the
+input as a string. The <code>trim</code> method on a <code>String</code> instance will eliminate any
+whitespace at the beginning and end, which we must do before we can convert the
+string to a <code>u32</code>, which can only contain numerical data. The user must press
+<kbd>enter</kbd> to satisfy <code>read_line</code> and input their guess, which adds a
+newline character to the string. For example, if the user types <kbd>5</kbd> and
+presses <kbd>enter</kbd>, <code>guess</code> looks like this: <code>5\n</code>. The <code>\n</code> represents
+“newline.” (On Windows, pressing <kbd>enter</kbd> results in a carriage return
+and a newline, <code>\r\n</code>.) The <code>trim</code> method eliminates <code>\n</code> or <code>\r\n</code>, resulting
+in just <code>5</code>.</p>
+<p>The [<code>parse</code> method on strings][parse]<!-- ignore --> converts a string to
+another type. Here, we use it to convert from a string to a number. We need to
+tell Rust the exact number type we want by using <code>let guess: u32</code>. The colon
+(<code>:</code>) after <code>guess</code> tells Rust we’ll annotate the variable’s type. Rust has a
+few built-in number types; the <code>u32</code> seen here is an unsigned, 32-bit integer.
+It’s a good default choice for a small positive number. You’ll learn about
+other number types in [Chapter 3][integers]<!-- ignore -->.</p>
+<p>Additionally, the <code>u32</code> annotation in this example program and the comparison
+with <code>secret_number</code> means Rust will infer that <code>secret_number</code> should be a
+<code>u32</code> as well. So, now the comparison will be between two values of the same
+type!</p>
+<p>The <code>parse</code> method will only work on characters that can logically be converted
+into numbers and so can easily cause errors. If, for example, the string
+contained <code>A👍%</code>, there would be no way to convert that to a number. Because it
+might fail, the <code>parse</code> method returns a <code>Result</code> type, much as the <code>read_line</code>
+method does (discussed earlier in <a href="#handling-potential-failure-with-result">“Handling Potential Failure with
+<code>Result</code>”</a><!-- ignore -->). We’ll treat
+this <code>Result</code> the same way by using the <code>expect</code> method again. If <code>parse</code>
+returns an <code>Err</code> <code>Result</code> variant because it couldn’t create a number from the
+string, the <code>expect</code> call will crash the game and print the message we give it.
+If <code>parse</code> can successfully convert the string to a number, it will return the
+<code>Ok</code> variant of <code>Result</code>, and <code>expect</code> will return the number that we want from
+the <code>Ok</code> value.</p>
+<p>Let’s run the program now:</p>
+<!-- manual-regeneration
+cd listings/ch02-guessing-game-tutorial/no-listing-03-convert-string-to-number/
+touch src/main.rs
+cargo run
+  76
+-->
+
+<pre><code class="language-console">$ cargo run
+   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.26s
+     Running `target/debug/guessing_game`
+Guess the number!
+The secret number is: 58
+Please input your guess.
+  76
+You guessed: 76
+Too big!
+</code></pre>
+<p>Nice! Even though spaces were added before the guess, the program still figured
+out that the user guessed 76. Run the program a few times to verify the
+different behavior with different kinds of input: Guess the number correctly,
+guess a number that is too high, and guess a number that is too low.</p>
+<p>We have most of the game working now, but the user can make only one guess.
+Let’s change that by adding a loop!</p>
+<h2>Allowing Multiple Guesses with Looping</h2>
+<p>The <code>loop</code> keyword creates an infinite loop. We’ll add a loop to give users
+more chances at guessing the number:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/no-listing-04-looping/src/main.rs:here}}</p>
+<pre><code>
+As you can see, we’ve moved everything from the guess input prompt onward into
+a loop. Be sure to indent the lines inside the loop another four spaces each
+and run the program again. The program will now ask for another guess forever,
+which actually introduces a new problem. It doesn’t seem like the user can quit!
+
+The user could always interrupt the program by using the keyboard shortcut
+&lt;kbd&gt;ctrl&lt;/kbd&gt;-&lt;kbd&gt;C&lt;/kbd&gt;. But there’s another way to escape this insatiable
+monster, as mentioned in the `parse` discussion in [“Comparing the Guess to the
+Secret Number”](#comparing-the-guess-to-the-secret-number)&lt;!-- ignore --&gt;: If
+the user enters a non-number answer, the program will crash. We can take
+advantage of that to allow the user to quit, as shown here:
+
+&lt;!-- manual-regeneration
+cd listings/ch02-guessing-game-tutorial/no-listing-04-looping/
+touch src/main.rs
+cargo run
+(too small guess)
+(too big guess)
+(correct guess)
+quit
+--&gt;
+
+```console
+$ cargo run
+   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.23s
+     Running `target/debug/guessing_game`
+Guess the number!
+The secret number is: 59
+Please input your guess.
+45
+You guessed: 45
+Too small!
+Please input your guess.
+60
+You guessed: 60
+Too big!
+Please input your guess.
+59
+You guessed: 59
+You win!
+Please input your guess.
+quit
+
+thread 'main' panicked at src/main.rs:28:47:
+Please type a number!: ParseIntError { kind: InvalidDigit }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+</code></pre>
+<p>Typing <code>quit</code> will quit the game, but as you’ll notice, so will entering any
+other non-number input. This is suboptimal, to say the least; we want the game
+to also stop when the correct number is guessed.</p>
+</body>
+</html>

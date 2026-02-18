@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Encoding States and Behavior as Types</title>
+</head>
+<body>
+<h1>Encoding States and Behavior as Types</h1>
+<p>We’ll show you how to rethink the state pattern to get a different set of
+trade-offs. Rather than encapsulating the states and transitions completely so
+that outside code has no knowledge of them, we’ll encode the states into
+different types. Consequently, Rust’s type-checking system will prevent
+attempts to use draft posts where only published posts are allowed by issuing a
+compiler error.</p>
+<p>Let’s consider the first part of <code>main</code> in Listing 18-11:</p>
+<p><Listing file-name="src/main.rs"></p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch18-oop/listing-18-11/src/main.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+We still enable the creation of new posts in the draft state using `Post::new`
+and the ability to add text to the post’s content. But instead of having a
+`content` method on a draft post that returns an empty string, we’ll make it so
+that draft posts don’t have the `content` method at all. That way, if we try to
+get a draft post’s content, we’ll get a compiler error telling us the method
+doesn’t exist. As a result, it will be impossible for us to accidentally
+display draft post content in production because that code won’t even compile.
+Listing 18-19 shows the definition of a `Post` struct and a `DraftPost` struct,
+as well as methods on each.
+
+&lt;Listing number=&quot;18-19&quot; file-name=&quot;src/lib.rs&quot; caption=&quot;A `Post` with a `content` method and a `DraftPost` without a `content` method&quot;&gt;
+
+```rust,noplayground
+{{#rustdoc_include ../listings/ch18-oop/listing-18-19/src/lib.rs}}
+</code></pre>
+<p></Listing></p>
+<p>Both the <code>Post</code> and <code>DraftPost</code> structs have a private <code>content</code> field that
+stores the blog post text. The structs no longer have the <code>state</code> field because
+we’re moving the encoding of the state to the types of the structs. The <code>Post</code>
+struct will represent a published post, and it has a <code>content</code> method that
+returns the <code>content</code>.</p>
+<p>We still have a <code>Post::new</code> function, but instead of returning an instance of
+<code>Post</code>, it returns an instance of <code>DraftPost</code>. Because <code>content</code> is private and
+there aren’t any functions that return <code>Post</code>, it’s not possible to create an
+instance of <code>Post</code> right now.</p>
+<p>The <code>DraftPost</code> struct has an <code>add_text</code> method, so we can add text to
+<code>content</code> as before, but note that <code>DraftPost</code> does not have a <code>content</code> method
+defined! So now the program ensures that all posts start as draft posts, and
+draft posts don’t have their content available for display. Any attempt to get
+around these constraints will result in a compiler error.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="implementing-transitions-as-transformations-into-different-types"></a></p>
+<p>So, how do we get a published post? We want to enforce the rule that a draft
+post has to be reviewed and approved before it can be published. A post in the
+pending review state should still not display any content. Let’s implement
+these constraints by adding another struct, <code>PendingReviewPost</code>, defining the
+<code>request_review</code> method on <code>DraftPost</code> to return a <code>PendingReviewPost</code> and
+defining an <code>approve</code> method on <code>PendingReviewPost</code> to return a <code>Post</code>, as
+shown in Listing 18-20.</p>
+<p><Listing number="18-20" file-name="src/lib.rs" caption="A <code>PendingReviewPost</code> that gets created by calling <code>request_review</code> on <code>DraftPost</code> and an <code>approve</code> method that turns a <code>PendingReviewPost</code> into a published <code>Post</code>"></p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch18-oop/listing-18-20/src/lib.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+The `request_review` and `approve` methods take ownership of `self`, thus
+consuming the `DraftPost` and `PendingReviewPost` instances and transforming
+them into a `PendingReviewPost` and a published `Post`, respectively. This way,
+we won’t have any lingering `DraftPost` instances after we’ve called
+`request_review` on them, and so forth. The `PendingReviewPost` struct doesn’t
+have a `content` method defined on it, so attempting to read its content
+results in a compiler error, as with `DraftPost`. Because the only way to get a
+published `Post` instance that does have a `content` method defined is to call
+the `approve` method on a `PendingReviewPost`, and the only way to get a
+`PendingReviewPost` is to call the `request_review` method on a `DraftPost`,
+we’ve now encoded the blog post workflow into the type system.
+
+But we also have to make some small changes to `main`. The `request_review` and
+`approve` methods return new instances rather than modifying the struct they’re
+called on, so we need to add more `let post =` shadowing assignments to save
+the returned instances. We also can’t have the assertions about the draft and
+pending review posts’ contents be empty strings, nor do we need them: We can’t
+compile code that tries to use the content of posts in those states any longer.
+The updated code in `main` is shown in Listing 18-21.
+
+&lt;Listing number=&quot;18-21&quot; file-name=&quot;src/main.rs&quot; caption=&quot;Modifications to `main` to use the new implementation of the blog post workflow&quot;&gt;
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch18-oop/listing-18-21/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>The changes we needed to make to <code>main</code> to reassign <code>post</code> mean that this
+implementation doesn’t quite follow the object-oriented state pattern anymore:
+The transformations between the states are no longer encapsulated entirely
+within the <code>Post</code> implementation. However, our gain is that invalid states are
+now impossible because of the type system and the type checking that happens at
+compile time! This ensures that certain bugs, such as display of the content of
+an unpublished post, will be discovered before they make it to production.</p>
+<p>Try the tasks suggested at the start of this section on the <code>blog</code> crate as it
+is after Listing 18-21 to see what you think about the design of this version
+of the code. Note that some of the tasks might be completed already in this
+design.</p>
+<p>We’ve seen that even though Rust is capable of implementing object-oriented
+design patterns, other patterns, such as encoding state into the type system,
+are also available in Rust. These patterns have different trade-offs. Although
+you might be very familiar with object-oriented patterns, rethinking the
+problem to take advantage of Rust’s features can provide benefits, such as
+preventing some bugs at compile time. Object-oriented patterns won’t always be
+the best solution in Rust due to certain features, like ownership, that
+object-oriented languages don’t have.</p>
+<h2>Summary</h2>
+<p>Regardless of whether you think Rust is an object-oriented language after
+reading this chapter, you now know that you can use trait objects to get some
+object-oriented features in Rust. Dynamic dispatch can give your code some
+flexibility in exchange for a bit of runtime performance. You can use this
+flexibility to implement object-oriented patterns that can help your code’s
+maintainability. Rust also has other features, like ownership, that
+object-oriented languages don’t have. An object-oriented pattern won’t always
+be the best way to take advantage of Rust’s strengths, but it is an available
+option.</p>
+<p>Next, we’ll look at patterns, which are another of Rust’s features that enable
+lots of flexibility. We’ve looked at them briefly throughout the book but
+haven’t seen their full capability yet. Let’s go!</p>
+</body>
+</html>

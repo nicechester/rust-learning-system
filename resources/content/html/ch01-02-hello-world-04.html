@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Compilation and Execution</title>
+</head>
+<body>
+<h1>Compilation and Execution</h1>
+<p>You’ve just run a newly created program, so let’s examine each step in the
+process.</p>
+<p>Before running a Rust program, you must compile it using the Rust compiler by
+entering the <code>rustc</code> command and passing it the name of your source file, like
+this:</p>
+<pre><code class="language-console">$ rustc main.rs
+</code></pre>
+<p>If you have a C or C++ background, you’ll notice that this is similar to <code>gcc</code>
+or <code>clang</code>. After compiling successfully, Rust outputs a binary executable.</p>
+<p>On Linux, macOS, and PowerShell on Windows, you can see the executable by
+entering the <code>ls</code> command in your shell:</p>
+<pre><code class="language-console">$ ls
+main  main.rs
+</code></pre>
+<p>On Linux and macOS, you’ll see two files. With PowerShell on Windows, you’ll
+see the same three files that you would see using CMD. With CMD on Windows, you
+would enter the following:</p>
+<pre><code class="language-cmd">&gt; dir /B %= the /B option says to only show the file names =%
+main.exe
+main.pdb
+main.rs
+</code></pre>
+<p>This shows the source code file with the <em>.rs</em> extension, the executable file
+(<em>main.exe</em> on Windows, but <em>main</em> on all other platforms), and, when using
+Windows, a file containing debugging information with the <em>.pdb</em> extension.
+From here, you run the <em>main</em> or <em>main.exe</em> file, like this:</p>
+<pre><code class="language-console">$ ./main # or .\main on Windows
+</code></pre>
+<p>If your <em>main.rs</em> is your “Hello, world!” program, this line prints <code>Hello,
+world!</code> to your terminal.</p>
+<p>If you’re more familiar with a dynamic language, such as Ruby, Python, or
+JavaScript, you might not be used to compiling and running a program as
+separate steps. Rust is an <em>ahead-of-time compiled</em> language, meaning you can
+compile a program and give the executable to someone else, and they can run it
+even without having Rust installed. If you give someone a <em>.rb</em>, <em>.py</em>, or
+<em>.js</em> file, they need to have a Ruby, Python, or JavaScript implementation
+installed (respectively). But in those languages, you only need one command to
+compile and run your program. Everything is a trade-off in language design.</p>
+<p>Just compiling with <code>rustc</code> is fine for simple programs, but as your project
+grows, you’ll want to manage all the options and make it easy to share your
+code. Next, we’ll introduce you to the Cargo tool, which will help you write
+real-world Rust programs.</p>
+</body>
+</html>

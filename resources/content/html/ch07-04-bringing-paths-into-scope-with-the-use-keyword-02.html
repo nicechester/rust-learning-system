@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Providing New Names with the `as` Keyword</title>
+</head>
+<body>
+<h1>Providing New Names with the `as` Keyword</h1>
+<p>There’s another solution to the problem of bringing two types of the same name
+into the same scope with <code>use</code>: After the path, we can specify <code>as</code> and a new
+local name, or <em>alias</em>, for the type. Listing 7-16 shows another way to write
+the code in Listing 7-15 by renaming one of the two <code>Result</code> types using <code>as</code>.</p>
+<p><Listing number="7-16" file-name="src/lib.rs" caption="Renaming a type when it’s brought into scope with the <code>as</code> keyword"></p>
+<p><code>rust,noplayground
+{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-16/src/lib.rs:here}}</code></p>
+<p></Listing></p>
+<p>In the second <code>use</code> statement, we chose the new name <code>IoResult</code> for the
+<code>std::io::Result</code> type, which won’t conflict with the <code>Result</code> from <code>std::fmt</code>
+that we’ve also brought into scope. Listing 7-15 and Listing 7-16 are
+considered idiomatic, so the choice is up to you!</p>
+</body>
+</html>

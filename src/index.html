@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rust Learning System</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body class="bg-gray-900 text-gray-100 h-screen flex flex-col overflow-hidden">
+    <!-- Header -->
+    <header class="bg-gray-800 border-b border-gray-700 px-4 py-3 flex justify-between items-center shrink-0">
+      <div class="flex items-center gap-3">
+        <svg class="w-8 h-8 text-rust" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+        <h1 class="text-xl font-bold text-white">Rust Learning System</h1>
+      </div>
+      <div class="flex items-center gap-4">
+        <div id="progress-summary" class="text-sm text-gray-400"></div>
+        <div id="toolchain-status" class="flex items-center gap-2 text-sm">
+          <span class="text-gray-400">Checking toolchain...</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex overflow-hidden">
+      <!-- Sidebar: Lessons -->
+      <nav id="sidebar" class="bg-gray-800 flex flex-col" style="width: 288px;">
+        <div class="p-4 border-b border-gray-700 flex items-center justify-between">
+          <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Lessons</h2>
+          <button id="btn-collapse-sidebar" class="p-1 hover:bg-gray-700 rounded transition-colors" title="Collapse sidebar">
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+            </svg>
+          </button>
+        </div>
+        <div id="lesson-tree" class="flex-1 overflow-y-auto p-2 space-y-1">
+          <div class="text-gray-500 text-sm p-2">Loading lessons...</div>
+        </div>
+      </nav>
+
+      <!-- Sidebar Divider -->
+      <div id="divider-sidebar" class="divider divider-vertical" data-min="200" data-max="500" data-target="sidebar"></div>
+
+      <!-- Content Area -->
+      <div class="flex-1 flex flex-col overflow-hidden min-w-0">
+        <!-- Top Section: Lesson + Editor -->
+        <div id="panels-container" class="flex-1 flex overflow-hidden min-h-0">
+          <!-- Lesson Panel -->
+          <div id="lesson-panel" class="flex flex-col overflow-hidden" style="width: 50%;">
+            <!-- Lesson Header -->
+            <div id="lesson-header" class="px-6 py-4 border-b border-gray-700 shrink-0">
+              <h1 class="text-xl font-bold text-gray-400">Select a lesson</h1>
+            </div>
+            
+            <!-- Micro-lesson Tabs -->
+            <div id="micro-lesson-tabs" class="flex gap-1 px-4 pt-2 bg-gray-850 overflow-x-auto shrink-0">
+            </div>
+            
+            <!-- Lesson Content -->
+            <div id="lesson-content" class="flex-1 overflow-y-auto p-6">
+              <div class="text-center py-12">
+                <svg class="w-16 h-16 mx-auto text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+                <h2 class="text-xl font-semibold text-gray-400 mb-2">Welcome to Rust Learning System</h2>
+                <p class="text-gray-500">Select a lesson from the sidebar to begin learning Rust.</p>
+              </div>
+            </div>
+            
+            <!-- Lesson Navigation -->
+            <div id="lesson-nav" class="px-6 py-3 border-t border-gray-700 flex justify-between items-center shrink-0 hidden">
+              <button id="btn-prev-micro" class="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-gray-300 text-sm rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                ← Previous
+              </button>
+              <span id="micro-progress" class="text-sm text-gray-500"></span>
+              <button id="btn-next-micro" class="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-gray-300 text-sm rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                Next →
+              </button>
+            </div>
+          </div>
+
+          <!-- Lesson/Editor Divider -->
+          <div id="divider-editor" class="divider divider-vertical" data-min="300" data-max-percent="80" data-target="lesson-panel" data-mode="percent"></div>
+
+          <!-- Editor Panel -->
+          <div id="editor-panel" class="flex-1 flex flex-col overflow-hidden min-w-0">
+            <!-- Editor Toolbar -->
+            <div class="bg-gray-800 border-b border-gray-700 px-4 py-2 flex items-center justify-between shrink-0">
+              <div class="flex items-center gap-4">
+                <span class="text-sm text-gray-400">Code Editor</span>
+                <div id="exercise-info"></div>
+              </div>
+              <div class="flex gap-2">
+                <button id="btn-reset" class="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-gray-300 text-sm rounded transition-colors hidden">
+                  Reset
+                </button>
+                <button id="btn-run" class="px-3 py-1.5 bg-green-600 hover:bg-green-500 text-white text-sm font-medium rounded transition-colors flex items-center gap-1.5">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Run
+                </button>
+                <button id="btn-test" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium rounded transition-colors flex items-center gap-1.5">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                  </svg>
+                  Test
+                </button>
+              </div>
+            </div>
+
+            <!-- Hint Panel (hidden by default) -->
+            <div id="hint-panel" class="px-4 py-2 hidden shrink-0"></div>
+
+            <!-- Monaco Editor Container -->
+            <div id="monaco-container" class="flex-1 overflow-hidden"></div>
+          </div>
+        </div>
+
+        <!-- Console Divider -->
+        <div id="divider-console" class="divider divider-horizontal" data-min="100" data-max="400" data-target="console-panel"></div>
+
+        <!-- Output Console -->
+        <div id="console-panel" class="bg-gray-950 flex flex-col" style="height: 192px;">
+          <div class="bg-gray-800 border-b border-gray-700 px-4 py-2 flex items-center justify-between shrink-0">
+            <div class="flex items-center gap-2">
+              <span class="text-sm text-gray-400">Output</span>
+              <button id="btn-collapse-console" class="p-1 hover:bg-gray-700 rounded transition-colors" title="Collapse output">
+                <svg class="w-4 h-4 text-gray-400 collapse-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+            </div>
+            <div class="flex items-center gap-3">
+              <span id="run-status" class="text-xs text-gray-500"></span>
+              <button id="btn-clear" class="text-xs text-gray-500 hover:text-gray-300 transition-colors">Clear</button>
+            </div>
+          </div>
+          <div id="console-output" class="flex-1 overflow-y-auto p-3 font-mono text-sm">
+            <div class="text-gray-500">Ready to run code.</div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Collapsed Sidebar Button -->
+    <button id="btn-expand-sidebar" class="expand-sidebar-btn hidden" title="Expand sidebar">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+      </svg>
+    </button>
+
+    <script type="module" src="/js/app.js"></script>
+  </body>
+</html>

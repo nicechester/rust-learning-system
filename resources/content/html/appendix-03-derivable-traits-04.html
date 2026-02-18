@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>`Clone` and `Copy` for Duplicating Values</title>
+</head>
+<body>
+<h1>`Clone` and `Copy` for Duplicating Values</h1>
+<p>The <code>Clone</code> trait allows you to explicitly create a deep copy of a value, and
+the duplication process might involve running arbitrary code and copying heap
+data. See the [“Variables and Data Interacting with
+Clone”][variables-and-data-interacting-with-clone]<!-- ignore --> section in
+Chapter 4 for more information on <code>Clone</code>.</p>
+<p>Deriving <code>Clone</code> implements the <code>clone</code> method, which when implemented for the
+whole type, calls <code>clone</code> on each of the parts of the type. This means all the
+fields or values in the type must also implement <code>Clone</code> to derive <code>Clone</code>.</p>
+<p>An example of when <code>Clone</code> is required is when calling the <code>to_vec</code> method on a
+slice. The slice doesn’t own the type instances it contains, but the vector
+returned from <code>to_vec</code> will need to own its instances, so <code>to_vec</code> calls
+<code>clone</code> on each item. Thus, the type stored in the slice must implement <code>Clone</code>.</p>
+<p>The <code>Copy</code> trait allows you to duplicate a value by only copying bits stored on
+the stack; no arbitrary code is necessary. See the [“Stack-Only Data:
+Copy”][stack-only-data-copy]<!-- ignore --> section in Chapter 4 for more
+information on <code>Copy</code>.</p>
+<p>The <code>Copy</code> trait doesn’t define any methods to prevent programmers from
+overloading those methods and violating the assumption that no arbitrary code
+is being run. That way, all programmers can assume that copying a value will be
+very fast.</p>
+<p>You can derive <code>Copy</code> on any type whose parts all implement <code>Copy</code>. A type that
+implements <code>Copy</code> must also implement <code>Clone</code> because a type that implements
+<code>Copy</code> has a trivial implementation of <code>Clone</code> that performs the same task as
+<code>Copy</code>.</p>
+<p>The <code>Copy</code> trait is rarely required; types that implement <code>Copy</code> have
+optimizations available, meaning you don’t have to call <code>clone</code>, which makes
+the code more concise.</p>
+<p>Everything possible with <code>Copy</code> you can also accomplish with <code>Clone</code>, but the
+code might be slower or have to use <code>clone</code> in places.</p>
+</body>
+</html>

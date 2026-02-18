@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>When You Have More Information Than the Compiler</title>
+</head>
+<body>
+<h1>When You Have More Information Than the Compiler</h1>
+<p>It would also be appropriate to call <code>expect</code> when you have some other logic
+that ensures that the <code>Result</code> will have an <code>Ok</code> value, but the logic isn’t
+something the compiler understands. You’ll still have a <code>Result</code> value that you
+need to handle: Whatever operation you’re calling still has the possibility of
+failing in general, even though it’s logically impossible in your particular
+situation. If you can ensure by manually inspecting the code that you’ll never
+have an <code>Err</code> variant, it’s perfectly acceptable to call <code>expect</code> and document
+the reason you think you’ll never have an <code>Err</code> variant in the argument text.
+Here’s an example:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch09-error-handling/no-listing-08-unwrap-that-cant-fail/src/main.rs:here}}
+</code></pre>
+<p>We’re creating an <code>IpAddr</code> instance by parsing a hardcoded string. We can see
+that <code>127.0.0.1</code> is a valid IP address, so it’s acceptable to use <code>expect</code>
+here. However, having a hardcoded, valid string doesn’t change the return type
+of the <code>parse</code> method: We still get a <code>Result</code> value, and the compiler will
+still make us handle the <code>Result</code> as if the <code>Err</code> variant is a possibility
+because the compiler isn’t smart enough to see that this string is always a
+valid IP address. If the IP address string came from a user rather than being
+hardcoded into the program and therefore <em>did</em> have a possibility of failure,
+we’d definitely want to handle the <code>Result</code> in a more robust way instead.
+Mentioning the assumption that this IP address is hardcoded will prompt us to
+change <code>expect</code> to better error-handling code if, in the future, we need to get
+the IP address from some other source instead.</p>
+</body>
+</html>

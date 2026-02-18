@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Creating Different Types with Tuple Structs</title>
+</head>
+<body>
+<h1>Creating Different Types with Tuple Structs</h1>
+<p>Rust also supports structs that look similar to tuples, called <em>tuple structs</em>.
+Tuple structs have the added meaning the struct name provides but don’t have
+names associated with their fields; rather, they just have the types of the
+fields. Tuple structs are useful when you want to give the whole tuple a name
+and make the tuple a different type from other tuples, and when naming each
+field as in a regular struct would be verbose or redundant.</p>
+<p>To define a tuple struct, start with the <code>struct</code> keyword and the struct name
+followed by the types in the tuple. For example, here we define and use two
+tuple structs named <code>Color</code> and <code>Point</code>:</p>
+<p><Listing file-name="src/main.rs"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/no-listing-01-tuple-structs/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>Note that the <code>black</code> and <code>origin</code> values are different types because they’re
+instances of different tuple structs. Each struct you define is its own type,
+even though the fields within the struct might have the same types. For
+example, a function that takes a parameter of type <code>Color</code> cannot take a
+<code>Point</code> as an argument, even though both types are made up of three <code>i32</code>
+values. Otherwise, tuple struct instances are similar to tuples in that you can
+destructure them into their individual pieces, and you can use a <code>.</code> followed
+by the index to access an individual value. Unlike tuples, tuple structs
+require you to name the type of the struct when you destructure them. For
+example, we would write <code>let Point(x, y, z) = origin;</code> to destructure the
+values in the <code>origin</code> point into variables named <code>x</code>, <code>y</code>, and <code>z</code>.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="unit-like-structs-without-any-fields"></a></p>
+</body>
+</html>

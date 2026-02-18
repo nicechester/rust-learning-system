@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Using `Result<T, E>` in Tests</title>
+</head>
+<body>
+<h1>Using `Result<T, E>` in Tests</h1>
+<p>All of our tests so far panic when they fail. We can also write tests that use
+<code>Result&lt;T, E&gt;</code>! Here’s the test from Listing 11-1, rewritten to use <code>Result&lt;T,
+E&gt;</code> and return an <code>Err</code> instead of panicking:</p>
+<p><code>rust,noplayground
+{{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-10-result-in-tests/src/lib.rs:here}}</code></p>
+<p>The <code>it_works</code> function now has the <code>Result&lt;(), String&gt;</code> return type. In the
+body of the function, rather than calling the <code>assert_eq!</code> macro, we return
+<code>Ok(())</code> when the test passes and an <code>Err</code> with a <code>String</code> inside when the test
+fails.</p>
+<p>Writing tests so that they return a <code>Result&lt;T, E&gt;</code> enables you to use the
+question mark operator in the body of tests, which can be a convenient way to
+write tests that should fail if any operation within them returns an <code>Err</code>
+variant.</p>
+<p>You can’t use the <code>#[should_panic]</code> annotation on tests that use <code>Result&lt;T,
+E&gt;</code>. To assert that an operation returns an <code>Err</code> variant, <em>don’t</em> use the
+question mark operator on the <code>Result&lt;T, E&gt;</code> value. Instead, use
+<code>assert!(value.is_err())</code>.</p>
+<p>Now that you know several ways to write tests, let’s look at what is happening
+when we run our tests and explore the different options we can use with <code>cargo
+test</code>.</p>
+</body>
+</html>

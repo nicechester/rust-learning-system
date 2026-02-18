@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>The `Future` Trait</title>
+</head>
+<body>
+<h1>The `Future` Trait</h1>
+<p>Let’s start by taking a closer look at how the <code>Future</code> trait works. Here’s how
+Rust defines it:</p>
+<pre><code class="language-rust">use std::pin::Pin;
+use std::task::{Context, Poll};
+
+pub trait Future {
+    type Output;
+
+    fn poll(self: Pin&lt;&amp;mut Self&gt;, cx: &amp;mut Context&lt;'_&gt;) -&gt; Poll&lt;Self::Output&gt;;
+}
+</code></pre>
+<p>That trait definition includes a bunch of new types and also some syntax we
+haven’t seen before, so let’s walk through the definition piece by piece.</p>
+<p>First, <code>Future</code>’s associated type <code>Output</code> says what the future resolves to.
+This is analogous to the <code>Item</code> associated type for the <code>Iterator</code> trait.
+Second, <code>Future</code> has the <code>poll</code> method, which takes a special <code>Pin</code> reference
+for its <code>self</code> parameter and a mutable reference to a <code>Context</code> type, and
+returns a <code>Poll&lt;Self::Output&gt;</code>. We’ll talk more about <code>Pin</code> and <code>Context</code> in a
+moment. For now, let’s focus on what the method returns, the <code>Poll</code> type:</p>
+<pre><code class="language-rust">pub enum Poll&lt;T&gt; {
+    Ready(T),
+    Pending,
+}
+</code></pre>
+<p>This <code>Poll</code> type is similar to an <code>Option</code>. It has one variant that has a value,
+<code>Ready(T)</code>, and one that does not, <code>Pending</code>. <code>Poll</code> means something quite
+different from <code>Option</code>, though! The <code>Pending</code> variant indicates that the future
+still has work to do, so the caller will need to check again later. The <code>Ready</code>
+variant indicates that the <code>Future</code> has finished its work and the <code>T</code> value is
+available.</p>
+<blockquote>
+<p>Note: It’s rare to need to call <code>poll</code> directly, but if you do need to, keep
+in mind that with most futures, the caller should not call <code>poll</code> again after
+the future has returned <code>Ready</code>. Many futures will panic if polled again after
+becoming ready. Futures that are safe to poll again will say so explicitly in
+their documentation. This is similar to how <code>Iterator::next</code> behaves.</p>
+</blockquote>
+<p>When you see code that uses <code>await</code>, Rust compiles it under the hood to code
+that calls <code>poll</code>. If you look back at Listing 17-4, where we printed out the
+page title for a single URL once it resolved, Rust compiles it into something
+kind of (although not exactly) like this:</p>
+<p>```rust,ignore
+match page_title(url).poll() {
+    Ready(page_title) =&gt; match page_title {
+        Some(title) =&gt; println!("The title for {url} was {title}"),
+        None =&gt; println!("{url} had no title"),
+    }
+    Pending =&gt; {
+        // But what goes here?
+    }
+}</p>
+<pre><code>
+What should we do when the future is still `Pending`? We need some way to try
+again, and again, and again, until the future is finally ready. In other words,
+we need a loop:
+
+```rust,ignore
+let mut page_title_fut = page_title(url);
+loop {
+    match page_title_fut.poll() {
+        Ready(value) =&gt; match page_title {
+            Some(title) =&gt; println!(&quot;The title for {url} was {title}&quot;),
+            None =&gt; println!(&quot;{url} had no title&quot;),
+        }
+        Pending =&gt; {
+            // continue
+        }
+    }
+}
+</code></pre>
+<p>If Rust compiled it to exactly that code, though, every <code>await</code> would be
+blocking—exactly the opposite of what we were going for! Instead, Rust ensures
+that the loop can hand off control to something that can pause work on this
+future to work on other futures and then check this one again later. As we’ve
+seen, that something is an async runtime, and this scheduling and coordination
+work is one of its main jobs.</p>
+<p>In the [“Sending Data Between Two Tasks Using Message
+Passing”][message-passing]<!-- ignore --> section, we described waiting on
+<code>rx.recv</code>. The <code>recv</code> call returns a future, and awaiting the future polls it.
+We noted that a runtime will pause the future until it’s ready with either
+<code>Some(message)</code> or <code>None</code> when the channel closes. With our deeper
+understanding of the <code>Future</code> trait, and specifically <code>Future::poll</code>, we can
+see how that works. The runtime knows the future isn’t ready when it returns
+<code>Poll::Pending</code>. Conversely, the runtime knows the future <em>is</em> ready and
+advances it when <code>poll</code> returns <code>Poll::Ready(Some(message))</code> or
+<code>Poll::Ready(None)</code>.</p>
+<p>The exact details of how a runtime does that are beyond the scope of this book,
+but the key is to see the basic mechanics of futures: a runtime <em>polls</em> each
+future it is responsible for, putting the future back to sleep when it is not
+yet ready.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="pinning-and-the-pin-and-unpin-traits"></a>
+<a id="the-pin-and-unpin-traits"></a></p>
+</body>
+</html>

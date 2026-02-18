@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Encapsulation That Hides Implementation Details</title>
+</head>
+<body>
+<h1>Encapsulation That Hides Implementation Details</h1>
+<p>Another aspect commonly associated with OOP is the idea of <em>encapsulation</em>,
+which means that the implementation details of an object aren’t accessible to
+code using that object. Therefore, the only way to interact with an object is
+through its public API; code using the object shouldn’t be able to reach into
+the object’s internals and change data or behavior directly. This enables the
+programmer to change and refactor an object’s internals without needing to
+change the code that uses the object.</p>
+<p>We discussed how to control encapsulation in Chapter 7: We can use the <code>pub</code>
+keyword to decide which modules, types, functions, and methods in our code
+should be public, and by default everything else is private. For example, we
+can define a struct <code>AveragedCollection</code> that has a field containing a vector
+of <code>i32</code> values. The struct can also have a field that contains the average of
+the values in the vector, meaning the average doesn’t have to be computed on
+demand whenever anyone needs it. In other words, <code>AveragedCollection</code> will
+cache the calculated average for us. Listing 18-1 has the definition of the
+<code>AveragedCollection</code> struct.</p>
+<p><Listing number="18-1" file-name="src/lib.rs" caption="An <code>AveragedCollection</code> struct that maintains a list of integers and the average of the items in the collection"></p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch18-oop/listing-18-01/src/lib.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+The struct is marked `pub` so that other code can use it, but the fields within
+the struct remain private. This is important in this case because we want to
+ensure that whenever a value is added or removed from the list, the average is
+also updated. We do this by implementing `add`, `remove`, and `average` methods
+on the struct, as shown in Listing 18-2.
+
+&lt;Listing number=&quot;18-2&quot; file-name=&quot;src/lib.rs&quot; caption=&quot;Implementations of the public methods `add`, `remove`, and `average` on `AveragedCollection`&quot;&gt;
+
+```rust,noplayground
+{{#rustdoc_include ../listings/ch18-oop/listing-18-02/src/lib.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>The public methods <code>add</code>, <code>remove</code>, and <code>average</code> are the only ways to access
+or modify data in an instance of <code>AveragedCollection</code>. When an item is added to
+<code>list</code> using the <code>add</code> method or removed using the <code>remove</code> method, the
+implementations of each call the private <code>update_average</code> method that handles
+updating the <code>average</code> field as well.</p>
+<p>We leave the <code>list</code> and <code>average</code> fields private so that there is no way for
+external code to add or remove items to or from the <code>list</code> field directly;
+otherwise, the <code>average</code> field might become out of sync when the <code>list</code>
+changes. The <code>average</code> method returns the value in the <code>average</code> field,
+allowing external code to read the <code>average</code> but not modify it.</p>
+<p>Because we’ve encapsulated the implementation details of the struct
+<code>AveragedCollection</code>, we can easily change aspects, such as the data structure,
+in the future. For instance, we could use a <code>HashSet&lt;i32&gt;</code> instead of a
+<code>Vec&lt;i32&gt;</code> for the <code>list</code> field. As long as the signatures of the <code>add</code>,
+<code>remove</code>, and <code>average</code> public methods stayed the same, code using
+<code>AveragedCollection</code> wouldn’t need to change. If we made <code>list</code> public instead,
+this wouldn’t necessarily be the case: <code>HashSet&lt;i32&gt;</code> and <code>Vec&lt;i32&gt;</code> have
+different methods for adding and removing items, so the external code would
+likely have to change if it were modifying <code>list</code> directly.</p>
+<p>If encapsulation is a required aspect for a language to be considered object
+oriented, then Rust meets that requirement. The option to use <code>pub</code> or not for
+different parts of code enables encapsulation of implementation details.</p>
+</body>
+</html>

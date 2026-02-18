@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Fixing the Error Handling</title>
+</head>
+<body>
+<h1>Fixing the Error Handling</h1>
+<p>Now we’ll work on fixing our error handling. Recall that attempting to access
+the values in the <code>args</code> vector at index 1 or index 2 will cause the program to
+panic if the vector contains fewer than three items. Try running the program
+without any arguments; it will look like this:</p>
+<pre><code class="language-console">{{#include ../listings/ch12-an-io-project/listing-12-07/output.txt}}
+</code></pre>
+<p>The line <code>index out of bounds: the len is 1 but the index is 1</code> is an error
+message intended for programmers. It won’t help our end users understand what
+they should do instead. Let’s fix that now.</p>
+<h4>Improving the Error Message</h4>
+<p>In Listing 12-8, we add a check in the <code>new</code> function that will verify that the
+slice is long enough before accessing index 1 and index 2. If the slice isn’t
+long enough, the program panics and displays a better error message.</p>
+<p><Listing number="12-8" file-name="src/main.rs" caption="Adding a check for the number of arguments"></p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-08/src/main.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+This code is similar to [the `Guess::new` function we wrote in Listing
+9-13][ch9-custom-types]&lt;!-- ignore --&gt;, where we called `panic!` when the
+`value` argument was out of the range of valid values. Instead of checking for
+a range of values here, we’re checking that the length of `args` is at least
+`3` and the rest of the function can operate under the assumption that this
+condition has been met. If `args` has fewer than three items, this condition
+will be `true`, and we call the `panic!` macro to end the program immediately.
+
+With these extra few lines of code in `new`, let’s run the program without any
+arguments again to see what the error looks like now:
+
+```console
+{{#include ../listings/ch12-an-io-project/listing-12-08/output.txt}}
+</code></pre>
+<p>This output is better: We now have a reasonable error message. However, we also
+have extraneous information we don’t want to give to our users. Perhaps the
+technique we used in Listing 9-13 isn’t the best one to use here: A call to
+<code>panic!</code> is more appropriate for a programming problem than a usage problem,
+[as discussed in Chapter 9][ch9-error-guidelines]<!-- ignore -->. Instead,
+we’ll use the other technique you learned about in Chapter 9—[returning a
+<code>Result</code>][ch9-result]<!-- ignore --> that indicates either success or an error.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="returning-a-result-from-new-instead-of-calling-panic"></a></p>
+<h4>Returning a <code>Result</code> Instead of Calling <code>panic!</code></h4>
+<p>We can instead return a <code>Result</code> value that will contain a <code>Config</code> instance in
+the successful case and will describe the problem in the error case. We’re also
+going to change the function name from <code>new</code> to <code>build</code> because many
+programmers expect <code>new</code> functions to never fail. When <code>Config::build</code> is
+communicating to <code>main</code>, we can use the <code>Result</code> type to signal there was a
+problem. Then, we can change <code>main</code> to convert an <code>Err</code> variant into a more
+practical error for our users without the surrounding text about <code>thread
+'main'</code> and <code>RUST_BACKTRACE</code> that a call to <code>panic!</code> causes.</p>
+<p>Listing 12-9 shows the changes we need to make to the return value of the
+function we’re now calling <code>Config::build</code> and the body of the function needed
+to return a <code>Result</code>. Note that this won’t compile until we update <code>main</code> as
+well, which we’ll do in the next listing.</p>
+<p><Listing number="12-9" file-name="src/main.rs" caption="Returning a <code>Result</code> from <code>Config::build</code>"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-09/src/main.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+Our `build` function returns a `Result` with a `Config` instance in the success
+case and a string literal in the error case. Our error values will always be
+string literals that have the `'static` lifetime.
+
+We’ve made two changes in the body of the function: Instead of calling `panic!`
+when the user doesn’t pass enough arguments, we now return an `Err` value, and
+we’ve wrapped the `Config` return value in an `Ok`. These changes make the
+function conform to its new type signature.
+
+Returning an `Err` value from `Config::build` allows the `main` function to
+handle the `Result` value returned from the `build` function and exit the
+process more cleanly in the error case.
+
+&lt;!-- Old headings. Do not remove or links may break. --&gt;
+
+&lt;a id=&quot;calling-confignew-and-handling-errors&quot;&gt;&lt;/a&gt;
+
+#### Calling `Config::build` and Handling Errors
+
+To handle the error case and print a user-friendly message, we need to update
+`main` to handle the `Result` being returned by `Config::build`, as shown in
+Listing 12-10. We’ll also take the responsibility of exiting the command line
+tool with a nonzero error code away from `panic!` and instead implement it by
+hand. A nonzero exit status is a convention to signal to the process that
+called our program that the program exited with an error state.
+
+&lt;Listing number=&quot;12-10&quot; file-name=&quot;src/main.rs&quot; caption=&quot;Exiting with an error code if building a `Config` fails&quot;&gt;
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-10/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>In this listing, we’ve used a method we haven’t covered in detail yet:
+<code>unwrap_or_else</code>, which is defined on <code>Result&lt;T, E&gt;</code> by the standard library.
+Using <code>unwrap_or_else</code> allows us to define some custom, non-<code>panic!</code> error
+handling. If the <code>Result</code> is an <code>Ok</code> value, this method’s behavior is similar
+to <code>unwrap</code>: It returns the inner value that <code>Ok</code> is wrapping. However, if the
+value is an <code>Err</code> value, this method calls the code in the closure, which is
+an anonymous function we define and pass as an argument to <code>unwrap_or_else</code>.
+We’ll cover closures in more detail in [Chapter 13][ch13]<!-- ignore -->. For
+now, you just need to know that <code>unwrap_or_else</code> will pass the inner value of
+the <code>Err</code>, which in this case is the static string <code>"not enough arguments"</code>
+that we added in Listing 12-9, to our closure in the argument <code>err</code> that
+appears between the vertical pipes. The code in the closure can then use the
+<code>err</code> value when it runs.</p>
+<p>We’ve added a new <code>use</code> line to bring <code>process</code> from the standard library into
+scope. The code in the closure that will be run in the error case is only two
+lines: We print the <code>err</code> value and then call <code>process::exit</code>. The
+<code>process::exit</code> function will stop the program immediately and return the
+number that was passed as the exit status code. This is similar to the
+<code>panic!</code>-based handling we used in Listing 12-8, but we no longer get all the
+extra output. Let’s try it:</p>
+<pre><code class="language-console">{{#include ../listings/ch12-an-io-project/listing-12-10/output.txt}}
+</code></pre>
+<p>Great! This output is much friendlier for our users.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="extracting-logic-from-the-main-function"></a></p>
+</body>
+</html>

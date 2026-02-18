@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Updating a Vector</title>
+</head>
+<body>
+<h1>Updating a Vector</h1>
+<p>To create a vector and then add elements to it, we can use the <code>push</code> method,
+as shown in Listing 8-3.</p>
+<p><Listing number="8-3" caption="Using the <code>push</code> method to add values to a vector"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch08-common-collections/listing-08-03/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>As with any variable, if we want to be able to change its value, we need to
+make it mutable using the <code>mut</code> keyword, as discussed in Chapter 3. The numbers
+we place inside are all of type <code>i32</code>, and Rust infers this from the data, so
+we don’t need the <code>Vec&lt;i32&gt;</code> annotation.</p>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Introduction</title>
+</head>
+<body>
+<h1>Introduction</h1>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="using-message-passing-to-transfer-data-between-threads"></a></p>
+<h2>Transfer Data Between Threads with Message Passing</h2>
+<p>One increasingly popular approach to ensuring safe concurrency is message
+passing, where threads or actors communicate by sending each other messages
+containing data. Here’s the idea in a slogan from <a href="https://golang.org/doc/effective_go.html#concurrency">the Go language documentation</a>:
+“Do not communicate by sharing memory; instead, share memory by communicating.”</p>
+<p>To accomplish message-sending concurrency, Rust’s standard library provides an
+implementation of channels. A <em>channel</em> is a general programming concept by
+which data is sent from one thread to another.</p>
+<p>You can imagine a channel in programming as being like a directional channel of
+water, such as a stream or a river. If you put something like a rubber duck
+into a river, it will travel downstream to the end of the waterway.</p>
+<p>A channel has two halves: a transmitter and a receiver. The transmitter half is
+the upstream location where you put the rubber duck into the river, and the
+receiver half is where the rubber duck ends up downstream. One part of your
+code calls methods on the transmitter with the data you want to send, and
+another part checks the receiving end for arriving messages. A channel is said
+to be <em>closed</em> if either the transmitter or receiver half is dropped.</p>
+<p>Here, we’ll work up to a program that has one thread to generate values and
+send them down a channel, and another thread that will receive the values and
+print them out. We’ll be sending simple values between threads using a channel
+to illustrate the feature. Once you’re familiar with the technique, you could
+use channels for any threads that need to communicate with each other, such as
+a chat system or a system where many threads perform parts of a calculation and
+send the parts to one thread that aggregates the results.</p>
+<p>First, in Listing 16-6, we’ll create a channel but not do anything with it.
+Note that this won’t compile yet because Rust can’t tell what type of values we
+want to send over the channel.</p>
+<p><Listing number="16-6" file-name="src/main.rs" caption="Creating a channel and assigning the two halves to <code>tx</code> and <code>rx</code>"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch16-fearless-concurrency/listing-16-06/src/main.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+We create a new channel using the `mpsc::channel` function; `mpsc` stands for
+_multiple producer, single consumer_. In short, the way Rust’s standard library
+implements channels means a channel can have multiple _sending_ ends that
+produce values but only one _receiving_ end that consumes those values. Imagine
+multiple streams flowing together into one big river: Everything sent down any
+of the streams will end up in one river at the end. We’ll start with a single
+producer for now, but we’ll add multiple producers when we get this example
+working.
+
+The `mpsc::channel` function returns a tuple, the first element of which is the
+sending end—the transmitter—and the second element of which is the receiving
+end—the receiver. The abbreviations `tx` and `rx` are traditionally used in
+many fields for _transmitter_ and _receiver_, respectively, so we name our
+variables as such to indicate each end. We’re using a `let` statement with a
+pattern that destructures the tuples; we’ll discuss the use of patterns in
+`let` statements and destructuring in Chapter 19. For now, know that using a
+`let` statement in this way is a convenient approach to extract the pieces of
+the tuple returned by `mpsc::channel`.
+
+Let’s move the transmitting end into a spawned thread and have it send one
+string so that the spawned thread is communicating with the main thread, as
+shown in Listing 16-7. This is like putting a rubber duck in the river upstream
+or sending a chat message from one thread to another.
+
+&lt;Listing number=&quot;16-7&quot; file-name=&quot;src/main.rs&quot; caption='Moving `tx` to a spawned thread and sending `&quot;hi&quot;`'&gt;
+
+```rust
+{{#rustdoc_include ../listings/ch16-fearless-concurrency/listing-16-07/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>Again, we’re using <code>thread::spawn</code> to create a new thread and then using <code>move</code>
+to move <code>tx</code> into the closure so that the spawned thread owns <code>tx</code>. The spawned
+thread needs to own the transmitter to be able to send messages through the
+channel.</p>
+<p>The transmitter has a <code>send</code> method that takes the value we want to send. The
+<code>send</code> method returns a <code>Result&lt;T, E&gt;</code> type, so if the receiver has already
+been dropped and there’s nowhere to send a value, the send operation will
+return an error. In this example, we’re calling <code>unwrap</code> to panic in case of an
+error. But in a real application, we would handle it properly: Return to
+Chapter 9 to review strategies for proper error handling.</p>
+<p>In Listing 16-8, we’ll get the value from the receiver in the main thread. This
+is like retrieving the rubber duck from the water at the end of the river or
+receiving a chat message.</p>
+<p><Listing number="16-8" file-name="src/main.rs" caption='Receiving the value <code>"hi"</code> in the main thread and printing it'></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch16-fearless-concurrency/listing-16-08/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>The receiver has two useful methods: <code>recv</code> and <code>try_recv</code>. We’re using <code>recv</code>,
+short for <em>receive</em>, which will block the main thread’s execution and wait
+until a value is sent down the channel. Once a value is sent, <code>recv</code> will
+return it in a <code>Result&lt;T, E&gt;</code>. When the transmitter closes, <code>recv</code> will return
+an error to signal that no more values will be coming.</p>
+<p>The <code>try_recv</code> method doesn’t block, but will instead return a <code>Result&lt;T, E&gt;</code>
+immediately: an <code>Ok</code> value holding a message if one is available and an <code>Err</code>
+value if there aren’t any messages this time. Using <code>try_recv</code> is useful if
+this thread has other work to do while waiting for messages: We could write a
+loop that calls <code>try_recv</code> every so often, handles a message if one is
+available, and otherwise does other work for a little while until checking
+again.</p>
+<p>We’ve used <code>recv</code> in this example for simplicity; we don’t have any other work
+for the main thread to do other than wait for messages, so blocking the main
+thread is appropriate.</p>
+<p>When we run the code in Listing 16-8, we’ll see the value printed from the main
+thread:</p>
+<!-- Not extracting output because changes to this output aren't significant;
+the changes are likely to be due to the threads running differently rather than
+changes in the compiler -->
+
+<pre><code class="language-text">Got: hi
+</code></pre>
+<p>Perfect!</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="channels-and-ownership-transference"></a></p>
+</body>
+</html>

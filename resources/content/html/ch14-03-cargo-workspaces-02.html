@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Creating the Second Package in the Workspace</title>
+</head>
+<body>
+<h1>Creating the Second Package in the Workspace</h1>
+<p>Next, let’s create another member package in the workspace and call it
+<code>add_one</code>. Generate a new library crate named <code>add_one</code>:</p>
+<!-- manual-regeneration
+cd listings/ch14-more-about-cargo/output-only-02-add-one/add
+remove `"add_one"` from `members` list in Cargo.toml
+rm -rf add_one
+cargo new add_one --lib
+copy output below
+-->
+
+<pre><code class="language-console">$ cargo new add_one --lib
+     Created library `add_one` package
+      Adding `add_one` as member of workspace at `file:///projects/add`
+</code></pre>
+<p>The top-level <em>Cargo.toml</em> will now include the <em>add_one</em> path in the <code>members</code>
+list:</p>
+<p><span class="filename">Filename: Cargo.toml</span></p>
+<pre><code class="language-toml">{{#include ../listings/ch14-more-about-cargo/no-listing-02-workspace-with-two-crates/add/Cargo.toml}}
+</code></pre>
+<p>Your <em>add</em> directory should now have these directories and files:</p>
+<pre><code class="language-text">├── Cargo.lock
+├── Cargo.toml
+├── add_one
+│   ├── Cargo.toml
+│   └── src
+│       └── lib.rs
+├── adder
+│   ├── Cargo.toml
+│   └── src
+│       └── main.rs
+└── target
+</code></pre>
+<p>In the <em>add_one/src/lib.rs</em> file, let’s add an <code>add_one</code> function:</p>
+<p><span class="filename">Filename: add_one/src/lib.rs</span></p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch14-more-about-cargo/no-listing-02-workspace-with-two-crates/add/add_one/src/lib.rs}}</p>
+<pre><code>
+Now we can have the `adder` package with our binary depend on the `add_one`
+package that has our library. First, we’ll need to add a path dependency on
+`add_one` to _adder/Cargo.toml_.
+
+&lt;span class=&quot;filename&quot;&gt;Filename: adder/Cargo.toml&lt;/span&gt;
+
+```toml
+{{#include ../listings/ch14-more-about-cargo/no-listing-02-workspace-with-two-crates/add/adder/Cargo.toml:6:7}}
+</code></pre>
+<p>Cargo doesn’t assume that crates in a workspace will depend on each other, so
+we need to be explicit about the dependency relationships.</p>
+<p>Next, let’s use the <code>add_one</code> function (from the <code>add_one</code> crate) in the
+<code>adder</code> crate. Open the <em>adder/src/main.rs</em> file and change the <code>main</code>
+function to call the <code>add_one</code> function, as in Listing 14-7.</p>
+<p><Listing number="14-7" file-name="adder/src/main.rs" caption="Using the <code>add_one</code> library crate from the <code>adder</code> crate"></p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch14-more-about-cargo/listing-14-07/add/adder/src/main.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+Let’s build the workspace by running `cargo build` in the top-level _add_
+directory!
+
+&lt;!-- manual-regeneration
+cd listings/ch14-more-about-cargo/listing-14-07/add
+cargo build
+copy output below; the output updating script doesn't handle subdirectories in paths properly
+--&gt;
+
+```console
+$ cargo build
+   Compiling add_one v0.1.0 (file:///projects/add/add_one)
+   Compiling adder v0.1.0 (file:///projects/add/adder)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.22s
+</code></pre>
+<p>To run the binary crate from the <em>add</em> directory, we can specify which package
+in the workspace we want to run by using the <code>-p</code> argument and the package name
+with <code>cargo run</code>:</p>
+<!-- manual-regeneration
+cd listings/ch14-more-about-cargo/listing-14-07/add
+cargo run -p adder
+copy output below; the output updating script doesn't handle subdirectories in paths properly
+-->
+
+<pre><code class="language-console">$ cargo run -p adder
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running `target/debug/adder`
+Hello, world! 10 plus one is 11!
+</code></pre>
+<p>This runs the code in <em>adder/src/main.rs</em>, which depends on the <code>add_one</code> crate.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="depending-on-an-external-package-in-a-workspace"></a></p>
+</body>
+</html>

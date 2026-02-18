@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Using Default Generic Parameters and Operator Overloading</title>
+</head>
+<body>
+<h1>Using Default Generic Parameters and Operator Overloading</h1>
+<p>When we use generic type parameters, we can specify a default concrete type for
+the generic type. This eliminates the need for implementors of the trait to
+specify a concrete type if the default type works. You specify a default type
+when declaring a generic type with the <code>&lt;PlaceholderType=ConcreteType&gt;</code> syntax.</p>
+<p>A great example of a situation where this technique is useful is with <em>operator
+overloading</em>, in which you customize the behavior of an operator (such as <code>+</code>)
+in particular situations.</p>
+<p>Rust doesn’t allow you to create your own operators or overload arbitrary
+operators. But you can overload the operations and corresponding traits listed
+in <code>std::ops</code> by implementing the traits associated with the operator. For
+example, in Listing 20-15, we overload the <code>+</code> operator to add two <code>Point</code>
+instances together. We do this by implementing the <code>Add</code> trait on a <code>Point</code>
+struct.</p>
+<p><Listing number="20-15" file-name="src/main.rs" caption="Implementing the <code>Add</code> trait to overload the <code>+</code> operator for <code>Point</code> instances"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-15/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>The <code>add</code> method adds the <code>x</code> values of two <code>Point</code> instances and the <code>y</code>
+values of two <code>Point</code> instances to create a new <code>Point</code>. The <code>Add</code> trait has an
+associated type named <code>Output</code> that determines the type returned from the <code>add</code>
+method.</p>
+<p>The default generic type in this code is within the <code>Add</code> trait. Here is its
+definition:</p>
+<pre><code class="language-rust">trait Add&lt;Rhs=Self&gt; {
+    type Output;
+
+    fn add(self, rhs: Rhs) -&gt; Self::Output;
+}
+</code></pre>
+<p>This code should look generally familiar: a trait with one method and an
+associated type. The new part is <code>Rhs=Self</code>: This syntax is called <em>default
+type parameters</em>. The <code>Rhs</code> generic type parameter (short for “right-hand
+side”) defines the type of the <code>rhs</code> parameter in the <code>add</code> method. If we don’t
+specify a concrete type for <code>Rhs</code> when we implement the <code>Add</code> trait, the type
+of <code>Rhs</code> will default to <code>Self</code>, which will be the type we’re implementing
+<code>Add</code> on.</p>
+<p>When we implemented <code>Add</code> for <code>Point</code>, we used the default for <code>Rhs</code> because we
+wanted to add two <code>Point</code> instances. Let’s look at an example of implementing
+the <code>Add</code> trait where we want to customize the <code>Rhs</code> type rather than using the
+default.</p>
+<p>We have two structs, <code>Millimeters</code> and <code>Meters</code>, holding values in different
+units. This thin wrapping of an existing type in another struct is known as the
+<em>newtype pattern</em>, which we describe in more detail in the [“Implementing
+External Traits with the Newtype Pattern”][newtype]<!-- ignore --> section. We
+want to add values in millimeters to values in meters and have the
+implementation of <code>Add</code> do the conversion correctly. We can implement <code>Add</code> for
+<code>Millimeters</code> with <code>Meters</code> as the <code>Rhs</code>, as shown in Listing 20-16.</p>
+<p><Listing number="20-16" file-name="src/lib.rs" caption="Implementing the <code>Add</code> trait on <code>Millimeters</code> to add <code>Millimeters</code> and <code>Meters</code>"></p>
+<p><code>rust,noplayground
+{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-16/src/lib.rs}}</code></p>
+<p></Listing></p>
+<p>To add <code>Millimeters</code> and <code>Meters</code>, we specify <code>impl Add&lt;Meters&gt;</code> to set the
+value of the <code>Rhs</code> type parameter instead of using the default of <code>Self</code>.</p>
+<p>You’ll use default type parameters in two main ways:</p>
+<ol>
+<li>To extend a type without breaking existing code</li>
+<li>To allow customization in specific cases most users won’t need</li>
+</ol>
+<p>The standard library’s <code>Add</code> trait is an example of the second purpose:
+Usually, you’ll add two like types, but the <code>Add</code> trait provides the ability to
+customize beyond that. Using a default type parameter in the <code>Add</code> trait
+definition means you don’t have to specify the extra parameter most of the
+time. In other words, a bit of implementation boilerplate isn’t needed, making
+it easier to use the trait.</p>
+<p>The first purpose is similar to the second but in reverse: If you want to add a
+type parameter to an existing trait, you can give it a default to allow
+extension of the functionality of the trait without breaking the existing
+implementation code.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="fully-qualified-syntax-for-disambiguation-calling-methods-with-the-same-name"></a>
+<a id="disambiguating-between-methods-with-the-same-name"></a></p>
+</body>
+</html>

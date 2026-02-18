@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Introduction</title>
+</head>
+<body>
+<h1>Introduction</h1>
+<h2>Defining and Instantiating Structs</h2>
+<p>Structs are similar to tuples, discussed in [“The Tuple Type”][tuples]<!--
+ignore --> section, in that both hold multiple related values. Like tuples, the
+pieces of a struct can be different types. Unlike with tuples, in a struct
+you’ll name each piece of data so it’s clear what the values mean. Adding these
+names means that structs are more flexible than tuples: You don’t have to rely
+on the order of the data to specify or access the values of an instance.</p>
+<p>To define a struct, we enter the keyword <code>struct</code> and name the entire struct. A
+struct’s name should describe the significance of the pieces of data being
+grouped together. Then, inside curly brackets, we define the names and types of
+the pieces of data, which we call <em>fields</em>. For example, Listing 5-1 shows a
+struct that stores information about a user account.</p>
+<p><Listing number="5-1" file-name="src/main.rs" caption="A <code>User</code> struct definition"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-01/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>To use a struct after we’ve defined it, we create an <em>instance</em> of that struct
+by specifying concrete values for each of the fields. We create an instance by
+stating the name of the struct and then add curly brackets containing <em><code>key:
+value</code></em> pairs, where the keys are the names of the fields and the values are the
+data we want to store in those fields. We don’t have to specify the fields in
+the same order in which we declared them in the struct. In other words, the
+struct definition is like a general template for the type, and instances fill
+in that template with particular data to create values of the type. For
+example, we can declare a particular user as shown in Listing 5-2.</p>
+<p><Listing number="5-2" file-name="src/main.rs" caption="Creating an instance of the <code>User</code> struct"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-02/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>To get a specific value from a struct, we use dot notation. For example, to
+access this user’s email address, we use <code>user1.email</code>. If the instance is
+mutable, we can change a value by using the dot notation and assigning into a
+particular field. Listing 5-3 shows how to change the value in the <code>email</code>
+field of a mutable <code>User</code> instance.</p>
+<p><Listing number="5-3" file-name="src/main.rs" caption="Changing the value in the <code>email</code> field of a <code>User</code> instance"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-03/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Note that the entire instance must be mutable; Rust doesn’t allow us to mark
+only certain fields as mutable. As with any expression, we can construct a new
+instance of the struct as the last expression in the function body to
+implicitly return that new instance.</p>
+<p>Listing 5-4 shows a <code>build_user</code> function that returns a <code>User</code> instance with
+the given email and username. The <code>active</code> field gets the value <code>true</code>, and the
+<code>sign_in_count</code> gets a value of <code>1</code>.</p>
+<p><Listing number="5-4" file-name="src/main.rs" caption="A <code>build_user</code> function that takes an email and username and returns a <code>User</code> instance"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-04/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>It makes sense to name the function parameters with the same name as the struct
+fields, but having to repeat the <code>email</code> and <code>username</code> field names and
+variables is a bit tedious. If the struct had more fields, repeating each name
+would get even more annoying. Luckily, there’s a convenient shorthand!</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="using-the-field-init-shorthand-when-variables-and-fields-have-the-same-name"></a></p>
+</body>
+</html>

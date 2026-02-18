@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Implementing an Unsafe Trait</title>
+</head>
+<body>
+<h1>Implementing an Unsafe Trait</h1>
+<p>We can use <code>unsafe</code> to implement an unsafe trait. A trait is unsafe when at
+least one of its methods has some invariant that the compiler can’t verify. We
+declare that a trait is <code>unsafe</code> by adding the <code>unsafe</code> keyword before <code>trait</code>
+and marking the implementation of the trait as <code>unsafe</code> too, as shown in
+Listing 20-12.</p>
+<p><Listing number="20-12" caption="Defining and implementing an unsafe trait"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-12/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>By using <code>unsafe impl</code>, we’re promising that we’ll uphold the invariants that
+the compiler can’t verify.</p>
+<p>As an example, recall the <code>Send</code> and <code>Sync</code> marker traits we discussed in the
+[“Extensible Concurrency with <code>Send</code> and <code>Sync</code>”][send-and-sync]<!-- ignore -->
+section in Chapter 16: The compiler implements these traits automatically if
+our types are composed entirely of other types that implement <code>Send</code> and
+<code>Sync</code>. If we implement a type that contains a type that does not implement
+<code>Send</code> or <code>Sync</code>, such as raw pointers, and we want to mark that type as <code>Send</code>
+or <code>Sync</code>, we must use <code>unsafe</code>. Rust can’t verify that our type upholds the
+guarantees that it can be safely sent across threads or accessed from multiple
+threads; therefore, we need to do those checks manually and indicate as such
+with <code>unsafe</code>.</p>
+</body>
+</html>

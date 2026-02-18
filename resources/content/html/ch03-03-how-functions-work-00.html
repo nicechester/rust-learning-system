@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Introduction</title>
+</head>
+<body>
+<h1>Introduction</h1>
+<h2>Functions</h2>
+<p>Functions are prevalent in Rust code. You’ve already seen one of the most
+important functions in the language: the <code>main</code> function, which is the entry
+point of many programs. You’ve also seen the <code>fn</code> keyword, which allows you to
+declare new functions.</p>
+<p>Rust code uses <em>snake case</em> as the conventional style for function and variable
+names, in which all letters are lowercase and underscores separate words.
+Here’s a program that contains an example function definition:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-16-functions/src/main.rs}}
+</code></pre>
+<p>We define a function in Rust by entering <code>fn</code> followed by a function name and a
+set of parentheses. The curly brackets tell the compiler where the function
+body begins and ends.</p>
+<p>We can call any function we’ve defined by entering its name followed by a set
+of parentheses. Because <code>another_function</code> is defined in the program, it can be
+called from inside the <code>main</code> function. Note that we defined <code>another_function</code>
+<em>after</em> the <code>main</code> function in the source code; we could have defined it before
+as well. Rust doesn’t care where you define your functions, only that they’re
+defined somewhere in a scope that can be seen by the caller.</p>
+<p>Let’s start a new binary project named <em>functions</em> to explore functions
+further. Place the <code>another_function</code> example in <em>src/main.rs</em> and run it. You
+should see the following output:</p>
+<pre><code class="language-console">{{#include ../listings/ch03-common-programming-concepts/no-listing-16-functions/output.txt}}
+</code></pre>
+<p>The lines execute in the order in which they appear in the <code>main</code> function.
+First the “Hello, world!” message prints, and then <code>another_function</code> is called
+and its message is printed.</p>
+</body>
+</html>

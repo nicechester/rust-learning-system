@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Scalar Types</title>
+</head>
+<body>
+<h1>Scalar Types</h1>
+<p>A <em>scalar</em> type represents a single value. Rust has four primary scalar types:
+integers, floating-point numbers, Booleans, and characters. You may recognize
+these from other programming languages. Let’s jump into how they work in Rust.</p>
+<h4>Integer Types</h4>
+<p>An <em>integer</em> is a number without a fractional component. We used one integer
+type in Chapter 2, the <code>u32</code> type. This type declaration indicates that the
+value it’s associated with should be an unsigned integer (signed integer types
+start with <code>i</code> instead of <code>u</code>) that takes up 32 bits of space. Table 3-1 shows
+the built-in integer types in Rust. We can use any of these variants to declare
+the type of an integer value.</p>
+<p><span class="caption">Table 3-1: Integer Types in Rust</span></p>
+<table>
+<thead>
+<tr>
+<th>Length</th>
+<th>Signed</th>
+<th>Unsigned</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8-bit</td>
+<td><code>i8</code></td>
+<td><code>u8</code></td>
+</tr>
+<tr>
+<td>16-bit</td>
+<td><code>i16</code></td>
+<td><code>u16</code></td>
+</tr>
+<tr>
+<td>32-bit</td>
+<td><code>i32</code></td>
+<td><code>u32</code></td>
+</tr>
+<tr>
+<td>64-bit</td>
+<td><code>i64</code></td>
+<td><code>u64</code></td>
+</tr>
+<tr>
+<td>128-bit</td>
+<td><code>i128</code></td>
+<td><code>u128</code></td>
+</tr>
+<tr>
+<td>Architecture-dependent</td>
+<td><code>isize</code></td>
+<td><code>usize</code></td>
+</tr>
+</tbody>
+</table>
+<p>Each variant can be either signed or unsigned and has an explicit size.
+<em>Signed</em> and <em>unsigned</em> refer to whether it’s possible for the number to be
+negative—in other words, whether the number needs to have a sign with it
+(signed) or whether it will only ever be positive and can therefore be
+represented without a sign (unsigned). It’s like writing numbers on paper: When
+the sign matters, a number is shown with a plus sign or a minus sign; however,
+when it’s safe to assume the number is positive, it’s shown with no sign.
+Signed numbers are stored using [two’s complement][twos-complement]<!-- ignore
+--> representation.</p>
+<p>Each signed variant can store numbers from −(2<sup>n − 1</sup>) to 2<sup>n −
+1</sup> − 1 inclusive, where <em>n</em> is the number of bits that variant uses. So, an
+<code>i8</code> can store numbers from −(2<sup>7</sup>) to 2<sup>7</sup> − 1, which equals
+−128 to 127. Unsigned variants can store numbers from 0 to 2<sup>n</sup> − 1,
+so a <code>u8</code> can store numbers from 0 to 2<sup>8</sup> − 1, which equals 0 to 255.</p>
+<p>Additionally, the <code>isize</code> and <code>usize</code> types depend on the architecture of the
+computer your program is running on: 64 bits if you’re on a 64-bit architecture
+and 32 bits if you’re on a 32-bit architecture.</p>
+<p>You can write integer literals in any of the forms shown in Table 3-2. Note
+that number literals that can be multiple numeric types allow a type suffix,
+such as <code>57u8</code>, to designate the type. Number literals can also use <code>_</code> as a
+visual separator to make the number easier to read, such as <code>1_000</code>, which will
+have the same value as if you had specified <code>1000</code>.</p>
+<p><span class="caption">Table 3-2: Integer Literals in Rust</span></p>
+<table>
+<thead>
+<tr>
+<th>Number literals</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Decimal</td>
+<td><code>98_222</code></td>
+</tr>
+<tr>
+<td>Hex</td>
+<td><code>0xff</code></td>
+</tr>
+<tr>
+<td>Octal</td>
+<td><code>0o77</code></td>
+</tr>
+<tr>
+<td>Binary</td>
+<td><code>0b1111_0000</code></td>
+</tr>
+<tr>
+<td>Byte (<code>u8</code> only)</td>
+<td><code>b'A'</code></td>
+</tr>
+</tbody>
+</table>
+<p>So how do you know which type of integer to use? If you’re unsure, Rust’s
+defaults are generally good places to start: Integer types default to <code>i32</code>.
+The primary situation in which you’d use <code>isize</code> or <code>usize</code> is when indexing
+some sort of collection.</p>
+<blockquote>
+<h5>Integer Overflow</h5>
+<p>Let’s say you have a variable of type <code>u8</code> that can hold values between 0 and
+255. If you try to change the variable to a value outside that range, such as
+256, <em>integer overflow</em> will occur, which can result in one of two behaviors.
+When you’re compiling in debug mode, Rust includes checks for integer overflow
+that cause your program to <em>panic</em> at runtime if this behavior occurs. Rust
+uses the term <em>panicking</em> when a program exits with an error; we’ll discuss
+panics in more depth in the [“Unrecoverable Errors with
+<code>panic!</code>”][unrecoverable-errors-with-panic]<!-- ignore --> section in Chapter
+9.</p>
+<p>When you’re compiling in release mode with the <code>--release</code> flag, Rust does
+<em>not</em> include checks for integer overflow that cause panics. Instead, if
+overflow occurs, Rust performs <em>two’s complement wrapping</em>. In short, values
+greater than the maximum value the type can hold “wrap around” to the minimum
+of the values the type can hold. In the case of a <code>u8</code>, the value 256 becomes
+0, the value 257 becomes 1, and so on. The program won’t panic, but the
+variable will have a value that probably isn’t what you were expecting it to
+have. Relying on integer overflow’s wrapping behavior is considered an error.</p>
+<p>To explicitly handle the possibility of overflow, you can use these families
+of methods provided by the standard library for primitive numeric types:</p>
+<ul>
+<li>Wrap in all modes with the <code>wrapping_*</code> methods, such as <code>wrapping_add</code>.</li>
+<li>Return the <code>None</code> value if there is overflow with the <code>checked_*</code> methods.</li>
+<li>Return the value and a Boolean indicating whether there was overflow with
+  the <code>overflowing_*</code> methods.</li>
+<li>Saturate at the value’s minimum or maximum values with the <code>saturating_*</code>
+  methods.</li>
+</ul>
+</blockquote>
+<h4>Floating-Point Types</h4>
+<p>Rust also has two primitive types for <em>floating-point numbers</em>, which are
+numbers with decimal points. Rust’s floating-point types are <code>f32</code> and <code>f64</code>,
+which are 32 bits and 64 bits in size, respectively. The default type is <code>f64</code>
+because on modern CPUs, it’s roughly the same speed as <code>f32</code> but is capable of
+more precision. All floating-point types are signed.</p>
+<p>Here’s an example that shows floating-point numbers in action:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-06-floating-point/src/main.rs}}
+</code></pre>
+<p>Floating-point numbers are represented according to the IEEE-754 standard.</p>
+<h4>Numeric Operations</h4>
+<p>Rust supports the basic mathematical operations you’d expect for all the number
+types: addition, subtraction, multiplication, division, and remainder. Integer
+division truncates toward zero to the nearest integer. The following code shows
+how you’d use each numeric operation in a <code>let</code> statement:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-07-numeric-operations/src/main.rs}}
+</code></pre>
+<p>Each expression in these statements uses a mathematical operator and evaluates
+to a single value, which is then bound to a variable. [Appendix
+B][appendix_b]<!-- ignore --> contains a list of all operators that Rust
+provides.</p>
+<h4>The Boolean Type</h4>
+<p>As in most other programming languages, a Boolean type in Rust has two possible
+values: <code>true</code> and <code>false</code>. Booleans are one byte in size. The Boolean type in
+Rust is specified using <code>bool</code>. For example:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-08-boolean/src/main.rs}}
+</code></pre>
+<p>The main way to use Boolean values is through conditionals, such as an <code>if</code>
+expression. We’ll cover how <code>if</code> expressions work in Rust in the [“Control
+Flow”][control-flow]<!-- ignore --> section.</p>
+<h4>The Character Type</h4>
+<p>Rust’s <code>char</code> type is the language’s most primitive alphabetic type. Here are
+some examples of declaring <code>char</code> values:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-09-char/src/main.rs}}
+</code></pre>
+<p>Note that we specify <code>char</code> literals with single quotation marks, as opposed to
+string literals, which use double quotation marks. Rust’s <code>char</code> type is 4
+bytes in size and represents a Unicode scalar value, which means it can
+represent a lot more than just ASCII. Accented letters; Chinese, Japanese, and
+Korean characters; emojis; and zero-width spaces are all valid <code>char</code> values in
+Rust. Unicode scalar values range from <code>U+0000</code> to <code>U+D7FF</code> and <code>U+E000</code> to
+<code>U+10FFFF</code> inclusive. However, a “character” isn’t really a concept in Unicode,
+so your human intuition for what a “character” is may not match up with what a
+<code>char</code> is in Rust. We’ll discuss this topic in detail in [“Storing UTF-8
+Encoded Text with Strings”][strings]<!-- ignore --> in Chapter 8.</p>
+</body>
+</html>

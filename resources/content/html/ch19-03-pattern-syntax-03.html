@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Matching Multiple Patterns</title>
+</head>
+<body>
+<h1>Matching Multiple Patterns</h1>
+<p>In <code>match</code> expressions, you can match multiple patterns using the <code>|</code> syntax,
+which is the pattern <em>or</em> operator. For example, in the following code, we match
+the value of <code>x</code> against the match arms, the first of which has an <em>or</em> option,
+meaning if the value of <code>x</code> matches either of the values in that arm, that
+arm’s code will run:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/no-listing-02-multiple-patterns/src/main.rs:here}}
+</code></pre>
+<p>This code prints <code>one or two</code>.</p>
+</body>
+</html>

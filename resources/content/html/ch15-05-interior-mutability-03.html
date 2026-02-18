@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Allowing Multiple Owners of Mutable Data</title>
+</head>
+<body>
+<h1>Allowing Multiple Owners of Mutable Data</h1>
+<p>A common way to use <code>RefCell&lt;T&gt;</code> is in combination with <code>Rc&lt;T&gt;</code>. Recall that
+<code>Rc&lt;T&gt;</code> lets you have multiple owners of some data, but it only gives immutable
+access to that data. If you have an <code>Rc&lt;T&gt;</code> that holds a <code>RefCell&lt;T&gt;</code>, you can
+get a value that can have multiple owners <em>and</em> that you can mutate!</p>
+<p>For example, recall the cons list example in Listing 15-18 where we used
+<code>Rc&lt;T&gt;</code> to allow multiple lists to share ownership of another list. Because
+<code>Rc&lt;T&gt;</code> holds only immutable values, we can’t change any of the values in the
+list once we’ve created them. Let’s add in <code>RefCell&lt;T&gt;</code> for its ability to
+change the values in the lists. Listing 15-24 shows that by using a
+<code>RefCell&lt;T&gt;</code> in the <code>Cons</code> definition, we can modify the value stored in all
+the lists.</p>
+<p><Listing number="15-24" file-name="src/main.rs" caption="Using <code>Rc&lt;RefCell&lt;i32&gt;&gt;</code> to create a <code>List</code> that we can mutate"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-24/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>We create a value that is an instance of <code>Rc&lt;RefCell&lt;i32&gt;&gt;</code> and store it in a
+variable named <code>value</code> so that we can access it directly later. Then, we create
+a <code>List</code> in <code>a</code> with a <code>Cons</code> variant that holds <code>value</code>. We need to clone
+<code>value</code> so that both <code>a</code> and <code>value</code> have ownership of the inner <code>5</code> value
+rather than transferring ownership from <code>value</code> to <code>a</code> or having <code>a</code> borrow
+from <code>value</code>.</p>
+<p>We wrap the list <code>a</code> in an <code>Rc&lt;T&gt;</code> so that when we create lists <code>b</code> and <code>c</code>,
+they can both refer to <code>a</code>, which is what we did in Listing 15-18.</p>
+<p>After we’ve created the lists in <code>a</code>, <code>b</code>, and <code>c</code>, we want to add 10 to the
+value in <code>value</code>. We do this by calling <code>borrow_mut</code> on <code>value</code>, which uses the
+automatic dereferencing feature we discussed in <a href="ch05-03-method-syntax.html#wheres-the---operator">“Where’s the <code>-&gt;</code>
+Operator?”</a><!-- ignore --> in Chapter 5 to dereference
+the <code>Rc&lt;T&gt;</code> to the inner <code>RefCell&lt;T&gt;</code> value. The <code>borrow_mut</code> method returns a
+<code>RefMut&lt;T&gt;</code> smart pointer, and we use the dereference operator on it and change
+the inner value.</p>
+<p>When we print <code>a</code>, <code>b</code>, and <code>c</code>, we can see that they all have the modified
+value of <code>15</code> rather than <code>5</code>:</p>
+<pre><code class="language-console">{{#include ../listings/ch15-smart-pointers/listing-15-24/output.txt}}
+</code></pre>
+<p>This technique is pretty neat! By using <code>RefCell&lt;T&gt;</code>, we have an outwardly
+immutable <code>List</code> value. But we can use the methods on <code>RefCell&lt;T&gt;</code> that provide
+access to its interior mutability so that we can modify our data when we need
+to. The runtime checks of the borrowing rules protect us from data races, and
+it’s sometimes worth trading a bit of speed for this flexibility in our data
+structures. Note that <code>RefCell&lt;T&gt;</code> does not work for multithreaded code!
+<code>Mutex&lt;T&gt;</code> is the thread-safe version of <code>RefCell&lt;T&gt;</code>, and we’ll discuss
+<code>Mutex&lt;T&gt;</code> in Chapter 16.</p>
+</body>
+</html>

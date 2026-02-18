@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Cloning to Increase the Reference Count</title>
+</head>
+<body>
+<h1>Cloning to Increase the Reference Count</h1>
+<p>Let’s change our working example in Listing 15-18 so that we can see the
+reference counts changing as we create and drop references to the <code>Rc&lt;List&gt;</code> in
+<code>a</code>.</p>
+<p>In Listing 15-19, we’ll change <code>main</code> so that it has an inner scope around list
+<code>c</code>; then, we can see how the reference count changes when <code>c</code> goes out of
+scope.</p>
+<p><Listing number="15-19" file-name="src/main.rs" caption="Printing the reference count"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-19/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>At each point in the program where the reference count changes, we print the
+reference count, which we get by calling the <code>Rc::strong_count</code> function. This
+function is named <code>strong_count</code> rather than <code>count</code> because the <code>Rc&lt;T&gt;</code> type
+also has a <code>weak_count</code>; we’ll see what <code>weak_count</code> is used for in <a href="ch15-06-reference-cycles.html#preventing-reference-cycles-turning-an-rct-into-a-weakt">“Preventing
+Reference Cycles Using <code>Weak&lt;T&gt;</code>”</a><!-- ignore -->.</p>
+<p>This code prints the following:</p>
+<pre><code class="language-console">{{#include ../listings/ch15-smart-pointers/listing-15-19/output.txt}}
+</code></pre>
+<p>We can see that the <code>Rc&lt;List&gt;</code> in <code>a</code> has an initial reference count of 1;
+then, each time we call <code>clone</code>, the count goes up by 1. When <code>c</code> goes out of
+scope, the count goes down by 1. We don’t have to call a function to decrease
+the reference count like we have to call <code>Rc::clone</code> to increase the reference
+count: The implementation of the <code>Drop</code> trait decreases the reference count
+automatically when an <code>Rc&lt;T&gt;</code> value goes out of scope.</p>
+<p>What we can’t see in this example is that when <code>b</code> and then <code>a</code> go out of scope
+at the end of <code>main</code>, the count is 0, and the <code>Rc&lt;List&gt;</code> is cleaned up
+completely. Using <code>Rc&lt;T&gt;</code> allows a single value to have multiple owners, and
+the count ensures that the value remains valid as long as any of the owners
+still exist.</p>
+<p>Via immutable references, <code>Rc&lt;T&gt;</code> allows you to share data between multiple
+parts of your program for reading only. If <code>Rc&lt;T&gt;</code> allowed you to have multiple
+mutable references too, you might violate one of the borrowing rules discussed
+in Chapter 4: Multiple mutable borrows to the same place can cause data races
+and inconsistencies. But being able to mutate data is very useful! In the next
+section, we’ll discuss the interior mutability pattern and the <code>RefCell&lt;T&gt;</code>
+type that you can use in conjunction with an <code>Rc&lt;T&gt;</code> to work with this
+immutability restriction.</p>
+</body>
+</html>

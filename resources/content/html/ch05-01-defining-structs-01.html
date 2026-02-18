@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Using the Field Init Shorthand</title>
+</head>
+<body>
+<h1>Using the Field Init Shorthand</h1>
+<p>Because the parameter names and the struct field names are exactly the same in
+Listing 5-4, we can use the <em>field init shorthand</em> syntax to rewrite
+<code>build_user</code> so that it behaves exactly the same but doesn’t have the
+repetition of <code>username</code> and <code>email</code>, as shown in Listing 5-5.</p>
+<p><Listing number="5-5" file-name="src/main.rs" caption="A <code>build_user</code> function that uses field init shorthand because the <code>username</code> and <code>email</code> parameters have the same name as struct fields"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-05/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Here, we’re creating a new instance of the <code>User</code> struct, which has a field
+named <code>email</code>. We want to set the <code>email</code> field’s value to the value in the
+<code>email</code> parameter of the <code>build_user</code> function. Because the <code>email</code> field and
+the <code>email</code> parameter have the same name, we only need to write <code>email</code> rather
+than <code>email: email</code>.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="creating-instances-from-other-instances-with-struct-update-syntax"></a></p>
+</body>
+</html>

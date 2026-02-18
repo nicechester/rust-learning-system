@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Type Safety and Abstraction with the Newtype Pattern</title>
+</head>
+<body>
+<h1>Type Safety and Abstraction with the Newtype Pattern</h1>
+<p>This section assumes you’ve read the earlier section [“Implementing External
+Traits with the Newtype Pattern”][newtype]<!-- ignore -->. The newtype pattern
+is also useful for tasks beyond those we’ve discussed so far, including
+statically enforcing that values are never confused and indicating the units of
+a value. You saw an example of using newtypes to indicate units in Listing
+20-16: Recall that the <code>Millimeters</code> and <code>Meters</code> structs wrapped <code>u32</code> values
+in a newtype. If we wrote a function with a parameter of type <code>Millimeters</code>, we
+wouldn’t be able to compile a program that accidentally tried to call that
+function with a value of type <code>Meters</code> or a plain <code>u32</code>.</p>
+<p>We can also use the newtype pattern to abstract away some implementation
+details of a type: The new type can expose a public API that is different from
+the API of the private inner type.</p>
+<p>Newtypes can also hide internal implementation. For example, we could provide a
+<code>People</code> type to wrap a <code>HashMap&lt;i32, String&gt;</code> that stores a person’s ID
+associated with their name. Code using <code>People</code> would only interact with the
+public API we provide, such as a method to add a name string to the <code>People</code>
+collection; that code wouldn’t need to know that we assign an <code>i32</code> ID to names
+internally. The newtype pattern is a lightweight way to achieve encapsulation
+to hide implementation details, which we discussed in the [“Encapsulation that
+Hides Implementation
+Details”][encapsulation-that-hides-implementation-details]<!-- ignore -->
+section in Chapter 18.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="creating-type-synonyms-with-type-aliases"></a></p>
+</body>
+</html>

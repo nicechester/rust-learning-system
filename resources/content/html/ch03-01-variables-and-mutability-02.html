@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Shadowing</title>
+</head>
+<body>
+<h1>Shadowing</h1>
+<p>As you saw in the guessing game tutorial in <a href="ch02-00-guessing-game-tutorial.html#comparing-the-guess-to-the-secret-number">Chapter
+2</a><!-- ignore -->, you can declare a
+new variable with the same name as a previous variable. Rustaceans say that the
+first variable is <em>shadowed</em> by the second, which means that the second
+variable is what the compiler will see when you use the name of the variable.
+In effect, the second variable overshadows the first, taking any uses of the
+variable name to itself until either it itself is shadowed or the scope ends.
+We can shadow a variable by using the same variable’s name and repeating the
+use of the <code>let</code> keyword as follows:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-03-shadowing/src/main.rs}}
+</code></pre>
+<p>This program first binds <code>x</code> to a value of <code>5</code>. Then, it creates a new variable
+<code>x</code> by repeating <code>let x =</code>, taking the original value and adding <code>1</code> so that
+the value of <code>x</code> is <code>6</code>. Then, within an inner scope created with the curly
+brackets, the third <code>let</code> statement also shadows <code>x</code> and creates a new
+variable, multiplying the previous value by <code>2</code> to give <code>x</code> a value of <code>12</code>.
+When that scope is over, the inner shadowing ends and <code>x</code> returns to being <code>6</code>.
+When we run this program, it will output the following:</p>
+<pre><code class="language-console">{{#include ../listings/ch03-common-programming-concepts/no-listing-03-shadowing/output.txt}}
+</code></pre>
+<p>Shadowing is different from marking a variable as <code>mut</code> because we’ll get a
+compile-time error if we accidentally try to reassign to this variable without
+using the <code>let</code> keyword. By using <code>let</code>, we can perform a few transformations
+on a value but have the variable be immutable after those transformations have
+completed.</p>
+<p>The other difference between <code>mut</code> and shadowing is that because we’re
+effectively creating a new variable when we use the <code>let</code> keyword again, we can
+change the type of the value but reuse the same name. For example, say our
+program asks a user to show how many spaces they want between some text by
+inputting space characters, and then we want to store that input as a number:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-04-shadowing-can-change-types/src/main.rs:here}}
+</code></pre>
+<p>The first <code>spaces</code> variable is a string type, and the second <code>spaces</code> variable
+is a number type. Shadowing thus spares us from having to come up with
+different names, such as <code>spaces_str</code> and <code>spaces_num</code>; instead, we can reuse
+the simpler <code>spaces</code> name. However, if we try to use <code>mut</code> for this, as shown
+here, we’ll get a compile-time error:</p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-05-mut-cant-change-types/src/main.rs:here}}</p>
+<pre><code>
+The error says we’re not allowed to mutate a variable’s type:
+
+```console
+{{#include ../listings/ch03-common-programming-concepts/no-listing-05-mut-cant-change-types/output.txt}}
+</code></pre>
+<p>Now that we’ve explored how variables work, let’s look at more data types they
+can have.</p>
+</body>
+</html>

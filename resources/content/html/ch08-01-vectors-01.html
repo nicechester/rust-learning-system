@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Creating a New Vector</title>
+</head>
+<body>
+<h1>Creating a New Vector</h1>
+<p>To create a new, empty vector, we call the <code>Vec::new</code> function, as shown in
+Listing 8-1.</p>
+<p><Listing number="8-1" caption="Creating a new, empty vector to hold values of type <code>i32</code>"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch08-common-collections/listing-08-01/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Note that we added a type annotation here. Because we aren’t inserting any
+values into this vector, Rust doesn’t know what kind of elements we intend to
+store. This is an important point. Vectors are implemented using generics;
+we’ll cover how to use generics with your own types in Chapter 10. For now,
+know that the <code>Vec&lt;T&gt;</code> type provided by the standard library can hold any type.
+When we create a vector to hold a specific type, we can specify the type within
+angle brackets. In Listing 8-1, we’ve told Rust that the <code>Vec&lt;T&gt;</code> in <code>v</code> will
+hold elements of the <code>i32</code> type.</p>
+<p>More often, you’ll create a <code>Vec&lt;T&gt;</code> with initial values, and Rust will infer
+the type of value you want to store, so you rarely need to do this type
+annotation. Rust conveniently provides the <code>vec!</code> macro, which will create a
+new vector that holds the values you give it. Listing 8-2 creates a new
+<code>Vec&lt;i32&gt;</code> that holds the values <code>1</code>, <code>2</code>, and <code>3</code>. The integer type is <code>i32</code>
+because that’s the default integer type, as we discussed in the [“Data
+Types”][data-types]<!-- ignore --> section of Chapter 3.</p>
+<p><Listing number="8-2" caption="Creating a new vector containing values"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch08-common-collections/listing-08-02/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Because we’ve given initial <code>i32</code> values, Rust can infer that the type of <code>v</code>
+is <code>Vec&lt;i32&gt;</code>, and the type annotation isn’t necessary. Next, we’ll look at how
+to modify a vector.</p>
+</body>
+</html>

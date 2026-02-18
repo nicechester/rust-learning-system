@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Statements and Expressions</title>
+</head>
+<body>
+<h1>Statements and Expressions</h1>
+<p>Function bodies are made up of a series of statements optionally ending in an
+expression. So far, the functions we’ve covered haven’t included an ending
+expression, but you have seen an expression as part of a statement. Because
+Rust is an expression-based language, this is an important distinction to
+understand. Other languages don’t have the same distinctions, so let’s look at
+what statements and expressions are and how their differences affect the bodies
+of functions.</p>
+<ul>
+<li><em>Statements</em> are instructions that perform some action and do not return
+  a value.</li>
+<li><em>Expressions</em> evaluate to a resultant value.</li>
+</ul>
+<p>Let’s look at some examples.</p>
+<p>We’ve actually already used statements and expressions. Creating a variable and
+assigning a value to it with the <code>let</code> keyword is a statement. In Listing 3-1,
+<code>let y = 6;</code> is a statement.</p>
+<p><Listing number="3-1" file-name="src/main.rs" caption="A <code>main</code> function declaration containing one statement"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch03-common-programming-concepts/listing-03-01/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>Function definitions are also statements; the entire preceding example is a
+statement in itself. (As we’ll see shortly, calling a function is not a
+statement, though.)</p>
+<p>Statements do not return values. Therefore, you can’t assign a <code>let</code> statement
+to another variable, as the following code tries to do; you’ll get an error:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-19-statements-vs-expressions/src/main.rs}}</p>
+<pre><code>
+When you run this program, the error you’ll get looks like this:
+
+```console
+{{#include ../listings/ch03-common-programming-concepts/no-listing-19-statements-vs-expressions/output.txt}}
+</code></pre>
+<p>The <code>let y = 6</code> statement does not return a value, so there isn’t anything for
+<code>x</code> to bind to. This is different from what happens in other languages, such as
+C and Ruby, where the assignment returns the value of the assignment. In those
+languages, you can write <code>x = y = 6</code> and have both <code>x</code> and <code>y</code> have the value
+<code>6</code>; that is not the case in Rust.</p>
+<p>Expressions evaluate to a value and make up most of the rest of the code that
+you’ll write in Rust. Consider a math operation, such as <code>5 + 6</code>, which is an
+expression that evaluates to the value <code>11</code>. Expressions can be part of
+statements: In Listing 3-1, the <code>6</code> in the statement <code>let y = 6;</code> is an
+expression that evaluates to the value <code>6</code>. Calling a function is an
+expression. Calling a macro is an expression. A new scope block created with
+curly brackets is an expression, for example:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-20-blocks-are-expressions/src/main.rs}}
+</code></pre>
+<p>This expression:</p>
+<p><code>rust,ignore
+{
+    let x = 3;
+    x + 1
+}</code></p>
+<p>is a block that, in this case, evaluates to <code>4</code>. That value gets bound to <code>y</code>
+as part of the <code>let</code> statement. Note the <code>x + 1</code> line without a semicolon at
+the end, which is unlike most of the lines you’ve seen so far. Expressions do
+not include ending semicolons. If you add a semicolon to the end of an
+expression, you turn it into a statement, and it will then not return a value.
+Keep this in mind as you explore function return values and expressions next.</p>
+</body>
+</html>

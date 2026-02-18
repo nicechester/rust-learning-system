@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Introduction</title>
+</head>
+<body>
+<h1>Introduction</h1>
+<h2>Controlling How Tests Are Run</h2>
+<p>Just as <code>cargo run</code> compiles your code and then runs the resultant binary,
+<code>cargo test</code> compiles your code in test mode and runs the resultant test
+binary. The default behavior of the binary produced by <code>cargo test</code> is to run
+all the tests in parallel and capture output generated during test runs,
+preventing the output from being displayed and making it easier to read the
+output related to the test results. You can, however, specify command line
+options to change this default behavior.</p>
+<p>Some command line options go to <code>cargo test</code>, and some go to the resultant test
+binary. To separate these two types of arguments, you list the arguments that
+go to <code>cargo test</code> followed by the separator <code>--</code> and then the ones that go to
+the test binary. Running <code>cargo test --help</code> displays the options you can use
+with <code>cargo test</code>, and running <code>cargo test -- --help</code> displays the options you
+can use after the separator. These options are also documented in <a href="https://doc.rust-lang.org/rustc/tests/index.html">the “Tests”
+section of <em>The <code>rustc</code> Book</em></a>.</p>
+</body>
+</html>

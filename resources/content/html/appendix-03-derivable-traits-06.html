@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>`Default` for Default Values</title>
+</head>
+<body>
+<h1>`Default` for Default Values</h1>
+<p>The <code>Default</code> trait allows you to create a default value for a type. Deriving
+<code>Default</code> implements the <code>default</code> function. The derived implementation of the
+<code>default</code> function calls the <code>default</code> function on each part of the type,
+meaning all fields or values in the type must also implement <code>Default</code> to
+derive <code>Default</code>.</p>
+<p>The <code>Default::default</code> function is commonly used in combination with the struct
+update syntax discussed in the <a href="ch05-01-defining-structs.html#creating-instances-from-other-instances-with-struct-update-syntax">“Creating Instances from Other Instances with
+Struct Update
+Syntax”</a><!--
+ignore --> section in Chapter 5. You can customize a few fields of a struct and
+then set and use a default value for the rest of the fields by using
+<code>..Default::default()</code>.</p>
+<p>The <code>Default</code> trait is required when you use the method <code>unwrap_or_default</code> on
+<code>Option&lt;T&gt;</code> instances, for example. If the <code>Option&lt;T&gt;</code> is <code>None</code>, the method
+<code>unwrap_or_default</code> will return the result of <code>Default::default</code> for the type
+<code>T</code> stored in the <code>Option&lt;T&gt;</code>.</p>
+</body>
+</html>

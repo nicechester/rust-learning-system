@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Separating Concerns in Binary Projects</title>
+</head>
+<body>
+<h1>Separating Concerns in Binary Projects</h1>
+<p>The organizational problem of allocating responsibility for multiple tasks to
+the <code>main</code> function is common to many binary projects. As a result, many Rust
+programmers find it useful to split up the separate concerns of a binary
+program when the <code>main</code> function starts getting large. This process has the
+following steps:</p>
+<ul>
+<li>Split your program into a <em>main.rs</em> file and a <em>lib.rs</em> file and move your
+  program’s logic to <em>lib.rs</em>.</li>
+<li>As long as your command line parsing logic is small, it can remain in
+  the <code>main</code> function.</li>
+<li>When the command line parsing logic starts getting complicated, extract it
+  from the <code>main</code> function into other functions or types.</li>
+</ul>
+<p>The responsibilities that remain in the <code>main</code> function after this process
+should be limited to the following:</p>
+<ul>
+<li>Calling the command line parsing logic with the argument values</li>
+<li>Setting up any other configuration</li>
+<li>Calling a <code>run</code> function in <em>lib.rs</em></li>
+<li>Handling the error if <code>run</code> returns an error</li>
+</ul>
+<p>This pattern is about separating concerns: <em>main.rs</em> handles running the
+program and <em>lib.rs</em> handles all the logic of the task at hand. Because you
+can’t test the <code>main</code> function directly, this structure lets you test all of
+your program’s logic by moving it out of the <code>main</code> function. The code that
+remains in the <code>main</code> function will be small enough to verify its correctness
+by reading it. Let’s rework our program by following this process.</p>
+<h4>Extracting the Argument Parser</h4>
+<p>We’ll extract the functionality for parsing arguments into a function that
+<code>main</code> will call. Listing 12-5 shows the new start of the <code>main</code> function that
+calls a new function <code>parse_config</code>, which we’ll define in <em>src/main.rs</em>.</p>
+<p><Listing number="12-5" file-name="src/main.rs" caption="Extracting a <code>parse_config</code> function from <code>main</code>"></p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-05/src/main.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+We’re still collecting the command line arguments into a vector, but instead of
+assigning the argument value at index 1 to the variable `query` and the
+argument value at index 2 to the variable `file_path` within the `main`
+function, we pass the whole vector to the `parse_config` function. The
+`parse_config` function then holds the logic that determines which argument
+goes in which variable and passes the values back to `main`. We still create
+the `query` and `file_path` variables in `main`, but `main` no longer has the
+responsibility of determining how the command line arguments and variables
+correspond.
+
+This rework may seem like overkill for our small program, but we’re refactoring
+in small, incremental steps. After making this change, run the program again to
+verify that the argument parsing still works. It’s good to check your progress
+often, to help identify the cause of problems when they occur.
+
+#### Grouping Configuration Values
+
+We can take another small step to improve the `parse_config` function further.
+At the moment, we’re returning a tuple, but then we immediately break that
+tuple into individual parts again. This is a sign that perhaps we don’t have
+the right abstraction yet.
+
+Another indicator that shows there’s room for improvement is the `config` part
+of `parse_config`, which implies that the two values we return are related and
+are both part of one configuration value. We’re not currently conveying this
+meaning in the structure of the data other than by grouping the two values into
+a tuple; we’ll instead put the two values into one struct and give each of the
+struct fields a meaningful name. Doing so will make it easier for future
+maintainers of this code to understand how the different values relate to each
+other and what their purpose is.
+
+Listing 12-6 shows the improvements to the `parse_config` function.
+
+&lt;Listing number=&quot;12-6&quot; file-name=&quot;src/main.rs&quot; caption=&quot;Refactoring `parse_config` to return an instance of a `Config` struct&quot;&gt;
+
+```rust,should_panic,noplayground
+{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-06/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>We’ve added a struct named <code>Config</code> defined to have fields named <code>query</code> and
+<code>file_path</code>. The signature of <code>parse_config</code> now indicates that it returns a
+<code>Config</code> value. In the body of <code>parse_config</code>, where we used to return
+string slices that reference <code>String</code> values in <code>args</code>, we now define <code>Config</code>
+to contain owned <code>String</code> values. The <code>args</code> variable in <code>main</code> is the owner of
+the argument values and is only letting the <code>parse_config</code> function borrow
+them, which means we’d violate Rust’s borrowing rules if <code>Config</code> tried to take
+ownership of the values in <code>args</code>.</p>
+<p>There are a number of ways we could manage the <code>String</code> data; the easiest,
+though somewhat inefficient, route is to call the <code>clone</code> method on the values.
+This will make a full copy of the data for the <code>Config</code> instance to own, which
+takes more time and memory than storing a reference to the string data.
+However, cloning the data also makes our code very straightforward because we
+don’t have to manage the lifetimes of the references; in this circumstance,
+giving up a little performance to gain simplicity is a worthwhile trade-off.</p>
+<blockquote>
+<h3>The Trade-Offs of Using <code>clone</code></h3>
+<p>There’s a tendency among many Rustaceans to avoid using <code>clone</code> to fix
+ownership problems because of its runtime cost. In
+[Chapter 13][ch13]<!-- ignore -->, you’ll learn how to use more efficient
+methods in this type of situation. But for now, it’s okay to copy a few
+strings to continue making progress because you’ll make these copies only
+once and your file path and query string are very small. It’s better to have
+a working program that’s a bit inefficient than to try to hyperoptimize code
+on your first pass. As you become more experienced with Rust, it’ll be
+easier to start with the most efficient solution, but for now, it’s
+perfectly acceptable to call <code>clone</code>.</p>
+</blockquote>
+<p>We’ve updated <code>main</code> so that it places the instance of <code>Config</code> returned by
+<code>parse_config</code> into a variable named <code>config</code>, and we updated the code that
+previously used the separate <code>query</code> and <code>file_path</code> variables so that it now
+uses the fields on the <code>Config</code> struct instead.</p>
+<p>Now our code more clearly conveys that <code>query</code> and <code>file_path</code> are related and
+that their purpose is to configure how the program will work. Any code that
+uses these values knows to find them in the <code>config</code> instance in the fields
+named for their purpose.</p>
+<h4>Creating a Constructor for <code>Config</code></h4>
+<p>So far, we’ve extracted the logic responsible for parsing the command line
+arguments from <code>main</code> and placed it in the <code>parse_config</code> function. Doing so
+helped us see that the <code>query</code> and <code>file_path</code> values were related, and that
+relationship should be conveyed in our code. We then added a <code>Config</code> struct to
+name the related purpose of <code>query</code> and <code>file_path</code> and to be able to return the
+values’ names as struct field names from the <code>parse_config</code> function.</p>
+<p>So, now that the purpose of the <code>parse_config</code> function is to create a <code>Config</code>
+instance, we can change <code>parse_config</code> from a plain function to a function
+named <code>new</code> that is associated with the <code>Config</code> struct. Making this change
+will make the code more idiomatic. We can create instances of types in the
+standard library, such as <code>String</code>, by calling <code>String::new</code>. Similarly, by
+changing <code>parse_config</code> into a <code>new</code> function associated with <code>Config</code>, we’ll
+be able to create instances of <code>Config</code> by calling <code>Config::new</code>. Listing 12-7
+shows the changes we need to make.</p>
+<p><Listing number="12-7" file-name="src/main.rs" caption="Changing <code>parse_config</code> into <code>Config::new</code>"></p>
+<p><code>rust,should_panic,noplayground
+{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-07/src/main.rs:here}}</code></p>
+<p></Listing></p>
+<p>We’ve updated <code>main</code> where we were calling <code>parse_config</code> to instead call
+<code>Config::new</code>. We’ve changed the name of <code>parse_config</code> to <code>new</code> and moved it
+within an <code>impl</code> block, which associates the <code>new</code> function with <code>Config</code>. Try
+compiling this code again to make sure it works.</p>
+</body>
+</html>

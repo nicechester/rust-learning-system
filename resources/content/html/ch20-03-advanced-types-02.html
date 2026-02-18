@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Type Synonyms and Type Aliases</title>
+</head>
+<body>
+<h1>Type Synonyms and Type Aliases</h1>
+<p>Rust provides the ability to declare a <em>type alias</em> to give an existing type
+another name. For this we use the <code>type</code> keyword. For example, we can create
+the alias <code>Kilometers</code> to <code>i32</code> like so:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-04-kilometers-alias/src/main.rs:here}}
+</code></pre>
+<p>Now the alias <code>Kilometers</code> is a <em>synonym</em> for <code>i32</code>; unlike the <code>Millimeters</code>
+and <code>Meters</code> types we created in Listing 20-16, <code>Kilometers</code> is not a separate,
+new type. Values that have the type <code>Kilometers</code> will be treated the same as
+values of type <code>i32</code>:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-04-kilometers-alias/src/main.rs:there}}
+</code></pre>
+<p>Because <code>Kilometers</code> and <code>i32</code> are the same type, we can add values of both
+types and can pass <code>Kilometers</code> values to functions that take <code>i32</code>
+parameters. However, using this method, we don’t get the type-checking benefits
+that we get from the newtype pattern discussed earlier. In other words, if we
+mix up <code>Kilometers</code> and <code>i32</code> values somewhere, the compiler will not give us
+an error.</p>
+<p>The main use case for type synonyms is to reduce repetition. For example, we
+might have a lengthy type like this:</p>
+<p>```rust,ignore
+Box<dyn Fn() + Send + 'static></p>
+<pre><code>
+Writing this lengthy type in function signatures and as type annotations all
+over the code can be tiresome and error-prone. Imagine having a project full of
+code like that in Listing 20-25.
+
+&lt;Listing number=&quot;20-25&quot; caption=&quot;Using a long type in many places&quot;&gt;
+
+```rust
+{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-25/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>A type alias makes this code more manageable by reducing the repetition. In
+Listing 20-26, we’ve introduced an alias named <code>Thunk</code> for the verbose type and
+can replace all uses of the type with the shorter alias <code>Thunk</code>.</p>
+<p><Listing number="20-26" caption="Introducing a type alias, <code>Thunk</code>, to reduce repetition"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-26/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>This code is much easier to read and write! Choosing a meaningful name for a
+type alias can help communicate your intent as well (<em>thunk</em> is a word for code
+to be evaluated at a later time, so it’s an appropriate name for a closure that
+gets stored).</p>
+<p>Type aliases are also commonly used with the <code>Result&lt;T, E&gt;</code> type for reducing
+repetition. Consider the <code>std::io</code> module in the standard library. I/O
+operations often return a <code>Result&lt;T, E&gt;</code> to handle situations when operations
+fail to work. This library has a <code>std::io::Error</code> struct that represents all
+possible I/O errors. Many of the functions in <code>std::io</code> will be returning
+<code>Result&lt;T, E&gt;</code> where the <code>E</code> is <code>std::io::Error</code>, such as these functions in
+the <code>Write</code> trait:</p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-05-write-trait/src/lib.rs}}</p>
+<pre><code>
+The `Result&lt;..., Error&gt;` is repeated a lot. As such, `std::io` has this type
+alias declaration:
+
+```rust,noplayground
+{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-06-result-alias/src/lib.rs:here}}
+</code></pre>
+<p>Because this declaration is in the <code>std::io</code> module, we can use the fully
+qualified alias <code>std::io::Result&lt;T&gt;</code>; that is, a <code>Result&lt;T, E&gt;</code> with the <code>E</code>
+filled in as <code>std::io::Error</code>. The <code>Write</code> trait function signatures end up
+looking like this:</p>
+<p><code>rust,noplayground
+{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-06-result-alias/src/lib.rs:there}}</code></p>
+<p>The type alias helps in two ways: It makes code easier to write <em>and</em> it gives
+us a consistent interface across all of <code>std::io</code>. Because it’s an alias, it’s
+just another <code>Result&lt;T, E&gt;</code>, which means we can use any methods that work on
+<code>Result&lt;T, E&gt;</code> with it, as well as special syntax like the <code>?</code> operator.</p>
+</body>
+</html>

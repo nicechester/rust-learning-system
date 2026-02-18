@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Disambiguating Between Identically Named Methods</title>
+</head>
+<body>
+<h1>Disambiguating Between Identically Named Methods</h1>
+<p>Nothing in Rust prevents a trait from having a method with the same name as
+another trait’s method, nor does Rust prevent you from implementing both traits
+on one type. It’s also possible to implement a method directly on the type with
+the same name as methods from traits.</p>
+<p>When calling methods with the same name, you’ll need to tell Rust which one you
+want to use. Consider the code in Listing 20-17 where we’ve defined two traits,
+<code>Pilot</code> and <code>Wizard</code>, that both have a method called <code>fly</code>. We then implement
+both traits on a type <code>Human</code> that already has a method named <code>fly</code> implemented
+on it. Each <code>fly</code> method does something different.</p>
+<p><Listing number="20-17" file-name="src/main.rs" caption="Two traits are defined to have a <code>fly</code> method and are implemented on the <code>Human</code> type, and a <code>fly</code> method is implemented on <code>Human</code> directly."></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-17/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>When we call <code>fly</code> on an instance of <code>Human</code>, the compiler defaults to calling
+the method that is directly implemented on the type, as shown in Listing 20-18.</p>
+<p><Listing number="20-18" file-name="src/main.rs" caption="Calling <code>fly</code> on an instance of <code>Human</code>"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-18/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Running this code will print <code>*waving arms furiously*</code>, showing that Rust
+called the <code>fly</code> method implemented on <code>Human</code> directly.</p>
+<p>To call the <code>fly</code> methods from either the <code>Pilot</code> trait or the <code>Wizard</code> trait,
+we need to use more explicit syntax to specify which <code>fly</code> method we mean.
+Listing 20-19 demonstrates this syntax.</p>
+<p><Listing number="20-19" file-name="src/main.rs" caption="Specifying which trait’s <code>fly</code> method we want to call"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-19/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Specifying the trait name before the method name clarifies to Rust which
+implementation of <code>fly</code> we want to call. We could also write
+<code>Human::fly(&amp;person)</code>, which is equivalent to the <code>person.fly()</code> that we used
+in Listing 20-19, but this is a bit longer to write if we don’t need to
+disambiguate.</p>
+<p>Running this code prints the following:</p>
+<pre><code class="language-console">{{#include ../listings/ch20-advanced-features/listing-20-19/output.txt}}
+</code></pre>
+<p>Because the <code>fly</code> method takes a <code>self</code> parameter, if we had two <em>types</em> that
+both implement one <em>trait</em>, Rust could figure out which implementation of a
+trait to use based on the type of <code>self</code>.</p>
+<p>However, associated functions that are not methods don’t have a <code>self</code>
+parameter. When there are multiple types or traits that define non-method
+functions with the same function name, Rust doesn’t always know which type you
+mean unless you use fully qualified syntax. For example, in Listing 20-20, we
+create a trait for an animal shelter that wants to name all baby dogs Spot. We
+make an <code>Animal</code> trait with an associated non-method function <code>baby_name</code>. The
+<code>Animal</code> trait is implemented for the struct <code>Dog</code>, on which we also provide an
+associated non-method function <code>baby_name</code> directly.</p>
+<p><Listing number="20-20" file-name="src/main.rs" caption="A trait with an associated function and a type with an associated function of the same name that also implements the trait"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-20/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>We implement the code for naming all puppies Spot in the <code>baby_name</code> associated
+function that is defined on <code>Dog</code>. The <code>Dog</code> type also implements the trait
+<code>Animal</code>, which describes characteristics that all animals have. Baby dogs are
+called puppies, and that is expressed in the implementation of the <code>Animal</code>
+trait on <code>Dog</code> in the <code>baby_name</code> function associated with the <code>Animal</code> trait.</p>
+<p>In <code>main</code>, we call the <code>Dog::baby_name</code> function, which calls the associated
+function defined on <code>Dog</code> directly. This code prints the following:</p>
+<pre><code class="language-console">{{#include ../listings/ch20-advanced-features/listing-20-20/output.txt}}
+</code></pre>
+<p>This output isn’t what we wanted. We want to call the <code>baby_name</code> function that
+is part of the <code>Animal</code> trait that we implemented on <code>Dog</code> so that the code
+prints <code>A baby dog is called a puppy</code>. The technique of specifying the trait
+name that we used in Listing 20-19 doesn’t help here; if we change <code>main</code> to
+the code in Listing 20-21, we’ll get a compilation error.</p>
+<p><Listing number="20-21" file-name="src/main.rs" caption="Attempting to call the <code>baby_name</code> function from the <code>Animal</code> trait, but Rust doesn’t know which implementation to use"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-21/src/main.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+Because `Animal::baby_name` doesn’t have a `self` parameter, and there could be
+other types that implement the `Animal` trait, Rust can’t figure out which
+implementation of `Animal::baby_name` we want. We’ll get this compiler error:
+
+```console
+{{#include ../listings/ch20-advanced-features/listing-20-21/output.txt}}
+</code></pre>
+<p>To disambiguate and tell Rust that we want to use the implementation of
+<code>Animal</code> for <code>Dog</code> as opposed to the implementation of <code>Animal</code> for some other
+type, we need to use fully qualified syntax. Listing 20-22 demonstrates how to
+use fully qualified syntax.</p>
+<p><Listing number="20-22" file-name="src/main.rs" caption="Using fully qualified syntax to specify that we want to call the <code>baby_name</code> function from the <code>Animal</code> trait as implemented on <code>Dog</code>"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-22/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>We’re providing Rust with a type annotation within the angle brackets, which
+indicates we want to call the <code>baby_name</code> method from the <code>Animal</code> trait as
+implemented on <code>Dog</code> by saying that we want to treat the <code>Dog</code> type as an
+<code>Animal</code> for this function call. This code will now print what we want:</p>
+<pre><code class="language-console">{{#include ../listings/ch20-advanced-features/listing-20-22/output.txt}}
+</code></pre>
+<p>In general, fully qualified syntax is defined as follows:</p>
+<p><code>rust,ignore
+&lt;Type as Trait&gt;::function(receiver_if_method, next_arg, ...);</code></p>
+<p>For associated functions that aren’t methods, there would not be a <code>receiver</code>:
+There would only be the list of other arguments. You could use fully qualified
+syntax everywhere that you call functions or methods. However, you’re allowed
+to omit any part of this syntax that Rust can figure out from other information
+in the program. You only need to use this more verbose syntax in cases where
+there are multiple implementations that use the same name and Rust needs help
+to identify which implementation you want to call.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="using-supertraits-to-require-one-traits-functionality-within-another-trait"></a></p>
+</body>
+</html>

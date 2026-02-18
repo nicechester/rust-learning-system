@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Hashing Functions</title>
+</head>
+<body>
+<h1>Hashing Functions</h1>
+<p>By default, <code>HashMap</code> uses a hashing function called <em>SipHash</em> that can provide
+resistance to denial-of-service (DoS) attacks involving hash
+tables<a href="[https://en.wikipedia.org/wiki/SipHash](https://en.wikipedia.org/wiki/SipHash)">^siphash</a><!-- ignore -->. This is not the fastest hashing algorithm
+available, but the trade-off for better security that comes with the drop in
+performance is worth it. If you profile your code and find that the default
+hash function is too slow for your purposes, you can switch to another function
+by specifying a different hasher. A <em>hasher</em> is a type that implements the
+<code>BuildHasher</code> trait. We’ll talk about traits and how to implement them in
+<a href="ch10-02-traits.html">Chapter 10</a><!-- ignore -->. You don’t necessarily have to implement
+your own hasher from scratch; <a href="https://crates.io/">crates.io</a><!-- ignore -->
+has libraries shared by other Rust users that provide hashers implementing many
+common hashing algorithms.</p>
+<h2>Summary</h2>
+<p>Vectors, strings, and hash maps will provide a large amount of functionality
+necessary in programs when you need to store, access, and modify data. Here are
+some exercises you should now be equipped to solve:</p>
+<ol>
+<li>Given a list of integers, use a vector and return the median (when sorted,
+   the value in the middle position) and mode (the value that occurs most
+   often; a hash map will be helpful here) of the list.</li>
+<li>Convert strings to Pig Latin. The first consonant of each word is moved to
+   the end of the word and <em>ay</em> is added, so <em>first</em> becomes <em>irst-fay</em>. Words
+   that start with a vowel have <em>hay</em> added to the end instead (<em>apple</em> becomes
+   <em>apple-hay</em>). Keep in mind the details about UTF-8 encoding!</li>
+<li>Using a hash map and vectors, create a text interface to allow a user to add
+   employee names to a department in a company; for example, “Add Sally to
+   Engineering” or “Add Amir to Sales.” Then, let the user retrieve a list of
+   all people in a department or all people in the company by department, sorted
+   alphabetically.</li>
+</ol>
+<p>The standard library API documentation describes methods that vectors, strings,
+and hash maps have that will be helpful for these exercises!</p>
+<p>We’re getting into more complex programs in which operations can fail, so it’s
+a perfect time to discuss error handling. We’ll do that next!</p>
+</body>
+</html>

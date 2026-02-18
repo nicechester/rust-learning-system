@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Accessing from Multiple Threads</title>
+</head>
+<body>
+<h1>Accessing from Multiple Threads</h1>
+<p>The <code>Sync</code> marker trait indicates that it is safe for the type implementing
+<code>Sync</code> to be referenced from multiple threads. In other words, any type <code>T</code>
+implements <code>Sync</code> if <code>&amp;T</code> (an immutable reference to <code>T</code>) implements <code>Send</code>,
+meaning the reference can be sent safely to another thread. Similar to <code>Send</code>,
+primitive types all implement <code>Sync</code>, and types composed entirely of types that
+implement <code>Sync</code> also implement <code>Sync</code>.</p>
+<p>The smart pointer <code>Rc&lt;T&gt;</code> also doesn’t implement <code>Sync</code> for the same reasons
+that it doesn’t implement <code>Send</code>. The <code>RefCell&lt;T&gt;</code> type (which we talked about
+in Chapter 15) and the family of related <code>Cell&lt;T&gt;</code> types don’t implement
+<code>Sync</code>. The implementation of borrow checking that <code>RefCell&lt;T&gt;</code> does at runtime
+is not thread-safe. The smart pointer <code>Mutex&lt;T&gt;</code> implements <code>Sync</code> and can be
+used to share access with multiple threads, as you saw in [“Shared Access to
+<code>Mutex&lt;T&gt;</code>”][shared-access]<!-- ignore -->.</p>
+</body>
+</html>

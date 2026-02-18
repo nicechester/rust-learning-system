@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Defining Traits with Associated Types</title>
+</head>
+<body>
+<h1>Defining Traits with Associated Types</h1>
+<p><em>Associated types</em> connect a type placeholder with a trait such that the trait
+method definitions can use these placeholder types in their signatures. The
+implementor of a trait will specify the concrete type to be used instead of the
+placeholder type for the particular implementation. That way, we can define a
+trait that uses some types without needing to know exactly what those types are
+until the trait is implemented.</p>
+<p>We’ve described most of the advanced features in this chapter as being rarely
+needed. Associated types are somewhere in the middle: They’re used more rarely
+than features explained in the rest of the book but more commonly than many of
+the other features discussed in this chapter.</p>
+<p>One example of a trait with an associated type is the <code>Iterator</code> trait that the
+standard library provides. The associated type is named <code>Item</code> and stands in
+for the type of the values the type implementing the <code>Iterator</code> trait is
+iterating over. The definition of the <code>Iterator</code> trait is as shown in Listing
+20-13.</p>
+<p><Listing number="20-13" caption="The definition of the <code>Iterator</code> trait that has an associated type <code>Item</code>"></p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-13/src/lib.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+The type `Item` is a placeholder, and the `next` method’s definition shows that
+it will return values of type `Option&lt;Self::Item&gt;`. Implementors of the
+`Iterator` trait will specify the concrete type for `Item`, and the `next`
+method will return an `Option` containing a value of that concrete type.
+
+Associated types might seem like a similar concept to generics, in that the
+latter allow us to define a function without specifying what types it can
+handle. To examine the difference between the two concepts, we’ll look at an
+implementation of the `Iterator` trait on a type named `Counter` that specifies
+the `Item` type is `u32`:
+
+&lt;Listing file-name=&quot;src/lib.rs&quot;&gt;
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-22-iterator-on-counter/src/lib.rs:ch19}}
+</code></pre>
+<p></Listing></p>
+<p>This syntax seems comparable to that of generics. So, why not just define the
+<code>Iterator</code> trait with generics, as shown in Listing 20-14?</p>
+<p><Listing number="20-14" caption="A hypothetical definition of the <code>Iterator</code> trait using generics"></p>
+<p><code>rust,noplayground
+{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-14/src/lib.rs}}</code></p>
+<p></Listing></p>
+<p>The difference is that when using generics, as in Listing 20-14, we must
+annotate the types in each implementation; because we can also implement
+<code>Iterator&lt;String&gt; for Counter</code> or any other type, we could have multiple
+implementations of <code>Iterator</code> for <code>Counter</code>. In other words, when a trait has a
+generic parameter, it can be implemented for a type multiple times, changing
+the concrete types of the generic type parameters each time. When we use the
+<code>next</code> method on <code>Counter</code>, we would have to provide type annotations to
+indicate which implementation of <code>Iterator</code> we want to use.</p>
+<p>With associated types, we don’t need to annotate types, because we can’t
+implement a trait on a type multiple times. In Listing 20-13 with the
+definition that uses associated types, we can choose what the type of <code>Item</code>
+will be only once because there can be only one <code>impl Iterator for Counter</code>. We
+don’t have to specify that we want an iterator of <code>u32</code> values everywhere we
+call <code>next</code> on <code>Counter</code>.</p>
+<p>Associated types also become part of the trait’s contract: Implementors of the
+trait must provide a type to stand in for the associated type placeholder.
+Associated types often have a name that describes how the type will be used,
+and documenting the associated type in the API documentation is a good practice.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="default-generic-type-parameters-and-operator-overloading"></a></p>
+</body>
+</html>

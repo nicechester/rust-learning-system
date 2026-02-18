@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Updating a String</title>
+</head>
+<body>
+<h1>Updating a String</h1>
+<p>A <code>String</code> can grow in size and its contents can change, just like the contents
+of a <code>Vec&lt;T&gt;</code>, if you push more data into it. In addition, you can conveniently
+use the <code>+</code> operator or the <code>format!</code> macro to concatenate <code>String</code> values.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="appending-to-a-string-with-push_str-and-push"></a></p>
+<h4>Appending with <code>push_str</code> or <code>push</code></h4>
+<p>We can grow a <code>String</code> by using the <code>push_str</code> method to append a string slice,
+as shown in Listing 8-15.</p>
+<p><Listing number="8-15" caption="Appending a string slice to a <code>String</code> using the <code>push_str</code> method"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch08-common-collections/listing-08-15/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>After these two lines, <code>s</code> will contain <code>foobar</code>. The <code>push_str</code> method takes a
+string slice because we don’t necessarily want to take ownership of the
+parameter. For example, in the code in Listing 8-16, we want to be able to use
+<code>s2</code> after appending its contents to <code>s1</code>.</p>
+<p><Listing number="8-16" caption="Using a string slice after appending its contents to a <code>String</code>"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch08-common-collections/listing-08-16/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>If the <code>push_str</code> method took ownership of <code>s2</code>, we wouldn’t be able to print
+its value on the last line. However, this code works as we’d expect!</p>
+<p>The <code>push</code> method takes a single character as a parameter and adds it to the
+<code>String</code>. Listing 8-17 adds the letter <em>l</em> to a <code>String</code> using the <code>push</code>
+method.</p>
+<p><Listing number="8-17" caption="Adding one character to a <code>String</code> value using <code>push</code>"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch08-common-collections/listing-08-17/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>As a result, <code>s</code> will contain <code>lol</code>.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="concatenation-with-the--operator-or-the-format-macro"></a></p>
+<h4>Concatenating with <code>+</code> or <code>format!</code></h4>
+<p>Often, you’ll want to combine two existing strings. One way to do so is to use
+the <code>+</code> operator, as shown in Listing 8-18.</p>
+<p><Listing number="8-18" caption="Using the <code>+</code> operator to combine two <code>String</code> values into a new <code>String</code> value"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch08-common-collections/listing-08-18/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>The string <code>s3</code> will contain <code>Hello, world!</code>. The reason <code>s1</code> is no longer
+valid after the addition, and the reason we used a reference to <code>s2</code>, has to do
+with the signature of the method that’s called when we use the <code>+</code> operator.
+The <code>+</code> operator uses the <code>add</code> method, whose signature looks something like
+this:</p>
+<p>```rust,ignore
+fn add(self, s: &amp;str) -&gt; String {</p>
+<pre><code>
+In the standard library, you’ll see `add` defined using generics and associated
+types. Here, we’ve substituted in concrete types, which is what happens when we
+call this method with `String` values. We’ll discuss generics in Chapter 10.
+This signature gives us the clues we need in order to understand the tricky
+bits of the `+` operator.
+
+First, `s2` has an `&amp;`, meaning that we’re adding a reference of the second
+string to the first string. This is because of the `s` parameter in the `add`
+function: We can only add a string slice to a `String`; we can’t add two
+`String` values together. But wait—the type of `&amp;s2` is `&amp;String`, not `&amp;str`,
+as specified in the second parameter to `add`. So, why does Listing 8-18
+compile?
+
+The reason we’re able to use `&amp;s2` in the call to `add` is that the compiler
+can coerce the `&amp;String` argument into a `&amp;str`. When we call the `add` method,
+Rust uses a deref coercion, which here turns `&amp;s2` into `&amp;s2[..]`. We’ll
+discuss deref coercion in more depth in Chapter 15. Because `add` does not take
+ownership of the `s` parameter, `s2` will still be a valid `String` after this
+operation.
+
+Second, we can see in the signature that `add` takes ownership of `self`
+because `self` does _not_ have an `&amp;`. This means `s1` in Listing 8-18 will be
+moved into the `add` call and will no longer be valid after that. So, although
+`let s3 = s1 + &amp;s2;` looks like it will copy both strings and create a new one,
+this statement actually takes ownership of `s1`, appends a copy of the contents
+of `s2`, and then returns ownership of the result. In other words, it looks
+like it’s making a lot of copies, but it isn’t; the implementation is more
+efficient than copying.
+
+If we need to concatenate multiple strings, the behavior of the `+` operator
+gets unwieldy:
+
+```rust
+{{#rustdoc_include ../listings/ch08-common-collections/no-listing-01-concat-multiple-strings/src/main.rs:here}}
+</code></pre>
+<p>At this point, <code>s</code> will be <code>tic-tac-toe</code>. With all of the <code>+</code> and <code>"</code>
+characters, it’s difficult to see what’s going on. For combining strings in
+more complicated ways, we can instead use the <code>format!</code> macro:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch08-common-collections/no-listing-02-format/src/main.rs:here}}
+</code></pre>
+<p>This code also sets <code>s</code> to <code>tic-tac-toe</code>. The <code>format!</code> macro works like
+<code>println!</code>, but instead of printing the output to the screen, it returns a
+<code>String</code> with the contents. The version of the code using <code>format!</code> is much
+easier to read, and the code generated by the <code>format!</code> macro uses references
+so that this call doesn’t take ownership of any of its parameters.</p>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Handling Invalid Input</title>
+</head>
+<body>
+<h1>Handling Invalid Input</h1>
+<p>To further refine the game’s behavior, rather than crashing the program when
+the user inputs a non-number, let’s make the game ignore a non-number so that
+the user can continue guessing. We can do that by altering the line where
+<code>guess</code> is converted from a <code>String</code> to a <code>u32</code>, as shown in Listing 2-5.</p>
+<p><Listing number="2-5" file-name="src/main.rs" caption="Ignoring a non-number guess and asking for another guess instead of crashing the program"></p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-05/src/main.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+We switch from an `expect` call to a `match` expression to move from crashing
+on an error to handling the error. Remember that `parse` returns a `Result`
+type and `Result` is an enum that has the variants `Ok` and `Err`. We’re using
+a `match` expression here, as we did with the `Ordering` result of the `cmp`
+method.
+
+If `parse` is able to successfully turn the string into a number, it will
+return an `Ok` value that contains the resultant number. That `Ok` value will
+match the first arm’s pattern, and the `match` expression will just return the
+`num` value that `parse` produced and put inside the `Ok` value. That number
+will end up right where we want it in the new `guess` variable we’re creating.
+
+If `parse` is _not_ able to turn the string into a number, it will return an
+`Err` value that contains more information about the error. The `Err` value
+does not match the `Ok(num)` pattern in the first `match` arm, but it does
+match the `Err(_)` pattern in the second arm. The underscore, `_`, is a
+catch-all value; in this example, we’re saying we want to match all `Err`
+values, no matter what information they have inside them. So, the program will
+execute the second arm’s code, `continue`, which tells the program to go to the
+next iteration of the `loop` and ask for another guess. So, effectively, the
+program ignores all errors that `parse` might encounter!
+
+Now everything in the program should work as expected. Let’s try it:
+
+&lt;!-- manual-regeneration
+cd listings/ch02-guessing-game-tutorial/listing-02-05/
+cargo run
+(too small guess)
+(too big guess)
+foo
+(correct guess)
+--&gt;
+
+```console
+$ cargo run
+   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.13s
+     Running `target/debug/guessing_game`
+Guess the number!
+The secret number is: 61
+Please input your guess.
+10
+You guessed: 10
+Too small!
+Please input your guess.
+99
+You guessed: 99
+Too big!
+Please input your guess.
+foo
+Please input your guess.
+61
+You guessed: 61
+You win!
+</code></pre>
+<p>Awesome! With one tiny final tweak, we will finish the guessing game. Recall
+that the program is still printing the secret number. That worked well for
+testing, but it ruins the game. Let’s delete the <code>println!</code> that outputs the
+secret number. Listing 2-6 shows the final code.</p>
+<p><Listing number="2-6" file-name="src/main.rs" caption="Complete guessing game code"></p>
+<p><code>rust,ignore
+{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-06/src/main.rs}}</code></p>
+<p></Listing></p>
+<p>At this point, you’ve successfully built the guessing game. Congratulations!</p>
+<h2>Summary</h2>
+<p>This project was a hands-on way to introduce you to many new Rust concepts:
+<code>let</code>, <code>match</code>, functions, the use of external crates, and more. In the next
+few chapters, you’ll learn about these concepts in more detail. Chapter 3
+covers concepts that most programming languages have, such as variables, data
+types, and functions, and shows how to use them in Rust. Chapter 4 explores
+ownership, a feature that makes Rust different from other languages. Chapter 5
+discusses structs and method syntax, and Chapter 6 explains how enums work.</p>
+</body>
+</html>

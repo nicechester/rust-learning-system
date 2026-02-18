@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Automatic Formatting with `rustfmt`</title>
+</head>
+<body>
+<h1>Automatic Formatting with `rustfmt`</h1>
+<p>The <code>rustfmt</code> tool reformats your code according to the community code style.
+Many collaborative projects use <code>rustfmt</code> to prevent arguments about which
+style to use when writing Rust: Everyone formats their code using the tool.</p>
+<p>Rust installations include <code>rustfmt</code> by default, so you should already have the
+programs <code>rustfmt</code> and <code>cargo-fmt</code> on your system. These two commands are
+analogous to <code>rustc</code> and <code>cargo</code> in that <code>rustfmt</code> allows finer grained control
+and <code>cargo-fmt</code> understands conventions of a project that uses Cargo. To format
+any Cargo project, enter the following:</p>
+<pre><code class="language-console">$ cargo fmt
+</code></pre>
+<p>Running this command reformats all the Rust code in the current crate. This
+should only change the code style, not the code semantics. For more information
+on <code>rustfmt</code>, see [its documentation][rustfmt].</p>
+</body>
+</html>

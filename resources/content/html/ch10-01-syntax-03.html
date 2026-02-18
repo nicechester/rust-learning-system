@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>In Enum Definitions</title>
+</head>
+<body>
+<h1>In Enum Definitions</h1>
+<p>As we did with structs, we can define enums to hold generic data types in their
+variants. Let’s take another look at the <code>Option&lt;T&gt;</code> enum that the standard
+library provides, which we used in Chapter 6:</p>
+<pre><code class="language-rust">enum Option&lt;T&gt; {
+    Some(T),
+    None,
+}
+</code></pre>
+<p>This definition should now make more sense to you. As you can see, the
+<code>Option&lt;T&gt;</code> enum is generic over type <code>T</code> and has two variants: <code>Some</code>, which
+holds one value of type <code>T</code>, and a <code>None</code> variant that doesn’t hold any value.
+By using the <code>Option&lt;T&gt;</code> enum, we can express the abstract concept of an
+optional value, and because <code>Option&lt;T&gt;</code> is generic, we can use this abstraction
+no matter what the type of the optional value is.</p>
+<p>Enums can use multiple generic types as well. The definition of the <code>Result</code>
+enum that we used in Chapter 9 is one example:</p>
+<pre><code class="language-rust">enum Result&lt;T, E&gt; {
+    Ok(T),
+    Err(E),
+}
+</code></pre>
+<p>The <code>Result</code> enum is generic over two types, <code>T</code> and <code>E</code>, and has two variants:
+<code>Ok</code>, which holds a value of type <code>T</code>, and <code>Err</code>, which holds a value of type
+<code>E</code>. This definition makes it convenient to use the <code>Result</code> enum anywhere we
+have an operation that might succeed (return a value of some type <code>T</code>) or fail
+(return an error of some type <code>E</code>). In fact, this is what we used to open a
+file in Listing 9-3, where <code>T</code> was filled in with the type <code>std::fs::File</code> when
+the file was opened successfully and <code>E</code> was filled in with the type
+<code>std::io::Error</code> when there were problems opening the file.</p>
+<p>When you recognize situations in your code with multiple struct or enum
+definitions that differ only in the types of the values they hold, you can
+avoid duplication by using generic types instead.</p>
+</body>
+</html>

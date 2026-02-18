@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Defining Unit-Like Structs</title>
+</head>
+<body>
+<h1>Defining Unit-Like Structs</h1>
+<p>You can also define structs that don’t have any fields! These are called
+<em>unit-like structs</em> because they behave similarly to <code>()</code>, the unit type that
+we mentioned in <a href="ch03-02-data-types.html#the-tuple-type">“The Tuple Type”</a><!-- ignore --> section. Unit-like
+structs can be useful when you need to implement a trait on some type but don’t
+have any data that you want to store in the type itself. We’ll discuss traits
+in Chapter 10. Here’s an example of declaring and instantiating a unit struct
+named <code>AlwaysEqual</code>:</p>
+<p><Listing file-name="src/main.rs"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/no-listing-04-unit-like-structs/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>To define <code>AlwaysEqual</code>, we use the <code>struct</code> keyword, the name we want, and
+then a semicolon. No need for curly brackets or parentheses! Then, we can get
+an instance of <code>AlwaysEqual</code> in the <code>subject</code> variable in a similar way: using
+the name we defined, without any curly brackets or parentheses. Imagine that
+later we’ll implement behavior for this type such that every instance of
+<code>AlwaysEqual</code> is always equal to every instance of any other type, perhaps to
+have a known result for testing purposes. We wouldn’t need any data to
+implement that behavior! You’ll see in Chapter 10 how to define traits and
+implement them on any type, including unit-like structs.</p>
+<blockquote>
+<h3>Ownership of Struct Data</h3>
+<p>In the <code>User</code> struct definition in Listing 5-1, we used the owned <code>String</code>
+type rather than the <code>&amp;str</code> string slice type. This is a deliberate choice
+because we want each instance of this struct to own all of its data and for
+that data to be valid for as long as the entire struct is valid.</p>
+<p>It’s also possible for structs to store references to data owned by something
+else, but to do so requires the use of <em>lifetimes</em>, a Rust feature that we’ll
+discuss in Chapter 10. Lifetimes ensure that the data referenced by a struct
+is valid for as long as the struct is. Let’s say you try to store a reference
+in a struct without specifying lifetimes, like the following in
+<em>src/main.rs</em>; this won’t work:</p>
+<p><Listing file-name="src/main.rs"></p>
+<!-- CAN'T EXTRACT SEE https://github.com/rust-lang/mdBook/issues/1127 -->
+<p>```rust,ignore,does_not_compile
+struct User {
+    active: bool,
+    username: &amp;str,
+    email: &amp;str,
+    sign_in_count: u64,
+}</p>
+<p>fn main() {
+    let user1 = User {
+        active: true,
+        username: "someusername123",
+        email: "someone@example.com",
+        sign_in_count: 1,
+    };
+}
+```</p>
+<p></Listing></p>
+<p>The compiler will complain that it needs lifetime specifiers:</p>
+<p>```console
+$ cargo run
+   Compiling structs v0.1.0 (file:///projects/structs)
+error[E0106]: missing lifetime specifier
+ --&gt; src/main.rs:3:15
+  |
+3 |     username: &amp;str,
+  |               ^ expected named lifetime parameter
+  |
+help: consider introducing a named lifetime parameter
+  |
+1 ~ struct User&lt;'a&gt; {
+2 |     active: bool,
+3 ~     username: &amp;'a str,
+  |</p>
+<p>error[E0106]: missing lifetime specifier
+ --&gt; src/main.rs:4:12
+  |
+4 |     email: &amp;str,
+  |            ^ expected named lifetime parameter
+  |
+help: consider introducing a named lifetime parameter
+  |
+1 ~ struct User&lt;'a&gt; {
+2 |     active: bool,
+3 |     username: &amp;str,
+4 ~     email: &amp;'a str,
+  |</p>
+<p>For more information about this error, try <code>rustc --explain E0106</code>.
+error: could not compile <code>structs</code> (bin "structs") due to 2 previous errors
+```</p>
+<p>In Chapter 10, we’ll discuss how to fix these errors so that you can store
+references in structs, but for now, we’ll fix errors like these using owned
+types like <code>String</code> instead of references like <code>&amp;str</code>.</p>
+</blockquote>
+<!-- manual-regeneration
+for the error above
+after running update-rustc.sh:
+pbcopy < listings/ch05-using-structs-to-structure-related-data/no-listing-02-reference-in-struct/output.txt
+paste above
+add `> ` before every line -->
+</body>
+</html>

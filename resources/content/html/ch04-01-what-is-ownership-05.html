@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Ownership and Functions</title>
+</head>
+<body>
+<h1>Ownership and Functions</h1>
+<p>The mechanics of passing a value to a function are similar to those when
+assigning a value to a variable. Passing a variable to a function will move or
+copy, just as assignment does. Listing 4-3 has an example with some annotations
+showing where variables go into and out of scope.</p>
+<p><Listing number="4-3" file-name="src/main.rs" caption="Functions with ownership and scope annotated"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch04-understanding-ownership/listing-04-03/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>If we tried to use <code>s</code> after the call to <code>takes_ownership</code>, Rust would throw a
+compile-time error. These static checks protect us from mistakes. Try adding
+code to <code>main</code> that uses <code>s</code> and <code>x</code> to see where you can use them and where
+the ownership rules prevent you from doing so.</p>
+</body>
+</html>

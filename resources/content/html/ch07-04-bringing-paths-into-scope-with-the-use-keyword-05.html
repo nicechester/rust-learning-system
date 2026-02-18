@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Using Nested Paths to Clean Up `use` Lists</title>
+</head>
+<body>
+<h1>Using Nested Paths to Clean Up `use` Lists</h1>
+<p>If we’re using multiple items defined in the same crate or same module, listing
+each item on its own line can take up a lot of vertical space in our files. For
+example, these two <code>use</code> statements we had in the guessing game in Listing 2-4
+bring items from <code>std</code> into scope:</p>
+<p><Listing file-name="src/main.rs"></p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch07-managing-growing-projects/no-listing-01-use-std-unnested/src/main.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+Instead, we can use nested paths to bring the same items into scope in one
+line. We do this by specifying the common part of the path, followed by two
+colons, and then curly brackets around a list of the parts of the paths that
+differ, as shown in Listing 7-18.
+
+&lt;Listing number=&quot;7-18&quot; file-name=&quot;src/main.rs&quot; caption=&quot;Specifying a nested path to bring multiple items with the same prefix into scope&quot;&gt;
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-18/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>In bigger programs, bringing many items into scope from the same crate or
+module using nested paths can reduce the number of separate <code>use</code> statements
+needed by a lot!</p>
+<p>We can use a nested path at any level in a path, which is useful when combining
+two <code>use</code> statements that share a subpath. For example, Listing 7-19 shows two
+<code>use</code> statements: one that brings <code>std::io</code> into scope and one that brings
+<code>std::io::Write</code> into scope.</p>
+<p><Listing number="7-19" file-name="src/lib.rs" caption="Two <code>use</code> statements where one is a subpath of the other"></p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-19/src/lib.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+The common part of these two paths is `std::io`, and that’s the complete first
+path. To merge these two paths into one `use` statement, we can use `self` in
+the nested path, as shown in Listing 7-20.
+
+&lt;Listing number=&quot;7-20&quot; file-name=&quot;src/lib.rs&quot; caption=&quot;Combining the paths in Listing 7-19 into one `use` statement&quot;&gt;
+
+```rust,noplayground
+{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-20/src/lib.rs}}
+</code></pre>
+<p></Listing></p>
+<p>This line brings <code>std::io</code> and <code>std::io::Write</code> into scope.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="the-glob-operator"></a></p>
+</body>
+</html>

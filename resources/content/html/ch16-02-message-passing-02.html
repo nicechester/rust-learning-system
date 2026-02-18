@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Sending Multiple Values</title>
+</head>
+<body>
+<h1>Sending Multiple Values</h1>
+<p>The code in Listing 16-8 compiled and ran, but it didn’t clearly show us that
+two separate threads were talking to each other over the channel.</p>
+<p>In Listing 16-10, we’ve made some modifications that will prove the code in
+Listing 16-8 is running concurrently: The spawned thread will now send multiple
+messages and pause for a second between each message.</p>
+<p><Listing number="16-10" file-name="src/main.rs" caption="Sending multiple messages and pausing between each one"></p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch16-fearless-concurrency/listing-16-10/src/main.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+This time, the spawned thread has a vector of strings that we want to send to
+the main thread. We iterate over them, sending each individually, and pause
+between each by calling the `thread::sleep` function with a `Duration` value of
+one second.
+
+In the main thread, we’re not calling the `recv` function explicitly anymore:
+Instead, we’re treating `rx` as an iterator. For each value received, we’re
+printing it. When the channel is closed, iteration will end.
+
+When running the code in Listing 16-10, you should see the following output
+with a one-second pause in between each line:
+
+&lt;!-- Not extracting output because changes to this output aren't significant;
+the changes are likely to be due to the threads running differently rather than
+changes in the compiler --&gt;
+
+```text
+Got: hi
+Got: from
+Got: the
+Got: thread
+</code></pre>
+<p>Because we don’t have any code that pauses or delays in the <code>for</code> loop in the
+main thread, we can tell that the main thread is waiting to receive values from
+the spawned thread.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="creating-multiple-producers-by-cloning-the-transmitter"></a></p>
+</body>
+</html>

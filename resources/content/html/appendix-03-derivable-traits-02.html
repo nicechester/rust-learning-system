@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>`PartialEq` and `Eq` for Equality Comparisons</title>
+</head>
+<body>
+<h1>`PartialEq` and `Eq` for Equality Comparisons</h1>
+<p>The <code>PartialEq</code> trait allows you to compare instances of a type to check for
+equality and enables use of the <code>==</code> and <code>!=</code> operators.</p>
+<p>Deriving <code>PartialEq</code> implements the <code>eq</code> method. When <code>PartialEq</code> is derived on
+structs, two instances are equal only if <em>all</em> fields are equal, and the
+instances are not equal if <em>any</em> fields are not equal. When derived on enums,
+each variant is equal to itself and not equal to the other variants.</p>
+<p>The <code>PartialEq</code> trait is required, for example, with the use of the
+<code>assert_eq!</code> macro, which needs to be able to compare two instances of a type
+for equality.</p>
+<p>The <code>Eq</code> trait has no methods. Its purpose is to signal that for every value of
+the annotated type, the value is equal to itself. The <code>Eq</code> trait can only be
+applied to types that also implement <code>PartialEq</code>, although not all types that
+implement <code>PartialEq</code> can implement <code>Eq</code>. One example of this is floating-point
+number types: The implementation of floating-point numbers states that two
+instances of the not-a-number (<code>NaN</code>) value are not equal to each other.</p>
+<p>An example of when <code>Eq</code> is required is for keys in a <code>HashMap&lt;K, V&gt;</code> so that
+the <code>HashMap&lt;K, V&gt;</code> can tell whether two keys are the same.</p>
+</body>
+</html>

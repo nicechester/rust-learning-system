@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Introduction</title>
+</head>
+<body>
+<h1>Introduction</h1>
+<h2>The Slice Type</h2>
+<p><em>Slices</em> let you reference a contiguous sequence of elements in a
+<a href="ch08-00-common-collections.md">collection</a><!-- ignore -->. A slice is a kind
+of reference, so it does not have ownership.</p>
+<p>Here’s a small programming problem: Write a function that takes a string of
+words separated by spaces and returns the first word it finds in that string.
+If the function doesn’t find a space in the string, the whole string must be
+one word, so the entire string should be returned.</p>
+<blockquote>
+<p>Note: For the purposes of introducing slices, we are assuming ASCII only in
+this section; a more thorough discussion of UTF-8 handling is in the
+[“Storing UTF-8 Encoded Text with Strings”][strings]<!-- ignore --> section
+of Chapter 8.</p>
+</blockquote>
+<p>Let’s work through how we’d write the signature of this function without using
+slices, to understand the problem that slices will solve:</p>
+<p>```rust,ignore
+fn first_word(s: &amp;String) -&gt; ?</p>
+<pre><code>
+The `first_word` function has a parameter of type `&amp;String`. We don’t need
+ownership, so this is fine. (In idiomatic Rust, functions do not take ownership
+of their arguments unless they need to, and the reasons for that will become
+clear as we keep going.) But what should we return? We don’t really have a way
+to talk about *part* of a string. However, we could return the index of the end
+of the word, indicated by a space. Let’s try that, as shown in Listing 4-7.
+
+&lt;Listing number=&quot;4-7&quot; file-name=&quot;src/main.rs&quot; caption=&quot;The `first_word` function that returns a byte index value into the `String` parameter&quot;&gt;
+
+```rust
+{{#rustdoc_include ../listings/ch04-understanding-ownership/listing-04-07/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Because we need to go through the <code>String</code> element by element and check whether
+a value is a space, we’ll convert our <code>String</code> to an array of bytes using the
+<code>as_bytes</code> method.</p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch04-understanding-ownership/listing-04-07/src/main.rs:as_bytes}}</p>
+<pre><code>
+Next, we create an iterator over the array of bytes using the `iter` method:
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch04-understanding-ownership/listing-04-07/src/main.rs:iter}}
+</code></pre>
+<p>We’ll discuss iterators in more detail in [Chapter 13][ch13]<!-- ignore -->.
+For now, know that <code>iter</code> is a method that returns each element in a collection
+and that <code>enumerate</code> wraps the result of <code>iter</code> and returns each element as
+part of a tuple instead. The first element of the tuple returned from
+<code>enumerate</code> is the index, and the second element is a reference to the element.
+This is a bit more convenient than calculating the index ourselves.</p>
+<p>Because the <code>enumerate</code> method returns a tuple, we can use patterns to
+destructure that tuple. We’ll be discussing patterns more in [Chapter
+6][ch6]<!-- ignore -->. In the <code>for</code> loop, we specify a pattern that has <code>i</code>
+for the index in the tuple and <code>&amp;item</code> for the single byte in the tuple.
+Because we get a reference to the element from <code>.iter().enumerate()</code>, we use
+<code>&amp;</code> in the pattern.</p>
+<p>Inside the <code>for</code> loop, we search for the byte that represents the space by
+using the byte literal syntax. If we find a space, we return the position.
+Otherwise, we return the length of the string by using <code>s.len()</code>.</p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch04-understanding-ownership/listing-04-07/src/main.rs:inside_for}}</p>
+<pre><code>
+We now have a way to find out the index of the end of the first word in the
+string, but there’s a problem. We’re returning a `usize` on its own, but it’s
+only a meaningful number in the context of the `&amp;String`. In other words,
+because it’s a separate value from the `String`, there’s no guarantee that it
+will still be valid in the future. Consider the program in Listing 4-8 that
+uses the `first_word` function from Listing 4-7.
+
+&lt;Listing number=&quot;4-8&quot; file-name=&quot;src/main.rs&quot; caption=&quot;Storing the result from calling the `first_word` function and then changing the `String` contents&quot;&gt;
+
+```rust
+{{#rustdoc_include ../listings/ch04-understanding-ownership/listing-04-08/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>This program compiles without any errors and would also do so if we used <code>word</code>
+after calling <code>s.clear()</code>. Because <code>word</code> isn’t connected to the state of <code>s</code>
+at all, <code>word</code> still contains the value <code>5</code>. We could use that value <code>5</code> with
+the variable <code>s</code> to try to extract the first word out, but this would be a bug
+because the contents of <code>s</code> have changed since we saved <code>5</code> in <code>word</code>.</p>
+<p>Having to worry about the index in <code>word</code> getting out of sync with the data in
+<code>s</code> is tedious and error-prone! Managing these indices is even more brittle if
+we write a <code>second_word</code> function. Its signature would have to look like this:</p>
+<p><code>rust,ignore
+fn second_word(s: &amp;String) -&gt; (usize, usize) {</code></p>
+<p>Now we’re tracking a starting <em>and</em> an ending index, and we have even more
+values that were calculated from data in a particular state but aren’t tied to
+that state at all. We have three unrelated variables floating around that need
+to be kept in sync.</p>
+<p>Luckily, Rust has a solution to this problem: string slices.</p>
+</body>
+</html>

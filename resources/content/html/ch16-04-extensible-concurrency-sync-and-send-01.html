@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Transferring Ownership Between Threads</title>
+</head>
+<body>
+<h1>Transferring Ownership Between Threads</h1>
+<p>The <code>Send</code> marker trait indicates that ownership of values of the type
+implementing <code>Send</code> can be transferred between threads. Almost every Rust type
+implements <code>Send</code>, but there are some exceptions, including <code>Rc&lt;T&gt;</code>: This
+cannot implement <code>Send</code> because if you cloned an <code>Rc&lt;T&gt;</code> value and tried to
+transfer ownership of the clone to another thread, both threads might update
+the reference count at the same time. For this reason, <code>Rc&lt;T&gt;</code> is implemented
+for use in single-threaded situations where you don’t want to pay the
+thread-safe performance penalty.</p>
+<p>Therefore, Rust’s type system and trait bounds ensure that you can never
+accidentally send an <code>Rc&lt;T&gt;</code> value across threads unsafely. When we tried to do
+this in Listing 16-14, we got the error <code>the trait `Send` is not implemented
+for `Rc&lt;Mutex&lt;i32&gt;&gt;`</code>. When we switched to <code>Arc&lt;T&gt;</code>, which does implement
+<code>Send</code>, the code compiled.</p>
+<p>Any type composed entirely of <code>Send</code> types is automatically marked as <code>Send</code> as
+well. Almost all primitive types are <code>Send</code>, aside from raw pointers, which
+we’ll discuss in Chapter 20.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="allowing-access-from-multiple-threads-with-sync"></a></p>
+</body>
+</html>

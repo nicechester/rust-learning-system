@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Introduction</title>
+</head>
+<body>
+<h1>Introduction</h1>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="writing-error-messages-to-standard-error-instead-of-standard-output"></a></p>
+<h2>Redirecting Errors to Standard Error</h2>
+<p>At the moment, we’re writing all of our output to the terminal using the
+<code>println!</code> macro. In most terminals, there are two kinds of output: <em>standard
+output</em> (<code>stdout</code>) for general information and <em>standard error</em> (<code>stderr</code>) for
+error messages. This distinction enables users to choose to direct the
+successful output of a program to a file but still print error messages to the
+screen.</p>
+<p>The <code>println!</code> macro is only capable of printing to standard output, so we have
+to use something else to print to standard error.</p>
+</body>
+</html>

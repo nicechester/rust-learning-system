@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Using Default Implementations</title>
+</head>
+<body>
+<h1>Using Default Implementations</h1>
+<p>Sometimes it’s useful to have default behavior for some or all of the methods
+in a trait instead of requiring implementations for all methods on every type.
+Then, as we implement the trait on a particular type, we can keep or override
+each method’s default behavior.</p>
+<p>In Listing 10-14, we specify a default string for the <code>summarize</code> method of the
+<code>Summary</code> trait instead of only defining the method signature, as we did in
+Listing 10-12.</p>
+<p><Listing number="10-14" file-name="src/lib.rs" caption="Defining a <code>Summary</code> trait with a default implementation of the <code>summarize</code> method"></p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-14/src/lib.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+To use a default implementation to summarize instances of `NewsArticle`, we
+specify an empty `impl` block with `impl Summary for NewsArticle {}`.
+
+Even though we’re no longer defining the `summarize` method on `NewsArticle`
+directly, we’ve provided a default implementation and specified that
+`NewsArticle` implements the `Summary` trait. As a result, we can still call
+the `summarize` method on an instance of `NewsArticle`, like this:
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-02-calling-default-impl/src/main.rs:here}}
+</code></pre>
+<p>This code prints <code>New article available! (Read more...)</code>.</p>
+<p>Creating a default implementation doesn’t require us to change anything about
+the implementation of <code>Summary</code> on <code>SocialPost</code> in Listing 10-13. The reason is
+that the syntax for overriding a default implementation is the same as the
+syntax for implementing a trait method that doesn’t have a default
+implementation.</p>
+<p>Default implementations can call other methods in the same trait, even if those
+other methods don’t have a default implementation. In this way, a trait can
+provide a lot of useful functionality and only require implementors to specify
+a small part of it. For example, we could define the <code>Summary</code> trait to have a
+<code>summarize_author</code> method whose implementation is required, and then define a
+<code>summarize</code> method that has a default implementation that calls the
+<code>summarize_author</code> method:</p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-03-default-impl-calls-other-methods/src/lib.rs:here}}</p>
+<pre><code>
+To use this version of `Summary`, we only need to define `summarize_author`
+when we implement the trait on a type:
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-03-default-impl-calls-other-methods/src/lib.rs:impl}}
+</code></pre>
+<p>After we define <code>summarize_author</code>, we can call <code>summarize</code> on instances of the
+<code>SocialPost</code> struct, and the default implementation of <code>summarize</code> will call the
+definition of <code>summarize_author</code> that we’ve provided. Because we’ve implemented
+<code>summarize_author</code>, the <code>Summary</code> trait has given us the behavior of the
+<code>summarize</code> method without requiring us to write any more code. Here’s what
+that looks like:</p>
+<p><code>rust,ignore
+{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-03-default-impl-calls-other-methods/src/main.rs:here}}</code></p>
+<p>This code prints <code>1 new post: (Read more from @horse_ebooks...)</code>.</p>
+<p>Note that it isn’t possible to call the default implementation from an
+overriding implementation of that same method.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="traits-as-parameters"></a></p>
+</body>
+</html>

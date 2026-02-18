@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Creating Instances with Struct Update Syntax</title>
+</head>
+<body>
+<h1>Creating Instances with Struct Update Syntax</h1>
+<p>It’s often useful to create a new instance of a struct that includes most of
+the values from another instance of the same type, but changes some of them.
+You can do this using struct update syntax.</p>
+<p>First, in Listing 5-6 we show how to create a new <code>User</code> instance in <code>user2</code> in
+the regular way, without the update syntax. We set a new value for <code>email</code> but
+otherwise use the same values from <code>user1</code> that we created in Listing 5-2.</p>
+<p><Listing number="5-6" file-name="src/main.rs" caption="Creating a new <code>User</code> instance using all but one of the values from <code>user1</code>"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-06/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Using struct update syntax, we can achieve the same effect with less code, as
+shown in Listing 5-7. The syntax <code>..</code> specifies that the remaining fields not
+explicitly set should have the same value as the fields in the given instance.</p>
+<p><Listing number="5-7" file-name="src/main.rs" caption="Using struct update syntax to set a new <code>email</code> value for a <code>User</code> instance but to use the rest of the values from <code>user1</code>"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-07/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>The code in Listing 5-7 also creates an instance in <code>user2</code> that has a
+different value for <code>email</code> but has the same values for the <code>username</code>,
+<code>active</code>, and <code>sign_in_count</code> fields from <code>user1</code>. The <code>..user1</code> must come last
+to specify that any remaining fields should get their values from the
+corresponding fields in <code>user1</code>, but we can choose to specify values for as
+many fields as we want in any order, regardless of the order of the fields in
+the struct’s definition.</p>
+<p>Note that the struct update syntax uses <code>=</code> like an assignment; this is because
+it moves the data, just as we saw in the [“Variables and Data Interacting with
+Move”][move]<!-- ignore --> section. In this example, we can no longer use
+<code>user1</code> after creating <code>user2</code> because the <code>String</code> in the <code>username</code> field of
+<code>user1</code> was moved into <code>user2</code>. If we had given <code>user2</code> new <code>String</code> values for
+both <code>email</code> and <code>username</code>, and thus only used the <code>active</code> and <code>sign_in_count</code>
+values from <code>user1</code>, then <code>user1</code> would still be valid after creating <code>user2</code>.
+Both <code>active</code> and <code>sign_in_count</code> are types that implement the <code>Copy</code> trait, so
+the behavior we discussed in the [“Stack-Only Data: Copy”][copy]<!-- ignore -->
+section would apply. We can also still use <code>user1.email</code> in this example,
+because its value was not moved out of <code>user1</code>.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="using-tuple-structs-without-named-fields-to-create-different-types"></a></p>
+</body>
+</html>

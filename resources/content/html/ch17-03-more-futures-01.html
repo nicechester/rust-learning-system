@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Yielding Control to the Runtime</title>
+</head>
+<body>
+<h1>Yielding Control to the Runtime</h1>
+<p>Recall from the [“Our First Async Program”][async-program]<!-- ignore -->
+section that at each await point, Rust gives a runtime a chance to pause the
+task and switch to another one if the future being awaited isn’t ready. The
+inverse is also true: Rust <em>only</em> pauses async blocks and hands control back to
+a runtime at an await point. Everything between await points is synchronous.</p>
+<p>That means if you do a bunch of work in an async block without an await point,
+that future will block any other futures from making progress. You may sometimes
+hear this referred to as one future <em>starving</em> other futures. In some cases,
+that may not be a big deal. However, if you are doing some kind of expensive
+setup or long-running work, or if you have a future that will keep doing some
+particular task indefinitely, you’ll need to think about when and where to hand
+control back to the runtime.</p>
+<p>Let’s simulate a long-running operation to illustrate the starvation problem,
+then explore how to solve it. Listing 17-14 introduces a <code>slow</code> function.</p>
+<p><Listing number="17-14" caption="Using <code>thread::sleep</code> to simulate slow operations" file-name="src/main.rs"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch17-async-await/listing-17-14/src/main.rs:slow}}
+</code></pre>
+<p></Listing></p>
+<p>This code uses <code>std::thread::sleep</code> instead of <code>trpl::sleep</code> so that calling
+<code>slow</code> will block the current thread for some number of milliseconds. We can
+use <code>slow</code> to stand in for real-world operations that are both long-running and
+blocking.</p>
+<p>In Listing 17-15, we use <code>slow</code> to emulate doing this kind of CPU-bound work in
+a pair of futures.</p>
+<p><Listing number="17-15" caption="Calling the <code>slow</code> function to simulate slow operations" file-name="src/main.rs"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch17-async-await/listing-17-15/src/main.rs:slow-futures}}
+</code></pre>
+<p></Listing></p>
+<p>Each future hands control back to the runtime only <em>after</em> carrying out a bunch
+of slow operations. If you run this code, you will see this output:</p>
+<!-- manual-regeneration
+cd listings/ch17-async-await/listing-17-15/
+cargo run
+copy just the output
+-->
+
+<pre><code class="language-text">'a' started.
+'a' ran for 30ms
+'a' ran for 10ms
+'a' ran for 20ms
+'b' started.
+'b' ran for 75ms
+'b' ran for 10ms
+'b' ran for 15ms
+'b' ran for 350ms
+'a' finished.
+</code></pre>
+<p>As with Listing 17-5 where we used <code>trpl::select</code> to race futures fetching two
+URLs, <code>select</code> still finishes as soon as <code>a</code> is done. There’s no interleaving
+between the calls to <code>slow</code> in the two futures, though. The <code>a</code> future does all
+of its work until the <code>trpl::sleep</code> call is awaited, then the <code>b</code> future does
+all of its work until its own <code>trpl::sleep</code> call is awaited, and finally the
+<code>a</code> future completes. To allow both futures to make progress between their slow
+tasks, we need await points so we can hand control back to the runtime. That
+means we need something we can await!</p>
+<p>We can already see this kind of handoff happening in Listing 17-15: if we
+removed the <code>trpl::sleep</code> at the end of the <code>a</code> future, it would complete
+without the <code>b</code> future running <em>at all</em>. Let’s try using the <code>trpl::sleep</code>
+function as a starting point for letting operations switch off making progress,
+as shown in Listing 17-16.</p>
+<p><Listing number="17-16" caption="Using <code>trpl::sleep</code> to let operations switch off making progress" file-name="src/main.rs"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch17-async-await/listing-17-16/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>We’ve added <code>trpl::sleep</code> calls with await points between each call to <code>slow</code>.
+Now the two futures’ work is interleaved:</p>
+<!-- manual-regeneration
+cd listings/ch17-async-await/listing-17-16
+cargo run
+copy just the output
+-->
+
+<pre><code class="language-text">'a' started.
+'a' ran for 30ms
+'b' started.
+'b' ran for 75ms
+'a' ran for 10ms
+'b' ran for 10ms
+'a' ran for 20ms
+'b' ran for 15ms
+'a' finished.
+</code></pre>
+<p>The <code>a</code> future still runs for a bit before handing off control to <code>b</code>, because
+it calls <code>slow</code> before ever calling <code>trpl::sleep</code>, but after that the futures
+swap back and forth each time one of them hits an await point. In this case, we
+have done that after every call to <code>slow</code>, but we could break up the work in
+whatever way makes the most sense to us.</p>
+<p>We don’t really want to <em>sleep</em> here, though: we want to make progress as fast
+as we can. We just need to hand back control to the runtime. We can do that
+directly, using the <code>trpl::yield_now</code> function. In Listing 17-17, we replace
+all those <code>trpl::sleep</code> calls with <code>trpl::yield_now</code>.</p>
+<p><Listing number="17-17" caption="Using <code>yield_now</code> to let operations switch off making progress" file-name="src/main.rs"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch17-async-await/listing-17-17/src/main.rs:yields}}
+</code></pre>
+<p></Listing></p>
+<p>This code is both clearer about the actual intent and can be significantly
+faster than using <code>sleep</code>, because timers such as the one used by <code>sleep</code> often
+have limits on how granular they can be. The version of <code>sleep</code> we are using,
+for example, will always sleep for at least a millisecond, even if we pass it a
+<code>Duration</code> of one nanosecond. Again, modern computers are <em>fast</em>: they can do a
+lot in one millisecond!</p>
+<p>This means that async can be useful even for compute-bound tasks, depending on
+what else your program is doing, because it provides a useful tool for
+structuring the relationships between different parts of the program (but at a
+cost of the overhead of the async state machine). This is a form of
+<em>cooperative multitasking</em>, where each future has the power to determine when
+it hands over control via await points. Each future therefore also has the
+responsibility to avoid blocking for too long. In some Rust-based embedded
+operating systems, this is the <em>only</em> kind of multitasking!</p>
+<p>In real-world code, you won’t usually be alternating function calls with await
+points on every single line, of course. While yielding control in this way is
+relatively inexpensive, it’s not free. In many cases, trying to break up a
+compute-bound task might make it significantly slower, so sometimes it’s better
+for <em>overall</em> performance to let an operation block briefly. Always
+measure to see what your code’s actual performance bottlenecks are. The
+underlying dynamic is important to keep in mind, though, if you <em>are</em> seeing a
+lot of work happening in serial that you expected to happen concurrently!</p>
+</body>
+</html>

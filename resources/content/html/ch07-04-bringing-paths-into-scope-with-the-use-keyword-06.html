@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Importing Items with the Glob Operator</title>
+</head>
+<body>
+<h1>Importing Items with the Glob Operator</h1>
+<p>If we want to bring <em>all</em> public items defined in a path into scope, we can
+specify that path followed by the <code>*</code> glob operator:</p>
+<pre><code class="language-rust">use std::collections::*;
+</code></pre>
+<p>This <code>use</code> statement brings all public items defined in <code>std::collections</code> into
+the current scope. Be careful when using the glob operator! Glob can make it
+harder to tell what names are in scope and where a name used in your program
+was defined. Additionally, if the dependency changes its definitions, what
+you’ve imported changes as well, which may lead to compiler errors when you
+upgrade the dependency if the dependency adds a definition with the same name
+as a definition of yours in the same scope, for example.</p>
+<p>The glob operator is often used when testing to bring everything under test into
+the <code>tests</code> module; we’ll talk about that in <a href="ch11-01-writing-tests.html#how-to-write-tests">“How to Write
+Tests”</a><!-- ignore --> in Chapter 11. The glob operator is also
+sometimes used as part of the prelude pattern: See <a href="../std/prelude/index.html#other-preludes">the standard library
+documentation</a><!-- ignore --> for more
+information on that pattern.</p>
+</body>
+</html>

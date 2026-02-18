@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Choo, Choo! Release Channels and Riding the Trains</title>
+</head>
+<body>
+<h1>Choo, Choo! Release Channels and Riding the Trains</h1>
+<p>Rust development operates on a <em>train schedule</em>. That is, all development is
+done in the main branch of the Rust repository. Releases follow a software
+release train model, which has been used by Cisco IOS and other software
+projects. There are three <em>release channels</em> for Rust:</p>
+<ul>
+<li>Nightly</li>
+<li>Beta</li>
+<li>Stable</li>
+</ul>
+<p>Most Rust developers primarily use the stable channel, but those who want to
+try out experimental new features may use nightly or beta.</p>
+<p>Here’s an example of how the development and release process works: let’s
+assume that the Rust team is working on the release of Rust 1.5. That release
+happened in December of 2015, but it will provide us with realistic version
+numbers. A new feature is added to Rust: a new commit lands on the main
+branch. Each night, a new nightly version of Rust is produced. Every day is a
+release day, and these releases are created by our release infrastructure
+automatically. So as time passes, our releases look like this, once a night:</p>
+<pre><code class="language-text">nightly: * - - * - - *
+</code></pre>
+<p>Every six weeks, it’s time to prepare a new release! The <code>beta</code> branch of the
+Rust repository branches off from the main branch used by nightly. Now,
+there are two releases:</p>
+<pre><code class="language-text">nightly: * - - * - - *
+                     |
+beta:                *
+</code></pre>
+<p>Most Rust users do not use beta releases actively, but test against beta in
+their CI system to help Rust discover possible regressions. In the meantime,
+there’s still a nightly release every night:</p>
+<pre><code class="language-text">nightly: * - - * - - * - - * - - *
+                     |
+beta:                *
+</code></pre>
+<p>Let’s say a regression is found. Good thing we had some time to test the beta
+release before the regression snuck into a stable release! The fix is applied
+to the main branch, so that nightly is fixed, and then the fix is backported to
+the <code>beta</code> branch, and a new release of beta is produced:</p>
+<pre><code class="language-text">nightly: * - - * - - * - - * - - * - - *
+                     |
+beta:                * - - - - - - - - *
+</code></pre>
+<p>Six weeks after the first beta was created, it’s time for a stable release! The
+<code>stable</code> branch is produced from the <code>beta</code> branch:</p>
+<pre><code class="language-text">nightly: * - - * - - * - - * - - * - - * - * - *
+                     |
+beta:                * - - - - - - - - *
+                                       |
+stable:                                *
+</code></pre>
+<p>Hooray! Rust 1.5 is done! However, we’ve forgotten one thing: because the six
+weeks have gone by, we also need a new beta of the <em>next</em> version of Rust, 1.6.
+So after <code>stable</code> branches off of <code>beta</code>, the next version of <code>beta</code> branches
+off of <code>nightly</code> again:</p>
+<pre><code class="language-text">nightly: * - - * - - * - - * - - * - - * - * - *
+                     |                         |
+beta:                * - - - - - - - - *       *
+                                       |
+stable:                                *
+</code></pre>
+<p>This is called the “train model” because every six weeks, a release “leaves the
+station”, but still has to take a journey through the beta channel before it
+arrives as a stable release.</p>
+<p>Rust releases every six weeks, like clockwork. If you know the date of one Rust
+release, you can know the date of the next one: it’s six weeks later. A nice
+aspect of having releases scheduled every six weeks is that the next train is
+coming soon. If a feature happens to miss a particular release, there’s no need
+to worry: another one is happening in a short time! This helps reduce pressure
+to sneak possibly unpolished features in close to the release deadline.</p>
+<p>Thanks to this process, you can always check out the next build of Rust and
+verify for yourself that it’s easy to upgrade to: if a beta release doesn’t
+work as expected, you can report it to the team and get it fixed before the
+next stable release happens! Breakage in a beta release is relatively rare, but
+<code>rustc</code> is still a piece of software, and bugs do exist.</p>
+</body>
+</html>

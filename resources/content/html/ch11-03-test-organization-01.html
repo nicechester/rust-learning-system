@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Unit Tests</title>
+</head>
+<body>
+<h1>Unit Tests</h1>
+<p>The purpose of unit tests is to test each unit of code in isolation from the
+rest of the code to quickly pinpoint where code is and isn’t working as
+expected. You’ll put unit tests in the <em>src</em> directory in each file with the
+code that they’re testing. The convention is to create a module named <code>tests</code>
+in each file to contain the test functions and to annotate the module with
+<code>cfg(test)</code>.</p>
+<h4>The <code>tests</code> Module and <code>#[cfg(test)]</code></h4>
+<p>The <code>#[cfg(test)]</code> annotation on the <code>tests</code> module tells Rust to compile and
+run the test code only when you run <code>cargo test</code>, not when you run <code>cargo
+build</code>. This saves compile time when you only want to build the library and
+saves space in the resultant compiled artifact because the tests are not
+included. You’ll see that because integration tests go in a different
+directory, they don’t need the <code>#[cfg(test)]</code> annotation. However, because unit
+tests go in the same files as the code, you’ll use <code>#[cfg(test)]</code> to specify
+that they shouldn’t be included in the compiled result.</p>
+<p>Recall that when we generated the new <code>adder</code> project in the first section of
+this chapter, Cargo generated this code for us:</p>
+<p><span class="filename">Filename: src/lib.rs</span></p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-01/src/lib.rs}}</p>
+<pre><code>
+On the automatically generated `tests` module, the attribute `cfg` stands for
+_configuration_ and tells Rust that the following item should only be included
+given a certain configuration option. In this case, the configuration option is
+`test`, which is provided by Rust for compiling and running tests. By using the
+`cfg` attribute, Cargo compiles our test code only if we actively run the tests
+with `cargo test`. This includes any helper functions that might be within this
+module, in addition to the functions annotated with `#[test]`.
+
+&lt;!-- Old headings. Do not remove or links may break. --&gt;
+
+&lt;a id=&quot;testing-private-functions&quot;&gt;&lt;/a&gt;
+
+#### Private Function Tests
+
+There’s debate within the testing community about whether or not private
+functions should be tested directly, and other languages make it difficult or
+impossible to test private functions. Regardless of which testing ideology you
+adhere to, Rust’s privacy rules do allow you to test private functions.
+Consider the code in Listing 11-12 with the private function `internal_adder`.
+
+&lt;Listing number=&quot;11-12&quot; file-name=&quot;src/lib.rs&quot; caption=&quot;Testing a private function&quot;&gt;
+
+```rust,noplayground
+{{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-12/src/lib.rs}}
+</code></pre>
+<p></Listing></p>
+<p>Note that the <code>internal_adder</code> function is not marked as <code>pub</code>. Tests are just
+Rust code, and the <code>tests</code> module is just another module. As we discussed in
+[“Paths for Referring to an Item in the Module Tree”][paths]<!-- ignore -->,
+items in child modules can use the items in their ancestor modules. In this
+test, we bring all of the items belonging to the <code>tests</code> module’s parent into
+scope with <code>use super::*</code>, and then the test can call <code>internal_adder</code>. If you
+don’t think private functions should be tested, there’s nothing in Rust that
+will compel you to do so.</p>
+</body>
+</html>

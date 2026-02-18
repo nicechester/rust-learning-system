@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Following the Reference to the Value</title>
+</head>
+<body>
+<h1>Following the Reference to the Value</h1>
+<p>A regular reference is a type of pointer, and one way to think of a pointer is
+as an arrow to a value stored somewhere else. In Listing 15-6, we create a
+reference to an <code>i32</code> value and then use the dereference operator to follow the
+reference to the value.</p>
+<p><Listing number="15-6" file-name="src/main.rs" caption="Using the dereference operator to follow a reference to an <code>i32</code> value"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-06/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>The variable <code>x</code> holds an <code>i32</code> value <code>5</code>. We set <code>y</code> equal to a reference to
+<code>x</code>. We can assert that <code>x</code> is equal to <code>5</code>. However, if we want to make an
+assertion about the value in <code>y</code>, we have to use <code>*y</code> to follow the reference
+to the value it’s pointing to (hence, <em>dereference</em>) so that the compiler can
+compare the actual value. Once we dereference <code>y</code>, we have access to the
+integer value <code>y</code> is pointing to that we can compare with <code>5</code>.</p>
+<p>If we tried to write <code>assert_eq!(5, y);</code> instead, we would get this compilation
+error:</p>
+<pre><code class="language-console">{{#include ../listings/ch15-smart-pointers/output-only-01-comparing-to-reference/output.txt}}
+</code></pre>
+<p>Comparing a number and a reference to a number isn’t allowed because they’re
+different types. We must use the dereference operator to follow the reference
+to the value it’s pointing to.</p>
+</body>
+</html>

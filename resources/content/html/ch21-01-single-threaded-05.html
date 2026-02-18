@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Returning Real HTML</title>
+</head>
+<body>
+<h1>Returning Real HTML</h1>
+<p>Let’s implement the functionality for returning more than a blank page. Create
+the new file <em>hello.html</em> in the root of your project directory, not in the
+<em>src</em> directory. You can input any HTML you want; Listing 21-4 shows one
+possibility.</p>
+<p><Listing number="21-4" file-name="hello.html" caption="A sample HTML file to return in a response"></p>
+<pre><code class="language-html">{{#include ../listings/ch21-web-server/listing-21-05/hello.html}}
+</code></pre>
+<p></Listing></p>
+<p>This is a minimal HTML5 document with a heading and some text. To return this
+from the server when a request is received, we’ll modify <code>handle_connection</code> as
+shown in Listing 21-5 to read the HTML file, add it to the response as a body,
+and send it.</p>
+<p><Listing number="21-5" file-name="src/main.rs" caption="Sending the contents of *hello.html* as the body of the response"></p>
+<p><code>rust,no_run
+{{#rustdoc_include ../listings/ch21-web-server/listing-21-05/src/main.rs:here}}</code></p>
+<p></Listing></p>
+<p>We’ve added <code>fs</code> to the <code>use</code> statement to bring the standard library’s
+filesystem module into scope. The code for reading the contents of a file to a
+string should look familiar; we used it when we read the contents of a file for
+our I/O project in Listing 12-4.</p>
+<p>Next, we use <code>format!</code> to add the file’s contents as the body of the success
+response. To ensure a valid HTTP response, we add the <code>Content-Length</code> header,
+which is set to the size of our response body—in this case, the size of
+<code>hello.html</code>.</p>
+<p>Run this code with <code>cargo run</code> and load <em>127.0.0.1:7878</em> in your browser; you
+should see your HTML rendered!</p>
+<p>Currently, we’re ignoring the request data in <code>http_request</code> and just sending
+back the contents of the HTML file unconditionally. That means if you try
+requesting <em>127.0.0.1:7878/something-else</em> in your browser, you’ll still get
+back this same HTML response. At the moment, our server is very limited and
+does not do what most web servers do. We want to customize our responses
+depending on the request and only send back the HTML file for a well-formed
+request to <em>/</em>.</p>
+</body>
+</html>

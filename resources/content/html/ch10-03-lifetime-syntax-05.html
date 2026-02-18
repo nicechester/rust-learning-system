@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>In Function Signatures</title>
+</head>
+<body>
+<h1>In Function Signatures</h1>
+<p>To use lifetime annotations in function signatures, we need to declare the
+generic lifetime parameters inside angle brackets between the function name and
+the parameter list, just as we did with generic type parameters.</p>
+<p>We want the signature to express the following constraint: The returned
+reference will be valid as long as both of the parameters are valid. This is
+the relationship between lifetimes of the parameters and the return value.
+We’ll name the lifetime <code>'a</code> and then add it to each reference, as shown in
+Listing 10-21.</p>
+<p><Listing number="10-21" file-name="src/main.rs" caption="The <code>longest</code> function definition specifying that all the references in the signature must have the same lifetime <code>'a</code>"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-21/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>This code should compile and produce the result we want when we use it with the
+<code>main</code> function in Listing 10-19.</p>
+<p>The function signature now tells Rust that for some lifetime <code>'a</code>, the function
+takes two parameters, both of which are string slices that live at least as
+long as lifetime <code>'a</code>. The function signature also tells Rust that the string
+slice returned from the function will live at least as long as lifetime <code>'a</code>.
+In practice, it means that the lifetime of the reference returned by the
+<code>longest</code> function is the same as the smaller of the lifetimes of the values
+referred to by the function arguments. These relationships are what we want
+Rust to use when analyzing this code.</p>
+<p>Remember, when we specify the lifetime parameters in this function signature,
+we’re not changing the lifetimes of any values passed in or returned. Rather,
+we’re specifying that the borrow checker should reject any values that don’t
+adhere to these constraints. Note that the <code>longest</code> function doesn’t need to
+know exactly how long <code>x</code> and <code>y</code> will live, only that some scope can be
+substituted for <code>'a</code> that will satisfy this signature.</p>
+<p>When annotating lifetimes in functions, the annotations go in the function
+signature, not in the function body. The lifetime annotations become part of
+the contract of the function, much like the types in the signature. Having
+function signatures contain the lifetime contract means the analysis the Rust
+compiler does can be simpler. If there’s a problem with the way a function is
+annotated or the way it is called, the compiler errors can point to the part of
+our code and the constraints more precisely. If, instead, the Rust compiler
+made more inferences about what we intended the relationships of the lifetimes
+to be, the compiler might only be able to point to a use of our code many steps
+away from the cause of the problem.</p>
+<p>When we pass concrete references to <code>longest</code>, the concrete lifetime that is
+substituted for <code>'a</code> is the part of the scope of <code>x</code> that overlaps with the
+scope of <code>y</code>. In other words, the generic lifetime <code>'a</code> will get the concrete
+lifetime that is equal to the smaller of the lifetimes of <code>x</code> and <code>y</code>. Because
+we’ve annotated the returned reference with the same lifetime parameter <code>'a</code>,
+the returned reference will also be valid for the length of the smaller of the
+lifetimes of <code>x</code> and <code>y</code>.</p>
+<p>Let’s look at how the lifetime annotations restrict the <code>longest</code> function by
+passing in references that have different concrete lifetimes. Listing 10-22 is
+a straightforward example.</p>
+<p><Listing number="10-22" file-name="src/main.rs" caption="Using the <code>longest</code> function with references to <code>String</code> values that have different concrete lifetimes"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-22/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>In this example, <code>string1</code> is valid until the end of the outer scope, <code>string2</code>
+is valid until the end of the inner scope, and <code>result</code> references something
+that is valid until the end of the inner scope. Run this code and you’ll see
+that the borrow checker approves; it will compile and print <code>The longest string
+is long string is long</code>.</p>
+<p>Next, let’s try an example that shows that the lifetime of the reference in
+<code>result</code> must be the smaller lifetime of the two arguments. We’ll move the
+declaration of the <code>result</code> variable outside the inner scope but leave the
+assignment of the value to the <code>result</code> variable inside the scope with
+<code>string2</code>. Then, we’ll move the <code>println!</code> that uses <code>result</code> to outside the
+inner scope, after the inner scope has ended. The code in Listing 10-23 will
+not compile.</p>
+<p><Listing number="10-23" file-name="src/main.rs" caption="Attempting to use <code>result</code> after <code>string2</code> has gone out of scope"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-23/src/main.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+When we try to compile this code, we get this error:
+
+```console
+{{#include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-23/output.txt}}
+</code></pre>
+<p>The error shows that for <code>result</code> to be valid for the <code>println!</code> statement,
+<code>string2</code> would need to be valid until the end of the outer scope. Rust knows
+this because we annotated the lifetimes of the function parameters and return
+values using the same lifetime parameter <code>'a</code>.</p>
+<p>As humans, we can look at this code and see that <code>string1</code> is longer than
+<code>string2</code>, and therefore, <code>result</code> will contain a reference to <code>string1</code>.
+Because <code>string1</code> has not gone out of scope yet, a reference to <code>string1</code> will
+still be valid for the <code>println!</code> statement. However, the compiler can’t see
+that the reference is valid in this case. We’ve told Rust that the lifetime of
+the reference returned by the <code>longest</code> function is the same as the smaller of
+the lifetimes of the references passed in. Therefore, the borrow checker
+disallows the code in Listing 10-23 as possibly having an invalid reference.</p>
+<p>Try designing more experiments that vary the values and lifetimes of the
+references passed in to the <code>longest</code> function and how the returned reference
+is used. Make hypotheses about whether or not your experiments will pass the
+borrow checker before you compile; then, check to see if you’re right!</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="thinking-in-terms-of-lifetimes"></a></p>
+</body>
+</html>

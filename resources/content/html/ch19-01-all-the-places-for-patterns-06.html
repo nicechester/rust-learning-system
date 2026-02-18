@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Function Parameters</title>
+</head>
+<body>
+<h1>Function Parameters</h1>
+<p>Function parameters can also be patterns. The code in Listing 19-6, which
+declares a function named <code>foo</code> that takes one parameter named <code>x</code> of type
+<code>i32</code>, should by now look familiar.</p>
+<p><Listing number="19-6" caption="A function signature using patterns in the parameters"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-06/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>The <code>x</code> part is a pattern! As we did with <code>let</code>, we could match a tuple in a
+function’s arguments to the pattern. Listing 19-7 splits the values in a tuple
+as we pass it to a function.</p>
+<p><Listing number="19-7" file-name="src/main.rs" caption="A function with parameters that destructure a tuple"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-07/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>This code prints <code>Current location: (3, 5)</code>. The values <code>&amp;(3, 5)</code> match the
+pattern <code>&amp;(x, y)</code>, so <code>x</code> is the value <code>3</code> and <code>y</code> is the value <code>5</code>.</p>
+<p>We can also use patterns in closure parameter lists in the same way as in
+function parameter lists because closures are similar to functions, as
+discussed in Chapter 13.</p>
+<p>At this point, you’ve seen several ways to use patterns, but patterns don’t
+work the same in every place we can use them. In some places, the patterns must
+be irrefutable; in other circumstances, they can be refutable. We’ll discuss
+these two concepts next.</p>
+</body>
+</html>

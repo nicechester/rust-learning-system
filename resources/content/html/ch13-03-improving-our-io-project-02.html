@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Clarifying Code with Iterator Adapters</title>
+</head>
+<body>
+<h1>Clarifying Code with Iterator Adapters</h1>
+<p>We can also take advantage of iterators in the <code>search</code> function in our I/O
+project, which is reproduced here in Listing 13-21 as it was in Listing 12-19.</p>
+<p><Listing number="13-21" file-name="src/lib.rs" caption="The implementation of the <code>search</code> function from Listing 12-19"></p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-19/src/lib.rs:ch13}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+We can write this code in a more concise way using iterator adapter methods.
+Doing so also lets us avoid having a mutable intermediate `results` vector. The
+functional programming style prefers to minimize the amount of mutable state to
+make code clearer. Removing the mutable state might enable a future enhancement
+to make searching happen in parallel because we wouldn’t have to manage
+concurrent access to the `results` vector. Listing 13-22 shows this change.
+
+&lt;Listing number=&quot;13-22&quot; file-name=&quot;src/lib.rs&quot; caption=&quot;Using iterator adapter methods in the implementation of the `search` function&quot;&gt;
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch13-functional-features/listing-13-22/src/lib.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Recall that the purpose of the <code>search</code> function is to return all lines in
+<code>contents</code> that contain the <code>query</code>. Similar to the <code>filter</code> example in Listing
+13-16, this code uses the <code>filter</code> adapter to keep only the lines for which
+<code>line.contains(query)</code> returns <code>true</code>. We then collect the matching lines into
+another vector with <code>collect</code>. Much simpler! Feel free to make the same change
+to use iterator methods in the <code>search_case_insensitive</code> function as well.</p>
+<p>For a further improvement, return an iterator from the <code>search</code> function by
+removing the call to <code>collect</code> and changing the return type to <code>impl
+Iterator&lt;Item = &amp;'a str&gt;</code> so that the function becomes an iterator adapter.
+Note that you’ll also need to update the tests! Search through a large file
+using your <code>minigrep</code> tool before and after making this change to observe the
+difference in behavior. Before this change, the program won’t print any results
+until it has collected all of the results, but after the change, the results
+will be printed as each matching line is found because the <code>for</code> loop in the
+<code>run</code> function is able to take advantage of the laziness of the iterator.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="choosing-between-loops-or-iterators"></a></p>
+</body>
+</html>

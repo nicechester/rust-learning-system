@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Ignoring Values in a Pattern</title>
+</head>
+<body>
+<h1>Ignoring Values in a Pattern</h1>
+<p>You’ve seen that it’s sometimes useful to ignore values in a pattern, such as
+in the last arm of a <code>match</code>, to get a catch-all that doesn’t actually do
+anything but does account for all remaining possible values. There are a few
+ways to ignore entire values or parts of values in a pattern: using the <code>_</code>
+pattern (which you’ve seen), using the <code>_</code> pattern within another pattern,
+using a name that starts with an underscore, or using <code>..</code> to ignore remaining
+parts of a value. Let’s explore how and why to use each of these patterns.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="ignoring-an-entire-value-with-_"></a></p>
+<h4>An Entire Value with <code>_</code></h4>
+<p>We’ve used the underscore as a wildcard pattern that will match any value but
+not bind to the value. This is especially useful as the last arm in a <code>match</code>
+expression, but we can also use it in any pattern, including function
+parameters, as shown in Listing 19-17.</p>
+<p><Listing number="19-17" file-name="src/main.rs" caption="Using <code>_</code> in a function signature"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-17/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>This code will completely ignore the value <code>3</code> passed as the first argument,
+and will print <code>This code only uses the y parameter: 4</code>.</p>
+<p>In most cases when you no longer need a particular function parameter, you
+would change the signature so that it doesn’t include the unused parameter.
+Ignoring a function parameter can be especially useful in cases when, for
+example, you’re implementing a trait when you need a certain type signature but
+the function body in your implementation doesn’t need one of the parameters.
+You then avoid getting a compiler warning about unused function parameters, as
+you would if you used a name instead.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="ignoring-parts-of-a-value-with-a-nested-_"></a></p>
+<h4>Parts of a Value with a Nested <code>_</code></h4>
+<p>We can also use <code>_</code> inside another pattern to ignore just part of a value, for
+example, when we want to test for only part of a value but have no use for the
+other parts in the corresponding code we want to run. Listing 19-18 shows code
+responsible for managing a setting’s value. The business requirements are that
+the user should not be allowed to overwrite an existing customization of a
+setting but can unset the setting and give it a value if it is currently unset.</p>
+<p><Listing number="19-18" caption="Using an underscore within patterns that match <code>Some</code> variants when we don’t need to use the value inside the <code>Some</code>"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-18/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>This code will print <code>Can't overwrite an existing customized value</code> and then
+<code>setting is Some(5)</code>. In the first match arm, we don’t need to match on or use
+the values inside either <code>Some</code> variant, but we do need to test for the case
+when <code>setting_value</code> and <code>new_setting_value</code> are the <code>Some</code> variant. In that
+case, we print the reason for not changing <code>setting_value</code>, and it doesn’t get
+changed.</p>
+<p>In all other cases (if either <code>setting_value</code> or <code>new_setting_value</code> is <code>None</code>)
+expressed by the <code>_</code> pattern in the second arm, we want to allow
+<code>new_setting_value</code> to become <code>setting_value</code>.</p>
+<p>We can also use underscores in multiple places within one pattern to ignore
+particular values. Listing 19-19 shows an example of ignoring the second and
+fourth values in a tuple of five items.</p>
+<p><Listing number="19-19" caption="Ignoring multiple parts of a tuple"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-19/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>This code will print <code>Some numbers: 2, 8, 32</code>, and the values <code>4</code> and <code>16</code> will
+be ignored.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="ignoring-an-unused-variable-by-starting-its-name-with-_"></a></p>
+<h4>An Unused Variable by Starting Its Name with <code>_</code></h4>
+<p>If you create a variable but don’t use it anywhere, Rust will usually issue a
+warning because an unused variable could be a bug. However, sometimes it’s
+useful to be able to create a variable you won’t use yet, such as when you’re
+prototyping or just starting a project. In this situation, you can tell Rust
+not to warn you about the unused variable by starting the name of the variable
+with an underscore. In Listing 19-20, we create two unused variables, but when
+we compile this code, we should only get a warning about one of them.</p>
+<p><Listing number="19-20" file-name="src/main.rs" caption="Starting a variable name with an underscore to avoid getting unused variable warnings"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-20/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>Here, we get a warning about not using the variable <code>y</code>, but we don’t get a
+warning about not using <code>_x</code>.</p>
+<p>Note that there is a subtle difference between using only <code>_</code> and using a name
+that starts with an underscore. The syntax <code>_x</code> still binds the value to the
+variable, whereas <code>_</code> doesn’t bind at all. To show a case where this
+distinction matters, Listing 19-21 will provide us with an error.</p>
+<p><Listing number="19-21" caption="An unused variable starting with an underscore still binds the value, which might take ownership of the value."></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-21/src/main.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+We’ll receive an error because the `s` value will still be moved into `_s`,
+which prevents us from using `s` again. However, using the underscore by itself
+doesn’t ever bind to the value. Listing 19-22 will compile without any errors
+because `s` doesn’t get moved into `_`.
+
+&lt;Listing number=&quot;19-22&quot; caption=&quot;Using an underscore does not bind the value.&quot;&gt;
+
+```rust
+{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-22/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>This code works just fine because we never bind <code>s</code> to anything; it isn’t moved.</p>
+<p><a id="ignoring-remaining-parts-of-a-value-with-"></a></p>
+<h4>Remaining Parts of a Value with <code>..</code></h4>
+<p>With values that have many parts, we can use the <code>..</code> syntax to use specific
+parts and ignore the rest, avoiding the need to list underscores for each
+ignored value. The <code>..</code> pattern ignores any parts of a value that we haven’t
+explicitly matched in the rest of the pattern. In Listing 19-23, we have a
+<code>Point</code> struct that holds a coordinate in three-dimensional space. In the
+<code>match</code> expression, we want to operate only on the <code>x</code> coordinate and ignore
+the values in the <code>y</code> and <code>z</code> fields.</p>
+<p><Listing number="19-23" caption="Ignoring all fields of a <code>Point</code> except for <code>x</code> by using <code>..</code>"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-23/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>We list the <code>x</code> value and then just include the <code>..</code> pattern. This is quicker
+than having to list <code>y: _</code> and <code>z: _</code>, particularly when we’re working with
+structs that have lots of fields in situations where only one or two fields are
+relevant.</p>
+<p>The syntax <code>..</code> will expand to as many values as it needs to be. Listing 19-24
+shows how to use <code>..</code> with a tuple.</p>
+<p><Listing number="19-24" file-name="src/main.rs" caption="Matching only the first and last values in a tuple and ignoring all other values"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-24/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>In this code, the first and last values are matched with <code>first</code> and <code>last</code>.
+The <code>..</code> will match and ignore everything in the middle.</p>
+<p>However, using <code>..</code> must be unambiguous. If it is unclear which values are
+intended for matching and which should be ignored, Rust will give us an error.
+Listing 19-25 shows an example of using <code>..</code> ambiguously, so it will not
+compile.</p>
+<p><Listing number="19-25" file-name="src/main.rs" caption="An attempt to use <code>..</code> in an ambiguous way"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-25/src/main.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+When we compile this example, we get this error:
+
+```console
+{{#include ../listings/ch19-patterns-and-matching/listing-19-25/output.txt}}
+</code></pre>
+<p>It’s impossible for Rust to determine how many values in the tuple to ignore
+before matching a value with <code>second</code> and then how many further values to
+ignore thereafter. This code could mean that we want to ignore <code>2</code>, bind
+<code>second</code> to <code>4</code>, and then ignore <code>8</code>, <code>16</code>, and <code>32</code>; or that we want to ignore
+<code>2</code> and <code>4</code>, bind <code>second</code> to <code>8</code>, and then ignore <code>16</code> and <code>32</code>; and so forth.
+The variable name <code>second</code> doesn’t mean anything special to Rust, so we get a
+compiler error because using <code>..</code> in two places like this is ambiguous.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="extra-conditionals-with-match-guards"></a></p>
+</body>
+</html>

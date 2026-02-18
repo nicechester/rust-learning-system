@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>String Slices</title>
+</head>
+<body>
+<h1>String Slices</h1>
+<p>A <em>string slice</em> is a reference to a contiguous sequence of the elements of a
+<code>String</code>, and it looks like this:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch04-understanding-ownership/no-listing-17-slice/src/main.rs:here}}
+</code></pre>
+<p>Rather than a reference to the entire <code>String</code>, <code>hello</code> is a reference to a
+portion of the <code>String</code>, specified in the extra <code>[0..5]</code> bit. We create slices
+using a range within square brackets by specifying
+<code>[starting_index..ending_index]</code>, where <em><code>starting_index</code></em> is the first
+position in the slice and <em><code>ending_index</code></em> is one more than the last position
+in the slice. Internally, the slice data structure stores the starting position
+and the length of the slice, which corresponds to <em><code>ending_index</code></em> minus
+<em><code>starting_index</code></em>. So, in the case of <code>let world = &amp;s[6..11];</code>, <code>world</code> would
+be a slice that contains a pointer to the byte at index 6 of <code>s</code> with a length
+value of <code>5</code>.</p>
+<p>Figure 4-7 shows this in a diagram.</p>
+<p><img alt="Three tables: a table representing the stack data of s, which points
+to the byte at index 0 in a table of the string data &quot;hello world&quot; on
+the heap. The third table represents the stack data of the slice world, which
+has a length value of 5 and points to byte 6 of the heap data table."
+src="img/trpl04-07.svg" class="center" style="width: 50%;" /></p>
+<p><span class="caption">Figure 4-7: A string slice referring to part of a
+<code>String</code></span></p>
+<p>With Rust’s <code>..</code> range syntax, if you want to start at index 0, you can drop
+the value before the two periods. In other words, these are equal:</p>
+<pre><code class="language-rust">let s = String::from(&quot;hello&quot;);
+
+let slice = &amp;s[0..2];
+let slice = &amp;s[..2];
+</code></pre>
+<p>By the same token, if your slice includes the last byte of the <code>String</code>, you
+can drop the trailing number. That means these are equal:</p>
+<pre><code class="language-rust">let s = String::from(&quot;hello&quot;);
+
+let len = s.len();
+
+let slice = &amp;s[3..len];
+let slice = &amp;s[3..];
+</code></pre>
+<p>You can also drop both values to take a slice of the entire string. So, these
+are equal:</p>
+<pre><code class="language-rust">let s = String::from(&quot;hello&quot;);
+
+let len = s.len();
+
+let slice = &amp;s[0..len];
+let slice = &amp;s[..];
+</code></pre>
+<blockquote>
+<p>Note: String slice range indices must occur at valid UTF-8 character
+boundaries. If you attempt to create a string slice in the middle of a
+multibyte character, your program will exit with an error.</p>
+</blockquote>
+<p>With all this information in mind, let’s rewrite <code>first_word</code> to return a
+slice. The type that signifies “string slice” is written as <code>&amp;str</code>:</p>
+<p><Listing file-name="src/main.rs"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch04-understanding-ownership/no-listing-18-first-word-slice/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>We get the index for the end of the word the same way we did in Listing 4-7, by
+looking for the first occurrence of a space. When we find a space, we return a
+string slice using the start of the string and the index of the space as the
+starting and ending indices.</p>
+<p>Now when we call <code>first_word</code>, we get back a single value that is tied to the
+underlying data. The value is made up of a reference to the starting point of
+the slice and the number of elements in the slice.</p>
+<p>Returning a slice would also work for a <code>second_word</code> function:</p>
+<p>```rust,ignore
+fn second_word(s: &amp;String) -&gt; &amp;str {</p>
+<pre><code>
+We now have a straightforward API that’s much harder to mess up because the
+compiler will ensure that the references into the `String` remain valid.
+Remember the bug in the program in Listing 4-8, when we got the index to the
+end of the first word but then cleared the string so our index was invalid?
+That code was logically incorrect but didn’t show any immediate errors. The
+problems would show up later if we kept trying to use the first word index with
+an emptied string. Slices make this bug impossible and let us know much sooner
+that we have a problem with our code. Using the slice version of `first_word`
+will throw a compile-time error:
+
+&lt;Listing file-name=&quot;src/main.rs&quot;&gt;
+
+```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch04-understanding-ownership/no-listing-19-slice-error/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Here’s the compiler error:</p>
+<pre><code class="language-console">{{#include ../listings/ch04-understanding-ownership/no-listing-19-slice-error/output.txt}}
+</code></pre>
+<p>Recall from the borrowing rules that if we have an immutable reference to
+something, we cannot also take a mutable reference. Because <code>clear</code> needs to
+truncate the <code>String</code>, it needs to get a mutable reference. The <code>println!</code>
+after the call to <code>clear</code> uses the reference in <code>word</code>, so the immutable
+reference must still be active at that point. Rust disallows the mutable
+reference in <code>clear</code> and the immutable reference in <code>word</code> from existing at the
+same time, and compilation fails. Not only has Rust made our API easier to use,
+but it has also eliminated an entire class of errors at compile time!</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="string-literals-are-slices"></a></p>
+<h4>String Literals as Slices</h4>
+<p>Recall that we talked about string literals being stored inside the binary. Now
+that we know about slices, we can properly understand string literals:</p>
+<pre><code class="language-rust">let s = &quot;Hello, world!&quot;;
+</code></pre>
+<p>The type of <code>s</code> here is <code>&amp;str</code>: It’s a slice pointing to that specific point of
+the binary. This is also why string literals are immutable; <code>&amp;str</code> is an
+immutable reference.</p>
+<h4>String Slices as Parameters</h4>
+<p>Knowing that you can take slices of literals and <code>String</code> values leads us to
+one more improvement on <code>first_word</code>, and that’s its signature:</p>
+<p>```rust,ignore
+fn first_word(s: &amp;String) -&gt; &amp;str {</p>
+<pre><code>
+A more experienced Rustacean would write the signature shown in Listing 4-9
+instead because it allows us to use the same function on both `&amp;String` values
+and `&amp;str` values.
+
+&lt;Listing number=&quot;4-9&quot; caption=&quot;Improving the `first_word` function by using a string slice for the type of the `s` parameter&quot;&gt;
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch04-understanding-ownership/listing-04-09/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>If we have a string slice, we can pass that directly. If we have a <code>String</code>, we
+can pass a slice of the <code>String</code> or a reference to the <code>String</code>. This
+flexibility takes advantage of deref coercions, a feature we will cover in
+the [“Using Deref Coercions in Functions and Methods”][deref-coercions]<!--
+ignore --> section of Chapter 15.</p>
+<p>Defining a function to take a string slice instead of a reference to a <code>String</code>
+makes our API more general and useful without losing any functionality:</p>
+<p><Listing file-name="src/main.rs"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch04-understanding-ownership/listing-04-09/src/main.rs:usage}}
+</code></pre>
+<p></Listing></p>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>In Method Definitions</title>
+</head>
+<body>
+<h1>In Method Definitions</h1>
+<p>We can implement methods on structs and enums (as we did in Chapter 5) and use
+generic types in their definitions too. Listing 10-9 shows the <code>Point&lt;T&gt;</code>
+struct we defined in Listing 10-6 with a method named <code>x</code> implemented on it.</p>
+<p><Listing number="10-9" file-name="src/main.rs" caption="Implementing a method named <code>x</code> on the <code>Point&lt;T&gt;</code> struct that will return a reference to the <code>x</code> field of type <code>T</code>"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-09/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>Here, we’ve defined a method named <code>x</code> on <code>Point&lt;T&gt;</code> that returns a reference
+to the data in the field <code>x</code>.</p>
+<p>Note that we have to declare <code>T</code> just after <code>impl</code> so that we can use <code>T</code> to
+specify that we’re implementing methods on the type <code>Point&lt;T&gt;</code>. By declaring
+<code>T</code> as a generic type after <code>impl</code>, Rust can identify that the type in the
+angle brackets in <code>Point</code> is a generic type rather than a concrete type. We
+could have chosen a different name for this generic parameter than the generic
+parameter declared in the struct definition, but using the same name is
+conventional. If you write a method within an <code>impl</code> that declares a generic
+type, that method will be defined on any instance of the type, no matter what
+concrete type ends up substituting for the generic type.</p>
+<p>We can also specify constraints on generic types when defining methods on the
+type. We could, for example, implement methods only on <code>Point&lt;f32&gt;</code> instances
+rather than on <code>Point&lt;T&gt;</code> instances with any generic type. In Listing 10-10, we
+use the concrete type <code>f32</code>, meaning we don’t declare any types after <code>impl</code>.</p>
+<p><Listing number="10-10" file-name="src/main.rs" caption="An <code>impl</code> block that only applies to a struct with a particular concrete type for the generic type parameter <code>T</code>"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-10/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>This code means the type <code>Point&lt;f32&gt;</code> will have a <code>distance_from_origin</code>
+method; other instances of <code>Point&lt;T&gt;</code> where <code>T</code> is not of type <code>f32</code> will not
+have this method defined. The method measures how far our point is from the
+point at coordinates (0.0, 0.0) and uses mathematical operations that are
+available only for floating-point types.</p>
+<p>Generic type parameters in a struct definition aren’t always the same as those
+you use in that same struct’s method signatures. Listing 10-11 uses the generic
+types <code>X1</code> and <code>Y1</code> for the <code>Point</code> struct and <code>X2</code> and <code>Y2</code> for the <code>mixup</code>
+method signature to make the example clearer. The method creates a new <code>Point</code>
+instance with the <code>x</code> value from the <code>self</code> <code>Point</code> (of type <code>X1</code>) and the <code>y</code>
+value from the passed-in <code>Point</code> (of type <code>Y2</code>).</p>
+<p><Listing number="10-11" file-name="src/main.rs" caption="A method that uses generic types that are different from its struct’s definition"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-11/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>In <code>main</code>, we’ve defined a <code>Point</code> that has an <code>i32</code> for <code>x</code> (with value <code>5</code>)
+and an <code>f64</code> for <code>y</code> (with value <code>10.4</code>). The <code>p2</code> variable is a <code>Point</code> struct
+that has a string slice for <code>x</code> (with value <code>"Hello"</code>) and a <code>char</code> for <code>y</code>
+(with value <code>c</code>). Calling <code>mixup</code> on <code>p1</code> with the argument <code>p2</code> gives us <code>p3</code>,
+which will have an <code>i32</code> for <code>x</code> because <code>x</code> came from <code>p1</code>. The <code>p3</code> variable
+will have a <code>char</code> for <code>y</code> because <code>y</code> came from <code>p2</code>. The <code>println!</code> macro
+call will print <code>p3.x = 5, p3.y = c</code>.</p>
+<p>The purpose of this example is to demonstrate a situation in which some generic
+parameters are declared with <code>impl</code> and some are declared with the method
+definition. Here, the generic parameters <code>X1</code> and <code>Y1</code> are declared after
+<code>impl</code> because they go with the struct definition. The generic parameters <code>X2</code>
+and <code>Y2</code> are declared after <code>fn mixup</code> because they’re only relevant to the
+method.</p>
+</body>
+</html>

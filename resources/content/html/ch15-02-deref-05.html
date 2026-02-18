@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Using Deref Coercion in Functions and Methods</title>
+</head>
+<body>
+<h1>Using Deref Coercion in Functions and Methods</h1>
+<p><em>Deref coercion</em> converts a reference to a type that implements the <code>Deref</code>
+trait into a reference to another type. For example, deref coercion can convert
+<code>&amp;String</code> to <code>&amp;str</code> because <code>String</code> implements the <code>Deref</code> trait such that it
+returns <code>&amp;str</code>. Deref coercion is a convenience Rust performs on arguments to
+functions and methods, and it works only on types that implement the <code>Deref</code>
+trait. It happens automatically when we pass a reference to a particular type’s
+value as an argument to a function or method that doesn’t match the parameter
+type in the function or method definition. A sequence of calls to the <code>deref</code>
+method converts the type we provided into the type the parameter needs.</p>
+<p>Deref coercion was added to Rust so that programmers writing function and
+method calls don’t need to add as many explicit references and dereferences
+with <code>&amp;</code> and <code>*</code>. The deref coercion feature also lets us write more code that
+can work for either references or smart pointers.</p>
+<p>To see deref coercion in action, let’s use the <code>MyBox&lt;T&gt;</code> type we defined in
+Listing 15-8 as well as the implementation of <code>Deref</code> that we added in Listing
+15-10. Listing 15-11 shows the definition of a function that has a string slice
+parameter.</p>
+<p><Listing number="15-11" file-name="src/main.rs" caption="A <code>hello</code> function that has the parameter <code>name</code> of type <code>&amp;str</code>"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-11/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>We can call the <code>hello</code> function with a string slice as an argument, such as
+<code>hello("Rust");</code>, for example. Deref coercion makes it possible to call <code>hello</code>
+with a reference to a value of type <code>MyBox&lt;String&gt;</code>, as shown in Listing 15-12.</p>
+<p><Listing number="15-12" file-name="src/main.rs" caption="Calling <code>hello</code> with a reference to a <code>MyBox&lt;String&gt;</code> value, which works because of deref coercion"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-12/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Here we’re calling the <code>hello</code> function with the argument <code>&amp;m</code>, which is a
+reference to a <code>MyBox&lt;String&gt;</code> value. Because we implemented the <code>Deref</code> trait
+on <code>MyBox&lt;T&gt;</code> in Listing 15-10, Rust can turn <code>&amp;MyBox&lt;String&gt;</code> into <code>&amp;String</code>
+by calling <code>deref</code>. The standard library provides an implementation of <code>Deref</code>
+on <code>String</code> that returns a string slice, and this is in the API documentation
+for <code>Deref</code>. Rust calls <code>deref</code> again to turn the <code>&amp;String</code> into <code>&amp;str</code>, which
+matches the <code>hello</code> function’s definition.</p>
+<p>If Rust didn’t implement deref coercion, we would have to write the code in
+Listing 15-13 instead of the code in Listing 15-12 to call <code>hello</code> with a value
+of type <code>&amp;MyBox&lt;String&gt;</code>.</p>
+<p><Listing number="15-13" file-name="src/main.rs" caption="The code we would have to write if Rust didn’t have deref coercion"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-13/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>The <code>(*m)</code> dereferences the <code>MyBox&lt;String&gt;</code> into a <code>String</code>. Then, the <code>&amp;</code> and
+<code>[..]</code> take a string slice of the <code>String</code> that is equal to the whole string to
+match the signature of <code>hello</code>. This code without deref coercions is harder to
+read, write, and understand with all of these symbols involved. Deref coercion
+allows Rust to handle these conversions for us automatically.</p>
+<p>When the <code>Deref</code> trait is defined for the types involved, Rust will analyze the
+types and use <code>Deref::deref</code> as many times as necessary to get a reference to
+match the parameter’s type. The number of times that <code>Deref::deref</code> needs to be
+inserted is resolved at compile time, so there is no runtime penalty for taking
+advantage of deref coercion!</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="how-deref-coercion-interacts-with-mutability"></a></p>
+</body>
+</html>

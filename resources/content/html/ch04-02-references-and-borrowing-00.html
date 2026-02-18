@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Introduction</title>
+</head>
+<body>
+<h1>Introduction</h1>
+<h2>References and Borrowing</h2>
+<p>The issue with the tuple code in Listing 4-5 is that we have to return the
+<code>String</code> to the calling function so that we can still use the <code>String</code> after
+the call to <code>calculate_length</code>, because the <code>String</code> was moved into
+<code>calculate_length</code>. Instead, we can provide a reference to the <code>String</code> value.
+A reference is like a pointer in that it’s an address we can follow to access
+the data stored at that address; that data is owned by some other variable.
+Unlike a pointer, a reference is guaranteed to point to a valid value of a
+particular type for the life of that reference.</p>
+<p>Here is how you would define and use a <code>calculate_length</code> function that has a
+reference to an object as a parameter instead of taking ownership of the value:</p>
+<p><Listing file-name="src/main.rs"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch04-understanding-ownership/no-listing-07-reference/src/main.rs:all}}
+</code></pre>
+<p></Listing></p>
+<p>First, notice that all the tuple code in the variable declaration and the
+function return value is gone. Second, note that we pass <code>&amp;s1</code> into
+<code>calculate_length</code> and, in its definition, we take <code>&amp;String</code> rather than
+<code>String</code>. These ampersands represent references, and they allow you to refer to
+some value without taking ownership of it. Figure 4-6 depicts this concept.</p>
+<p><img alt="Three tables: the table for s contains only a pointer to the table
+for s1. The table for s1 contains the stack data for s1 and points to the
+string data on the heap." src="img/trpl04-06.svg" class="center" /></p>
+<p><span class="caption">Figure 4-6: A diagram of <code>&amp;String</code> <code>s</code> pointing at
+<code>String</code> <code>s1</code></span></p>
+<blockquote>
+<p>Note: The opposite of referencing by using <code>&amp;</code> is <em>dereferencing</em>, which is
+accomplished with the dereference operator, <code>*</code>. We’ll see some uses of the
+dereference operator in Chapter 8 and discuss details of dereferencing in
+Chapter 15.</p>
+</blockquote>
+<p>Let’s take a closer look at the function call here:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch04-understanding-ownership/no-listing-07-reference/src/main.rs:here}}
+</code></pre>
+<p>The <code>&amp;s1</code> syntax lets us create a reference that <em>refers</em> to the value of <code>s1</code>
+but does not own it. Because the reference does not own it, the value it points
+to will not be dropped when the reference stops being used.</p>
+<p>Likewise, the signature of the function uses <code>&amp;</code> to indicate that the type of
+the parameter <code>s</code> is a reference. Let’s add some explanatory annotations:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch04-understanding-ownership/no-listing-08-reference-with-annotations/src/main.rs:here}}
+</code></pre>
+<p>The scope in which the variable <code>s</code> is valid is the same as any function
+parameter’s scope, but the value pointed to by the reference is not dropped
+when <code>s</code> stops being used, because <code>s</code> doesn’t have ownership. When functions
+have references as parameters instead of the actual values, we won’t need to
+return the values in order to give back ownership, because we never had
+ownership.</p>
+<p>We call the action of creating a reference <em>borrowing</em>. As in real life, if a
+person owns something, you can borrow it from them. When you’re done, you have
+to give it back. You don’t own it.</p>
+<p>So, what happens if we try to modify something we’re borrowing? Try the code in
+Listing 4-6. Spoiler alert: It doesn’t work!</p>
+<p><Listing number="4-6" file-name="src/main.rs" caption="Attempting to modify a borrowed value"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch04-understanding-ownership/listing-04-06/src/main.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+Here’s the error:
+
+```console
+{{#include ../listings/ch04-understanding-ownership/listing-04-06/output.txt}}
+</code></pre>
+<p>Just as variables are immutable by default, so are references. We’re not
+allowed to modify something we have a reference to.</p>
+</body>
+</html>

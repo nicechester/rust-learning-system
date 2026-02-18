@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Custom `derive` Macros</title>
+</head>
+<body>
+<h1>Custom `derive` Macros</h1>
+<p>Let’s create a crate named <code>hello_macro</code> that defines a trait named
+<code>HelloMacro</code> with one associated function named <code>hello_macro</code>. Rather than
+making our users implement the <code>HelloMacro</code> trait for each of their types,
+we’ll provide a procedural macro so that users can annotate their type with
+<code>#[derive(HelloMacro)]</code> to get a default implementation of the <code>hello_macro</code>
+function. The default implementation will print <code>Hello, Macro! My name is
+TypeName!</code> where <code>TypeName</code> is the name of the type on which this trait has
+been defined. In other words, we’ll write a crate that enables another
+programmer to write code like Listing 20-37 using our crate.</p>
+<p><Listing number="20-37" file-name="src/main.rs" caption="The code a user of our crate will be able to write when using our procedural macro"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-37/src/main.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+This code will print `Hello, Macro! My name is Pancakes!` when we’re done. The
+first step is to make a new library crate, like this:
+
+```console
+$ cargo new hello_macro --lib
+</code></pre>
+<p>Next, in Listing 20-38, we’ll define the <code>HelloMacro</code> trait and its associated
+function.</p>
+<p><Listing file-name="src/lib.rs" number="20-38" caption="A simple trait that we will use with the <code>derive</code> macro"></p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-38/hello_macro/src/lib.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+We have a trait and its function. At this point, our crate user could implement
+the trait to achieve the desired functionality, as in Listing 20-39.
+
+&lt;Listing number=&quot;20-39&quot; file-name=&quot;src/main.rs&quot; caption=&quot;How it would look if users wrote a manual implementation of the `HelloMacro` trait&quot;&gt;
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-39/pancakes/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>However, they would need to write the implementation block for each type they
+wanted to use with <code>hello_macro</code>; we want to spare them from having to do this
+work.</p>
+<p>Additionally, we can’t yet provide the <code>hello_macro</code> function with default
+implementation that will print the name of the type the trait is implemented
+on: Rust doesn’t have reflection capabilities, so it can’t look up the type’s
+name at runtime. We need a macro to generate code at compile time.</p>
+<p>The next step is to define the procedural macro. At the time of this writing,
+procedural macros need to be in their own crate. Eventually, this restriction
+might be lifted. The convention for structuring crates and macro crates is as
+follows: For a crate named <code>foo</code>, a custom <code>derive</code> procedural macro crate is
+called <code>foo_derive</code>. Let’s start a new crate called <code>hello_macro_derive</code> inside
+our <code>hello_macro</code> project:</p>
+<pre><code class="language-console">$ cargo new hello_macro_derive --lib
+</code></pre>
+<p>Our two crates are tightly related, so we create the procedural macro crate
+within the directory of our <code>hello_macro</code> crate. If we change the trait
+definition in <code>hello_macro</code>, we’ll have to change the implementation of the
+procedural macro in <code>hello_macro_derive</code> as well. The two crates will need to
+be published separately, and programmers using these crates will need to add
+both as dependencies and bring them both into scope. We could instead have the
+<code>hello_macro</code> crate use <code>hello_macro_derive</code> as a dependency and re-export the
+procedural macro code. However, the way we’ve structured the project makes it
+possible for programmers to use <code>hello_macro</code> even if they don’t want the
+<code>derive</code> functionality.</p>
+<p>We need to declare the <code>hello_macro_derive</code> crate as a procedural macro crate.
+We’ll also need functionality from the <code>syn</code> and <code>quote</code> crates, as you’ll see
+in a moment, so we need to add them as dependencies. Add the following to the
+<em>Cargo.toml</em> file for <code>hello_macro_derive</code>:</p>
+<p><Listing file-name="hello_macro_derive/Cargo.toml"></p>
+<pre><code class="language-toml">{{#include ../listings/ch20-advanced-features/listing-20-40/hello_macro/hello_macro_derive/Cargo.toml:6:12}}
+</code></pre>
+<p></Listing></p>
+<p>To start defining the procedural macro, place the code in Listing 20-40 into
+your <em>src/lib.rs</em> file for the <code>hello_macro_derive</code> crate. Note that this code
+won’t compile until we add a definition for the <code>impl_hello_macro</code> function.</p>
+<p><Listing number="20-40" file-name="hello_macro_derive/src/lib.rs" caption="Code that most procedural macro crates will require in order to process Rust code"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-40/hello_macro/hello_macro_derive/src/lib.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+Notice that we’ve split the code into the `hello_macro_derive` function, which
+is responsible for parsing the `TokenStream`, and the `impl_hello_macro`
+function, which is responsible for transforming the syntax tree: This makes
+writing a procedural macro more convenient. The code in the outer function
+(`hello_macro_derive` in this case) will be the same for almost every
+procedural macro crate you see or create. The code you specify in the body of
+the inner function (`impl_hello_macro` in this case) will be different
+depending on your procedural macro’s purpose.
+
+We’ve introduced three new crates: `proc_macro`, [`syn`][syn]&lt;!-- ignore --&gt;,
+and [`quote`][quote]&lt;!-- ignore --&gt;. The `proc_macro` crate comes with Rust,
+so we didn’t need to add that to the dependencies in _Cargo.toml_. The
+`proc_macro` crate is the compiler’s API that allows us to read and manipulate
+Rust code from our code.
+
+The `syn` crate parses Rust code from a string into a data structure that we
+can perform operations on. The `quote` crate turns `syn` data structures back
+into Rust code. These crates make it much simpler to parse any sort of Rust
+code we might want to handle: Writing a full parser for Rust code is no simple
+task.
+
+The `hello_macro_derive` function will be called when a user of our library
+specifies `#[derive(HelloMacro)]` on a type. This is possible because we’ve
+annotated the `hello_macro_derive` function here with `proc_macro_derive` and
+specified the name `HelloMacro`, which matches our trait name; this is the
+convention most procedural macros follow.
+
+The `hello_macro_derive` function first converts the `input` from a
+`TokenStream` to a data structure that we can then interpret and perform
+operations on. This is where `syn` comes into play. The `parse` function in
+`syn` takes a `TokenStream` and returns a `DeriveInput` struct representing the
+parsed Rust code. Listing 20-41 shows the relevant parts of the `DeriveInput`
+struct we get from parsing the `struct Pancakes;` string.
+
+&lt;Listing number=&quot;20-41&quot; caption=&quot;The `DeriveInput` instance we get when parsing the code that has the macro’s attribute in Listing 20-37&quot;&gt;
+
+```rust,ignore
+DeriveInput {
+    // --snip--
+
+    ident: Ident {
+        ident: &quot;Pancakes&quot;,
+        span: #0 bytes(95..103)
+    },
+    data: Struct(
+        DataStruct {
+            struct_token: Struct,
+            fields: Unit,
+            semi_token: Some(
+                Semi
+            )
+        }
+    )
+}
+</code></pre>
+<p></Listing></p>
+<p>The fields of this struct show that the Rust code we’ve parsed is a unit struct
+with the <code>ident</code> (<em>identifier</em>, meaning the name) of <code>Pancakes</code>. There are more
+fields on this struct for describing all sorts of Rust code; check the [<code>syn</code>
+documentation for <code>DeriveInput</code>][syn-docs] for more information.</p>
+<p>Soon we’ll define the <code>impl_hello_macro</code> function, which is where we’ll build
+the new Rust code we want to include. But before we do, note that the output
+for our <code>derive</code> macro is also a <code>TokenStream</code>. The returned <code>TokenStream</code> is
+added to the code that our crate users write, so when they compile their crate,
+they’ll get the extra functionality that we provide in the modified
+<code>TokenStream</code>.</p>
+<p>You might have noticed that we’re calling <code>unwrap</code> to cause the
+<code>hello_macro_derive</code> function to panic if the call to the <code>syn::parse</code> function
+fails here. It’s necessary for our procedural macro to panic on errors because
+<code>proc_macro_derive</code> functions must return <code>TokenStream</code> rather than <code>Result</code> to
+conform to the procedural macro API. We’ve simplified this example by using
+<code>unwrap</code>; in production code, you should provide more specific error messages
+about what went wrong by using <code>panic!</code> or <code>expect</code>.</p>
+<p>Now that we have the code to turn the annotated Rust code from a <code>TokenStream</code>
+into a <code>DeriveInput</code> instance, let’s generate the code that implements the
+<code>HelloMacro</code> trait on the annotated type, as shown in Listing 20-42.</p>
+<p><Listing number="20-42" file-name="hello_macro_derive/src/lib.rs" caption="Implementing the <code>HelloMacro</code> trait using the parsed Rust code"></p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-42/hello_macro/hello_macro_derive/src/lib.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+We get an `Ident` struct instance containing the name (identifier) of the
+annotated type using `ast.ident`. The struct in Listing 20-41 shows that when
+we run the `impl_hello_macro` function on the code in Listing 20-37, the
+`ident` we get will have the `ident` field with a value of `&quot;Pancakes&quot;`. Thus,
+the `name` variable in Listing 20-42 will contain an `Ident` struct instance
+that, when printed, will be the string `&quot;Pancakes&quot;`, the name of the struct in
+Listing 20-37.
+
+The `quote!` macro lets us define the Rust code that we want to return. The
+compiler expects something different from the direct result of the `quote!`
+macro’s execution, so we need to convert it to a `TokenStream`. We do this by
+calling the `into` method, which consumes this intermediate representation and
+returns a value of the required `TokenStream` type.
+
+The `quote!` macro also provides some very cool templating mechanics: We can
+enter `#name`, and `quote!` will replace it with the value in the variable
+`name`. You can even do some repetition similar to the way regular macros work.
+Check out [the `quote` crate’s docs][quote-docs] for a thorough introduction.
+
+We want our procedural macro to generate an implementation of our `HelloMacro`
+trait for the type the user annotated, which we can get by using `#name`. The
+trait implementation has the one function `hello_macro`, whose body contains the
+functionality we want to provide: printing `Hello, Macro! My name is` and then
+the name of the annotated type.
+
+The `stringify!` macro used here is built into Rust. It takes a Rust
+expression, such as `1 + 2`, and at compile time turns the expression into a
+string literal, such as `&quot;1 + 2&quot;`. This is different from `format!` or
+`println!`, which are macros that evaluate the expression and then turn the
+result into a `String`. There is a possibility that the `#name` input might be
+an expression to print literally, so we use `stringify!`. Using `stringify!`
+also saves an allocation by converting `#name` to a string literal at compile
+time.
+
+At this point, `cargo build` should complete successfully in both `hello_macro`
+and `hello_macro_derive`. Let’s hook up these crates to the code in Listing
+20-37 to see the procedural macro in action! Create a new binary project in
+your _projects_ directory using `cargo new pancakes`. We need to add
+`hello_macro` and `hello_macro_derive` as dependencies in the `pancakes`
+crate’s _Cargo.toml_. If you’re publishing your versions of `hello_macro` and
+`hello_macro_derive` to [crates.io](https://crates.io/)&lt;!-- ignore --&gt;, they
+would be regular dependencies; if not, you can specify them as `path`
+dependencies as follows:
+
+```toml
+{{#include ../listings/ch20-advanced-features/no-listing-21-pancakes/pancakes/Cargo.toml:6:8}}
+</code></pre>
+<p>Put the code in Listing 20-37 into <em>src/main.rs</em>, and run <code>cargo run</code>: It
+should print <code>Hello, Macro! My name is Pancakes!</code>. The implementation of the
+<code>HelloMacro</code> trait from the procedural macro was included without the
+<code>pancakes</code> crate needing to implement it; the <code>#[derive(HelloMacro)]</code> added the
+trait implementation.</p>
+<p>Next, let’s explore how the other kinds of procedural macros differ from custom
+<code>derive</code> macros.</p>
+</body>
+</html>

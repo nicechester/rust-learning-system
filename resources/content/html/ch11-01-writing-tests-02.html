@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Checking Results with `assert!`</title>
+</head>
+<body>
+<h1>Checking Results with `assert!`</h1>
+<p>The <code>assert!</code> macro, provided by the standard library, is useful when you want
+to ensure that some condition in a test evaluates to <code>true</code>. We give the
+<code>assert!</code> macro an argument that evaluates to a Boolean. If the value is
+<code>true</code>, nothing happens and the test passes. If the value is <code>false</code>, the
+<code>assert!</code> macro calls <code>panic!</code> to cause the test to fail. Using the <code>assert!</code>
+macro helps us check that our code is functioning in the way we intend.</p>
+<p>In Chapter 5, Listing 5-15, we used a <code>Rectangle</code> struct and a <code>can_hold</code>
+method, which are repeated here in Listing 11-5. Let’s put this code in the
+<em>src/lib.rs</em> file, then write some tests for it using the <code>assert!</code> macro.</p>
+<p><Listing number="11-5" file-name="src/lib.rs" caption="The <code>Rectangle</code> struct and its <code>can_hold</code> method from Chapter 5"></p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-05/src/lib.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+The `can_hold` method returns a Boolean, which means it’s a perfect use case
+for the `assert!` macro. In Listing 11-6, we write a test that exercises the
+`can_hold` method by creating a `Rectangle` instance that has a width of 8 and
+a height of 7 and asserting that it can hold another `Rectangle` instance that
+has a width of 5 and a height of 1.
+
+&lt;Listing number=&quot;11-6&quot; file-name=&quot;src/lib.rs&quot; caption=&quot;A test for `can_hold` that checks whether a larger rectangle can indeed hold a smaller rectangle&quot;&gt;
+
+```rust,noplayground
+{{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-06/src/lib.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Note the <code>use super::*;</code> line inside the <code>tests</code> module. The <code>tests</code> module is
+a regular module that follows the usual visibility rules we covered in Chapter
+7 in the [“Paths for Referring to an Item in the Module
+Tree”][paths-for-referring-to-an-item-in-the-module-tree]<!-- ignore -->
+section. Because the <code>tests</code> module is an inner module, we need to bring the
+code under test in the outer module into the scope of the inner module. We use
+a glob here, so anything we define in the outer module is available to this
+<code>tests</code> module.</p>
+<p>We’ve named our test <code>larger_can_hold_smaller</code>, and we’ve created the two
+<code>Rectangle</code> instances that we need. Then, we called the <code>assert!</code> macro and
+passed it the result of calling <code>larger.can_hold(&amp;smaller)</code>. This expression is
+supposed to return <code>true</code>, so our test should pass. Let’s find out!</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/listing-11-06/output.txt}}
+</code></pre>
+<p>It does pass! Let’s add another test, this time asserting that a smaller
+rectangle cannot hold a larger rectangle:</p>
+<p><span class="filename">Filename: src/lib.rs</span></p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-02-adding-another-rectangle-test/src/lib.rs:here}}</p>
+<pre><code>
+Because the correct result of the `can_hold` function in this case is `false`,
+we need to negate that result before we pass it to the `assert!` macro. As a
+result, our test will pass if `can_hold` returns `false`:
+
+```console
+{{#include ../listings/ch11-writing-automated-tests/no-listing-02-adding-another-rectangle-test/output.txt}}
+</code></pre>
+<p>Two tests that pass! Now let’s see what happens to our test results when we
+introduce a bug in our code. We’ll change the implementation of the <code>can_hold</code>
+method by replacing the greater-than sign (<code>&gt;</code>) with a less-than sign (<code>&lt;</code>)
+when it compares the widths:</p>
+<p>```rust,not_desired_behavior,noplayground
+{{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-03-introducing-a-bug/src/lib.rs:here}}</p>
+<pre><code>
+Running the tests now produces the following:
+
+```console
+{{#include ../listings/ch11-writing-automated-tests/no-listing-03-introducing-a-bug/output.txt}}
+</code></pre>
+<p>Our tests caught the bug! Because <code>larger.width</code> is <code>8</code> and <code>smaller.width</code> is
+<code>5</code>, the comparison of the widths in <code>can_hold</code> now returns <code>false</code>: 8 is not
+less than 5.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="testing-equality-with-the-assert_eq-and-assert_ne-macros"></a></p>
+</body>
+</html>

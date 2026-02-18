@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Dynamically Sized Types and the `Sized` Trait</title>
+</head>
+<body>
+<h1>Dynamically Sized Types and the `Sized` Trait</h1>
+<p>Rust needs to know certain details about its types, such as how much space to
+allocate for a value of a particular type. This leaves one corner of its type
+system a little confusing at first: the concept of <em>dynamically sized types</em>.
+Sometimes referred to as <em>DSTs</em> or <em>unsized types</em>, these types let us write
+code using values whose size we can know only at runtime.</p>
+<p>Let’s dig into the details of a dynamically sized type called <code>str</code>, which
+we’ve been using throughout the book. That’s right, not <code>&amp;str</code>, but <code>str</code> on
+its own, is a DST. In many cases, such as when storing text entered by a user,
+we can’t know how long the string is until runtime. That means we can’t create
+a variable of type <code>str</code>, nor can we take an argument of type <code>str</code>. Consider
+the following code, which does not work:</p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-11-cant-create-str/src/main.rs:here}}</p>
+<pre><code>
+Rust needs to know how much memory to allocate for any value of a particular
+type, and all values of a type must use the same amount of memory. If Rust
+allowed us to write this code, these two `str` values would need to take up the
+same amount of space. But they have different lengths: `s1` needs 12 bytes of
+storage and `s2` needs 15. This is why it’s not possible to create a variable
+holding a dynamically sized type.
+
+So, what do we do? In this case, you already know the answer: We make the type
+of `s1` and `s2` string slice (`&amp;str`) rather than `str`. Recall from the
+[“String Slices”][string-slices]&lt;!-- ignore --&gt; section in Chapter 4 that the
+slice data structure only stores the starting position and the length of the
+slice. So, although `&amp;T` is a single value that stores the memory address of
+where the `T` is located, a string slice is _two_ values: the address of the
+`str` and its length. As such, we can know the size of a string slice value at
+compile time: It’s twice the length of a `usize`. That is, we always know the
+size of a string slice, no matter how long the string it refers to is. In
+general, this is the way in which dynamically sized types are used in Rust:
+They have an extra bit of metadata that stores the size of the dynamic
+information. The golden rule of dynamically sized types is that we must always
+put values of dynamically sized types behind a pointer of some kind.
+
+We can combine `str` with all kinds of pointers: for example, `Box&lt;str&gt;` or
+`Rc&lt;str&gt;`. In fact, you’ve seen this before but with a different dynamically
+sized type: traits. Every trait is a dynamically sized type we can refer to by
+using the name of the trait. In the [“Using Trait Objects to Abstract over
+Shared Behavior”][using-trait-objects-to-abstract-over-shared-behavior]&lt;!--
+ignore --&gt; section in Chapter 18, we mentioned that to use traits as trait
+objects, we must put them behind a pointer, such as `&amp;dyn Trait` or `Box&lt;dyn
+Trait&gt;` (`Rc&lt;dyn Trait&gt;` would work too).
+
+To work with DSTs, Rust provides the `Sized` trait to determine whether or not
+a type’s size is known at compile time. This trait is automatically implemented
+for everything whose size is known at compile time. In addition, Rust
+implicitly adds a bound on `Sized` to every generic function. That is, a
+generic function definition like this:
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-12-generic-fn-definition/src/lib.rs}}
+</code></pre>
+<p>is actually treated as though we had written this:</p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-13-generic-implicit-sized-bound/src/lib.rs}}</p>
+<pre><code>
+By default, generic functions will work only on types that have a known size at
+compile time. However, you can use the following special syntax to relax this
+restriction:
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-14-generic-maybe-sized/src/lib.rs}}
+</code></pre>
+<p>A trait bound on <code>?Sized</code> means “<code>T</code> may or may not be <code>Sized</code>,” and this
+notation overrides the default that generic types must have a known size at
+compile time. The <code>?Trait</code> syntax with this meaning is only available for
+<code>Sized</code>, not any other traits.</p>
+<p>Also note that we switched the type of the <code>t</code> parameter from <code>T</code> to <code>&amp;T</code>.
+Because the type might not be <code>Sized</code>, we need to use it behind some kind of
+pointer. In this case, we’ve chosen a reference.</p>
+<p>Next, we’ll talk about functions and closures!</p>
+</body>
+</html>

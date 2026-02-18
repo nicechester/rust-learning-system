@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Handling the Complexities of Strings</title>
+</head>
+<body>
+<h1>Handling the Complexities of Strings</h1>
+<p>To summarize, strings are complicated. Different programming languages make
+different choices about how to present this complexity to the programmer. Rust
+has chosen to make the correct handling of <code>String</code> data the default behavior
+for all Rust programs, which means programmers have to put more thought into
+handling UTF-8 data up front. This trade-off exposes more of the complexity of
+strings than is apparent in other programming languages, but it prevents you
+from having to handle errors involving non-ASCII characters later in your
+development life cycle.</p>
+<p>The good news is that the standard library offers a lot of functionality built
+off the <code>String</code> and <code>&amp;str</code> types to help handle these complex situations
+correctly. Be sure to check out the documentation for useful methods like
+<code>contains</code> for searching in a string and <code>replace</code> for substituting parts of a
+string with another string.</p>
+<p>Let’s switch to something a bit less complex: hash maps!</p>
+</body>
+</html>

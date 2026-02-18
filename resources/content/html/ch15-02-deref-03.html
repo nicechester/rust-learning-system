@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Defining Our Own Smart Pointer</title>
+</head>
+<body>
+<h1>Defining Our Own Smart Pointer</h1>
+<p>Let’s build a wrapper type similar to the <code>Box&lt;T&gt;</code> type provided by the
+standard library to experience how smart pointer types behave differently from
+references by default. Then, we’ll look at how to add the ability to use the
+dereference operator.</p>
+<blockquote>
+<p>Note: There’s one big difference between the <code>MyBox&lt;T&gt;</code> type we’re about to
+build and the real <code>Box&lt;T&gt;</code>: Our version will not store its data on the heap.
+We are focusing this example on <code>Deref</code>, so where the data is actually stored
+is less important than the pointer-like behavior.</p>
+</blockquote>
+<p>The <code>Box&lt;T&gt;</code> type is ultimately defined as a tuple struct with one element, so
+Listing 15-8 defines a <code>MyBox&lt;T&gt;</code> type in the same way. We’ll also define a
+<code>new</code> function to match the <code>new</code> function defined on <code>Box&lt;T&gt;</code>.</p>
+<p><Listing number="15-8" file-name="src/main.rs" caption="Defining a <code>MyBox&lt;T&gt;</code> type"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-08/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>We define a struct named <code>MyBox</code> and declare a generic parameter <code>T</code> because we
+want our type to hold values of any type. The <code>MyBox</code> type is a tuple struct
+with one element of type <code>T</code>. The <code>MyBox::new</code> function takes one parameter of
+type <code>T</code> and returns a <code>MyBox</code> instance that holds the value passed in.</p>
+<p>Let’s try adding the <code>main</code> function in Listing 15-7 to Listing 15-8 and
+changing it to use the <code>MyBox&lt;T&gt;</code> type we’ve defined instead of <code>Box&lt;T&gt;</code>. The
+code in Listing 15-9 won’t compile, because Rust doesn’t know how to
+dereference <code>MyBox</code>.</p>
+<p><Listing number="15-9" file-name="src/main.rs" caption="Attempting to use <code>MyBox&lt;T&gt;</code> in the same way we used references and <code>Box&lt;T&gt;</code>"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-09/src/main.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+Here’s the resultant compilation error:
+
+```console
+{{#include ../listings/ch15-smart-pointers/listing-15-09/output.txt}}
+</code></pre>
+<p>Our <code>MyBox&lt;T&gt;</code> type can’t be dereferenced because we haven’t implemented that
+ability on our type. To enable dereferencing with the <code>*</code> operator, we
+implement the <code>Deref</code> trait.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="treating-a-type-like-a-reference-by-implementing-the-deref-trait"></a></p>
+</body>
+</html>

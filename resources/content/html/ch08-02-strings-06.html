@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Iterating Over Strings</title>
+</head>
+<body>
+<h1>Iterating Over Strings</h1>
+<p>The best way to operate on pieces of strings is to be explicit about whether
+you want characters or bytes. For individual Unicode scalar values, use the
+<code>chars</code> method. Calling <code>chars</code> on “Зд” separates out and returns two values of
+type <code>char</code>, and you can iterate over the result to access each element:</p>
+<pre><code class="language-rust">for c in &quot;Зд&quot;.chars() {
+    println!(&quot;{c}&quot;);
+}
+</code></pre>
+<p>This code will print the following:</p>
+<pre><code class="language-text">З
+д
+</code></pre>
+<p>Alternatively, the <code>bytes</code> method returns each raw byte, which might be
+appropriate for your domain:</p>
+<pre><code class="language-rust">for b in &quot;Зд&quot;.bytes() {
+    println!(&quot;{b}&quot;);
+}
+</code></pre>
+<p>This code will print the 4 bytes that make up this string:</p>
+<pre><code class="language-text">208
+151
+208
+180
+</code></pre>
+<p>But be sure to remember that valid Unicode scalar values may be made up of more
+than 1 byte.</p>
+<p>Getting grapheme clusters from strings, as with the Devanagari script, is
+complex, so this functionality is not provided by the standard library. Crates
+are available on <a href="https://crates.io/">crates.io</a><!-- ignore --> if this is the
+functionality you need.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="strings-are-not-so-simple"></a></p>
+</body>
+</html>

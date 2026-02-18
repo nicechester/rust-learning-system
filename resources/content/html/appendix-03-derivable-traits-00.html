@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Introduction</title>
+</head>
+<body>
+<h1>Introduction</h1>
+<h2>Appendix C: Derivable Traits</h2>
+<p>In various places in the book, we’ve discussed the <code>derive</code> attribute, which
+you can apply to a struct or enum definition. The <code>derive</code> attribute generates
+code that will implement a trait with its own default implementation on the
+type you’ve annotated with the <code>derive</code> syntax.</p>
+<p>In this appendix, we provide a reference of all the traits in the standard
+library that you can use with <code>derive</code>. Each section covers:</p>
+<ul>
+<li>What operators and methods deriving this trait will enable</li>
+<li>What the implementation of the trait provided by <code>derive</code> does</li>
+<li>What implementing the trait signifies about the type</li>
+<li>The conditions in which you’re allowed or not allowed to implement the trait</li>
+<li>Examples of operations that require the trait</li>
+</ul>
+<p>If you want different behavior from that provided by the <code>derive</code> attribute,
+consult the <a href="../std/index.html">standard library documentation</a><!-- ignore -->
+for each trait for details on how to manually implement them.</p>
+<p>The traits listed here are the only ones defined by the standard library that
+can be implemented on your types using <code>derive</code>. Other traits defined in the
+standard library don’t have sensible default behavior, so it’s up to you to
+implement them in the way that makes sense for what you’re trying to accomplish.</p>
+<p>An example of a trait that can’t be derived is <code>Display</code>, which handles
+formatting for end users. You should always consider the appropriate way to
+display a type to an end user. What parts of the type should an end user be
+allowed to see? What parts would they find relevant? What format of the data
+would be most relevant to them? The Rust compiler doesn’t have this insight, so
+it can’t provide appropriate default behavior for you.</p>
+<p>The list of derivable traits provided in this appendix is not comprehensive:
+Libraries can implement <code>derive</code> for their own traits, making the list of
+traits you can use <code>derive</code> with truly open ended. Implementing <code>derive</code>
+involves using a procedural macro, which is covered in the [“Custom <code>derive</code>
+Macros”][custom-derive-macros]<!-- ignore --> section in Chapter 20.</p>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Building and Running a Cargo Project</title>
+</head>
+<body>
+<h1>Building and Running a Cargo Project</h1>
+<p>Now let’s look at what’s different when we build and run the “Hello, world!”
+program with Cargo! From your <em>hello_cargo</em> directory, build your project by
+entering the following command:</p>
+<pre><code class="language-console">$ cargo build
+   Compiling hello_cargo v0.1.0 (file:///projects/hello_cargo)
+    Finished dev [unoptimized + debuginfo] target(s) in 2.85 secs
+</code></pre>
+<p>This command creates an executable file in <em>target/debug/hello_cargo</em> (or
+<em>target\debug\hello_cargo.exe</em> on Windows) rather than in your current
+directory. Because the default build is a debug build, Cargo puts the binary in
+a directory named <em>debug</em>. You can run the executable with this command:</p>
+<pre><code class="language-console">$ ./target/debug/hello_cargo # or .\target\debug\hello_cargo.exe on Windows
+Hello, world!
+</code></pre>
+<p>If all goes well, <code>Hello, world!</code> should print to the terminal. Running <code>cargo
+build</code> for the first time also causes Cargo to create a new file at the top
+level: <em>Cargo.lock</em>. This file keeps track of the exact versions of
+dependencies in your project. This project doesn’t have dependencies, so the
+file is a bit sparse. You won’t ever need to change this file manually; Cargo
+manages its contents for you.</p>
+<p>We just built a project with <code>cargo build</code> and ran it with
+<code>./target/debug/hello_cargo</code>, but we can also use <code>cargo run</code> to compile the
+code and then run the resultant executable all in one command:</p>
+<pre><code class="language-console">$ cargo run
+    Finished dev [unoptimized + debuginfo] target(s) in 0.0 secs
+     Running `target/debug/hello_cargo`
+Hello, world!
+</code></pre>
+<p>Using <code>cargo run</code> is more convenient than having to remember to run <code>cargo
+build</code> and then use the whole path to the binary, so most developers use <code>cargo
+run</code>.</p>
+<p>Notice that this time we didn’t see output indicating that Cargo was compiling
+<code>hello_cargo</code>. Cargo figured out that the files hadn’t changed, so it didn’t
+rebuild but just ran the binary. If you had modified your source code, Cargo
+would have rebuilt the project before running it, and you would have seen this
+output:</p>
+<pre><code class="language-console">$ cargo run
+   Compiling hello_cargo v0.1.0 (file:///projects/hello_cargo)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.33 secs
+     Running `target/debug/hello_cargo`
+Hello, world!
+</code></pre>
+<p>Cargo also provides a command called <code>cargo check</code>. This command quickly checks
+your code to make sure it compiles but doesn’t produce an executable:</p>
+<pre><code class="language-console">$ cargo check
+   Checking hello_cargo v0.1.0 (file:///projects/hello_cargo)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.32 secs
+</code></pre>
+<p>Why would you not want an executable? Often, <code>cargo check</code> is much faster than
+<code>cargo build</code> because it skips the step of producing an executable. If you’re
+continually checking your work while writing the code, using <code>cargo check</code> will
+speed up the process of letting you know if your project is still compiling! As
+such, many Rustaceans run <code>cargo check</code> periodically as they write their
+program to make sure it compiles. Then, they run <code>cargo build</code> when they’re
+ready to use the executable.</p>
+<p>Let’s recap what we’ve learned so far about Cargo:</p>
+<ul>
+<li>We can create a project using <code>cargo new</code>.</li>
+<li>We can build a project using <code>cargo build</code>.</li>
+<li>We can build and run a project in one step using <code>cargo run</code>.</li>
+<li>We can build a project without producing a binary to check for errors using
+  <code>cargo check</code>.</li>
+<li>Instead of saving the result of the build in the same directory as our code,
+  Cargo stores it in the <em>target/debug</em> directory.</li>
+</ul>
+<p>An additional advantage of using Cargo is that the commands are the same no
+matter which operating system you’re working on. So, at this point, we’ll no
+longer provide specific instructions for Linux and macOS versus Windows.</p>
+</body>
+</html>

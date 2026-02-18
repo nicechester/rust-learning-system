@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Reading Elements of Vectors</title>
+</head>
+<body>
+<h1>Reading Elements of Vectors</h1>
+<p>There are two ways to reference a value stored in a vector: via indexing or by
+using the <code>get</code> method. In the following examples, we’ve annotated the types of
+the values that are returned from these functions for extra clarity.</p>
+<p>Listing 8-4 shows both methods of accessing a value in a vector, with indexing
+syntax and the <code>get</code> method.</p>
+<p><Listing number="8-4" caption="Using indexing syntax and using the <code>get</code> method to access an item in a vector"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch08-common-collections/listing-08-04/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Note a few details here. We use the index value of <code>2</code> to get the third element
+because vectors are indexed by number, starting at zero. Using <code>&amp;</code> and <code>[]</code>
+gives us a reference to the element at the index value. When we use the <code>get</code>
+method with the index passed as an argument, we get an <code>Option&lt;&amp;T&gt;</code> that we can
+use with <code>match</code>.</p>
+<p>Rust provides these two ways to reference an element so that you can choose how
+the program behaves when you try to use an index value outside the range of
+existing elements. As an example, let’s see what happens when we have a vector
+of five elements and then we try to access an element at index 100 with each
+technique, as shown in Listing 8-5.</p>
+<p><Listing number="8-5" caption="Attempting to access the element at index 100 in a vector containing five elements"></p>
+<p>```rust,should_panic,panics
+{{#rustdoc_include ../listings/ch08-common-collections/listing-08-05/src/main.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+When we run this code, the first `[]` method will cause the program to panic
+because it references a nonexistent element. This method is best used when you
+want your program to crash if there’s an attempt to access an element past the
+end of the vector.
+
+When the `get` method is passed an index that is outside the vector, it returns
+`None` without panicking. You would use this method if accessing an element
+beyond the range of the vector may happen occasionally under normal
+circumstances. Your code will then have logic to handle having either
+`Some(&amp;element)` or `None`, as discussed in Chapter 6. For example, the index
+could be coming from a person entering a number. If they accidentally enter a
+number that’s too large and the program gets a `None` value, you could tell the
+user how many items are in the current vector and give them another chance to
+enter a valid value. That would be more user-friendly than crashing the program
+due to a typo!
+
+When the program has a valid reference, the borrow checker enforces the
+ownership and borrowing rules (covered in Chapter 4) to ensure that this
+reference and any other references to the contents of the vector remain valid.
+Recall the rule that states you can’t have mutable and immutable references in
+the same scope. That rule applies in Listing 8-6, where we hold an immutable
+reference to the first element in a vector and try to add an element to the
+end. This program won’t work if we also try to refer to that element later in
+the function.
+
+&lt;Listing number=&quot;8-6&quot; caption=&quot;Attempting to add an element to a vector while holding a reference to an item&quot;&gt;
+
+```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch08-common-collections/listing-08-06/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Compiling this code will result in this error:</p>
+<pre><code class="language-console">{{#include ../listings/ch08-common-collections/listing-08-06/output.txt}}
+</code></pre>
+<p>The code in Listing 8-6 might look like it should work: Why should a reference
+to the first element care about changes at the end of the vector? This error is
+due to the way vectors work: Because vectors put the values next to each other
+in memory, adding a new element onto the end of the vector might require
+allocating new memory and copying the old elements to the new space, if there
+isn’t enough room to put all the elements next to each other where the vector
+is currently stored. In that case, the reference to the first element would be
+pointing to deallocated memory. The borrowing rules prevent programs from
+ending up in that situation.</p>
+<blockquote>
+<p>Note: For more on the implementation details of the <code>Vec&lt;T&gt;</code> type, see [“The
+Rustonomicon”][nomicon].</p>
+</blockquote>
+</body>
+</html>
