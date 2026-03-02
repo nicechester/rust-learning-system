@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Testing the First Part</title>
+</head>
+<body>
+<h1>Testing the First Part</h1>
+<p>Let’s test the first part of the guessing game. Run it using <code>cargo run</code>:</p>
+<!-- manual-regeneration
+cd listings/ch02-guessing-game-tutorial/listing-02-01/
+cargo clean
+cargo run
+input 6 -->
+
+<pre><code class="language-console">$ cargo run
+   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.44s
+     Running `target/debug/guessing_game`
+Guess the number!
+Please input your guess.
+6
+You guessed: 6
+</code></pre>
+<p>At this point, the first part of the game is done: We’re getting input from the
+keyboard and then printing it.</p>
+<h2>Generating a Secret Number</h2>
+<p>Next, we need to generate a secret number that the user will try to guess. The
+secret number should be different every time so that the game is fun to play
+more than once. We’ll use a random number between 1 and 100 so that the game
+isn’t too difficult. Rust doesn’t yet include random number functionality in
+its standard library. However, the Rust team does provide a [<code>rand</code>
+crate][randcrate] with said functionality.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="using-a-crate-to-get-more-functionality"></a></p>
+</body>
+</html>

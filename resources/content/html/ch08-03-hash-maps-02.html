@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Accessing Values in a Hash Map</title>
+</head>
+<body>
+<h1>Accessing Values in a Hash Map</h1>
+<p>We can get a value out of the hash map by providing its key to the <code>get</code>
+method, as shown in Listing 8-21.</p>
+<p><Listing number="8-21" caption="Accessing the score for the Blue team stored in the hash map"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch08-common-collections/listing-08-21/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Here, <code>score</code> will have the value that’s associated with the Blue team, and the
+result will be <code>10</code>. The <code>get</code> method returns an <code>Option&lt;&amp;V&gt;</code>; if there’s no
+value for that key in the hash map, <code>get</code> will return <code>None</code>. This program
+handles the <code>Option</code> by calling <code>copied</code> to get an <code>Option&lt;i32&gt;</code> rather than an
+<code>Option&lt;&amp;i32&gt;</code>, then <code>unwrap_or</code> to set <code>score</code> to zero if <code>scores</code> doesn’t
+have an entry for the key.</p>
+<p>We can iterate over each key-value pair in a hash map in a similar manner as we
+do with vectors, using a <code>for</code> loop:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch08-common-collections/no-listing-03-iterate-over-hashmap/src/main.rs:here}}
+</code></pre>
+<p>This code will print each pair in an arbitrary order:</p>
+<pre><code class="language-text">Yellow: 50
+Blue: 10
+</code></pre>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="hash-maps-and-ownership"></a></p>
+</body>
+</html>

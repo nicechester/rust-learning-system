@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Creating a New Hash Map</title>
+</head>
+<body>
+<h1>Creating a New Hash Map</h1>
+<p>One way to create an empty hash map is to use <code>new</code> and to add elements with
+<code>insert</code>. In Listing 8-20, we’re keeping track of the scores of two teams whose
+names are <em>Blue</em> and <em>Yellow</em>. The Blue team starts with 10 points, and the
+Yellow team starts with 50.</p>
+<p><Listing number="8-20" caption="Creating a new hash map and inserting some keys and values"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch08-common-collections/listing-08-20/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Note that we need to first <code>use</code> the <code>HashMap</code> from the collections portion of
+the standard library. Of our three common collections, this one is the least
+often used, so it’s not included in the features brought into scope
+automatically in the prelude. Hash maps also have less support from the
+standard library; there’s no built-in macro to construct them, for example.</p>
+<p>Just like vectors, hash maps store their data on the heap. This <code>HashMap</code> has
+keys of type <code>String</code> and values of type <code>i32</code>. Like vectors, hash maps are
+homogeneous: All of the keys must have the same type, and all of the values
+must have the same type.</p>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Defining Strings</title>
+</head>
+<body>
+<h1>Defining Strings</h1>
+<p>We’ll first define what we mean by the term <em>string</em>. Rust has only one string
+type in the core language, which is the string slice <code>str</code> that is usually seen
+in its borrowed form, <code>&amp;str</code>. In Chapter 4, we talked about string slices,
+which are references to some UTF-8 encoded string data stored elsewhere. String
+literals, for example, are stored in the program’s binary and are therefore
+string slices.</p>
+<p>The <code>String</code> type, which is provided by Rust’s standard library rather than
+coded into the core language, is a growable, mutable, owned, UTF-8 encoded
+string type. When Rustaceans refer to “strings” in Rust, they might be
+referring to either the <code>String</code> or the string slice <code>&amp;str</code> types, not just one
+of those types. Although this section is largely about <code>String</code>, both types are
+used heavily in Rust’s standard library, and both <code>String</code> and string slices
+are UTF-8 encoded.</p>
+</body>
+</html>

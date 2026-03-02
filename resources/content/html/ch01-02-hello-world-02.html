@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Rust Program Basics</title>
+</head>
+<body>
+<h1>Rust Program Basics</h1>
+<p>Next, make a new source file and call it <em>main.rs</em>. Rust files always end with
+the <em>.rs</em> extension. If you’re using more than one word in your filename, the
+convention is to use an underscore to separate them. For example, use
+<em>hello_world.rs</em> rather than <em>helloworld.rs</em>.</p>
+<p>Now open the <em>main.rs</em> file you just created and enter the code in Listing 1-1.</p>
+<p><Listing number="1-1" file-name="main.rs" caption="A program that prints <code>Hello, world!</code>"></p>
+<pre><code class="language-rust">fn main() {
+    println!(&quot;Hello, world!&quot;);
+}
+</code></pre>
+<p></Listing></p>
+<p>Save the file and go back to your terminal window in the
+<em>~/projects/hello_world</em> directory. On Linux or macOS, enter the following
+commands to compile and run the file:</p>
+<pre><code class="language-console">$ rustc main.rs
+$ ./main
+Hello, world!
+</code></pre>
+<p>On Windows, enter the command <code>.\main</code> instead of <code>./main</code>:</p>
+<pre><code class="language-powershell">&gt; rustc main.rs
+&gt; .\main
+Hello, world!
+</code></pre>
+<p>Regardless of your operating system, the string <code>Hello, world!</code> should print to
+the terminal. If you don’t see this output, refer back to the
+[“Troubleshooting”][troubleshooting]<!-- ignore --> part of the Installation
+section for ways to get help.</p>
+<p>If <code>Hello, world!</code> did print, congratulations! You’ve officially written a Rust
+program. That makes you a Rust programmer—welcome!</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="anatomy-of-a-rust-program"></a></p>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Rustup and the Role of Rust Nightly</title>
+</head>
+<body>
+<h1>Rustup and the Role of Rust Nightly</h1>
+<p>Rustup makes it easy to change between different release channels of Rust, on a
+global or per-project basis. By default, you’ll have stable Rust installed. To
+install nightly, for example:</p>
+<pre><code class="language-console">$ rustup toolchain install nightly
+</code></pre>
+<p>You can see all of the <em>toolchains</em> (releases of Rust and associated
+components) you have installed with <code>rustup</code> as well. Here’s an example on one
+of your authors’ Windows computer:</p>
+<pre><code class="language-powershell">&gt; rustup toolchain list
+stable-x86_64-pc-windows-msvc (default)
+beta-x86_64-pc-windows-msvc
+nightly-x86_64-pc-windows-msvc
+</code></pre>
+<p>As you can see, the stable toolchain is the default. Most Rust users use stable
+most of the time. You might want to use stable most of the time, but use
+nightly on a specific project, because you care about a cutting-edge feature.
+To do so, you can use <code>rustup override</code> in that project’s directory to set the
+nightly toolchain as the one <code>rustup</code> should use when you’re in that directory:</p>
+<pre><code class="language-console">$ cd ~/projects/needs-nightly
+$ rustup override set nightly
+</code></pre>
+<p>Now, every time you call <code>rustc</code> or <code>cargo</code> inside of
+<em>~/projects/needs-nightly</em>, <code>rustup</code> will make sure that you are using nightly
+Rust, rather than your default of stable Rust. This comes in handy when you
+have a lot of Rust projects!</p>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Calling an Unsafe Function or Method</title>
+</head>
+<body>
+<h1>Calling an Unsafe Function or Method</h1>
+<p>The second type of operation you can perform in an unsafe block is calling
+unsafe functions. Unsafe functions and methods look exactly like regular
+functions and methods, but they have an extra <code>unsafe</code> before the rest of the
+definition. The <code>unsafe</code> keyword in this context indicates the function has
+requirements we need to uphold when we call this function, because Rust can’t
+guarantee we’ve met these requirements. By calling an unsafe function within an
+<code>unsafe</code> block, we’re saying that we’ve read this function’s documentation and
+we take responsibility for upholding the function’s contracts.</p>
+<p>Here is an unsafe function named <code>dangerous</code> that doesn’t do anything in its
+body:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-01-unsafe-fn/src/main.rs:here}}
+</code></pre>
+<p>We must call the <code>dangerous</code> function within a separate <code>unsafe</code> block. If we
+try to call <code>dangerous</code> without the <code>unsafe</code> block, we’ll get an error:</p>
+<pre><code class="language-console">{{#include ../listings/ch20-advanced-features/output-only-01-missing-unsafe/output.txt}}
+</code></pre>
+<p>With the <code>unsafe</code> block, we’re asserting to Rust that we’ve read the function’s
+documentation, we understand how to use it properly, and we’ve verified that
+we’re fulfilling the contract of the function.</p>
+<p>To perform unsafe operations in the body of an <code>unsafe</code> function, you still
+need to use an <code>unsafe</code> block, just as within a regular function, and the
+compiler will warn you if you forget. This helps us keep <code>unsafe</code> blocks as
+small as possible, as unsafe operations may not be needed across the whole
+function body.</p>
+<h4>Creating a Safe Abstraction over Unsafe Code</h4>
+<p>Just because a function contains unsafe code doesn’t mean we need to mark the
+entire function as unsafe. In fact, wrapping unsafe code in a safe function is
+a common abstraction. As an example, let’s study the <code>split_at_mut</code> function
+from the standard library, which requires some unsafe code. We’ll explore how
+we might implement it. This safe method is defined on mutable slices: It takes
+one slice and makes it two by splitting the slice at the index given as an
+argument. Listing 20-4 shows how to use <code>split_at_mut</code>.</p>
+<p><Listing number="20-4" caption="Using the safe <code>split_at_mut</code> function"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-04/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>We can’t implement this function using only safe Rust. An attempt might look
+something like Listing 20-5, which won’t compile. For simplicity, we’ll
+implement <code>split_at_mut</code> as a function rather than a method and only for slices
+of <code>i32</code> values rather than for a generic type <code>T</code>.</p>
+<p><Listing number="20-5" caption="An attempted implementation of <code>split_at_mut</code> using only safe Rust"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-05/src/main.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+This function first gets the total length of the slice. Then, it asserts that
+the index given as a parameter is within the slice by checking whether it’s
+less than or equal to the length. The assertion means that if we pass an index
+that is greater than the length to split the slice at, the function will panic
+before it attempts to use that index.
+
+Then, we return two mutable slices in a tuple: one from the start of the
+original slice to the `mid` index and another from `mid` to the end of the
+slice.
+
+When we try to compile the code in Listing 20-5, we’ll get an error:
+
+```console
+{{#include ../listings/ch20-advanced-features/listing-20-05/output.txt}}
+</code></pre>
+<p>Rust’s borrow checker can’t understand that we’re borrowing different parts of
+the slice; it only knows that we’re borrowing from the same slice twice.
+Borrowing different parts of a slice is fundamentally okay because the two
+slices aren’t overlapping, but Rust isn’t smart enough to know this. When we
+know code is okay, but Rust doesn’t, it’s time to reach for unsafe code.</p>
+<p>Listing 20-6 shows how to use an <code>unsafe</code> block, a raw pointer, and some calls
+to unsafe functions to make the implementation of <code>split_at_mut</code> work.</p>
+<p><Listing number="20-6" caption="Using unsafe code in the implementation of the <code>split_at_mut</code> function"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-06/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Recall from [“The Slice Type”][the-slice-type]<!-- ignore --> section in
+Chapter 4 that a slice is a pointer to some data and the length of the slice.
+We use the <code>len</code> method to get the length of a slice and the <code>as_mut_ptr</code>
+method to access the raw pointer of a slice. In this case, because we have a
+mutable slice to <code>i32</code> values, <code>as_mut_ptr</code> returns a raw pointer with the type
+<code>*mut i32</code>, which we’ve stored in the variable <code>ptr</code>.</p>
+<p>We keep the assertion that the <code>mid</code> index is within the slice. Then, we get to
+the unsafe code: The <code>slice::from_raw_parts_mut</code> function takes a raw pointer
+and a length, and it creates a slice. We use this function to create a slice
+that starts from <code>ptr</code> and is <code>mid</code> items long. Then, we call the <code>add</code> method
+on <code>ptr</code> with <code>mid</code> as an argument to get a raw pointer that starts at <code>mid</code>,
+and we create a slice using that pointer and the remaining number of items
+after <code>mid</code> as the length.</p>
+<p>The function <code>slice::from_raw_parts_mut</code> is unsafe because it takes a raw
+pointer and must trust that this pointer is valid. The <code>add</code> method on raw
+pointers is also unsafe because it must trust that the offset location is also
+a valid pointer. Therefore, we had to put an <code>unsafe</code> block around our calls to
+<code>slice::from_raw_parts_mut</code> and <code>add</code> so that we could call them. By looking at
+the code and by adding the assertion that <code>mid</code> must be less than or equal to
+<code>len</code>, we can tell that all the raw pointers used within the <code>unsafe</code> block
+will be valid pointers to data within the slice. This is an acceptable and
+appropriate use of <code>unsafe</code>.</p>
+<p>Note that we don’t need to mark the resultant <code>split_at_mut</code> function as
+<code>unsafe</code>, and we can call this function from safe Rust. We’ve created a safe
+abstraction to the unsafe code with an implementation of the function that uses
+<code>unsafe</code> code in a safe way, because it creates only valid pointers from the
+data this function has access to.</p>
+<p>In contrast, the use of <code>slice::from_raw_parts_mut</code> in Listing 20-7 would
+likely crash when the slice is used. This code takes an arbitrary memory
+location and creates a slice 10,000 items long.</p>
+<p><Listing number="20-7" caption="Creating a slice from an arbitrary memory location"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-07/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>We don’t own the memory at this arbitrary location, and there is no guarantee
+that the slice this code creates contains valid <code>i32</code> values. Attempting to use
+<code>values</code> as though it’s a valid slice results in undefined behavior.</p>
+<h4>Using <code>extern</code> Functions to Call External Code</h4>
+<p>Sometimes your Rust code might need to interact with code written in another
+language. For this, Rust has the keyword <code>extern</code> that facilitates the creation
+and use of a <em>Foreign Function Interface (FFI)</em>, which is a way for a
+programming language to define functions and enable a different (foreign)
+programming language to call those functions.</p>
+<p>Listing 20-8 demonstrates how to set up an integration with the <code>abs</code> function
+from the C standard library. Functions declared within <code>extern</code> blocks are
+generally unsafe to call from Rust code, so <code>extern</code> blocks must also be marked
+<code>unsafe</code>. The reason is that other languages don’t enforce Rust’s rules and
+guarantees, and Rust can’t check them, so responsibility falls on the
+programmer to ensure safety.</p>
+<p><Listing number="20-8" file-name="src/main.rs" caption="Declaring and calling an <code>extern</code> function defined in another language"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-08/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>Within the <code>unsafe extern "C"</code> block, we list the names and signatures of
+external functions from another language we want to call. The <code>"C"</code> part
+defines which <em>application binary interface (ABI)</em> the external function uses:
+The ABI defines how to call the function at the assembly level. The <code>"C"</code> ABI
+is the most common and follows the C programming language’s ABI. Information
+about all the ABIs Rust supports is available in [the Rust Reference][ABI].</p>
+<p>Every item declared within an <code>unsafe extern</code> block is implicitly unsafe.
+However, some FFI functions <em>are</em> safe to call. For example, the <code>abs</code> function
+from C’s standard library does not have any memory safety considerations, and we
+know it can be called with any <code>i32</code>. In cases like this, we can use the <code>safe</code>
+keyword to say that this specific function is safe to call even though it is in
+an <code>unsafe extern</code> block. Once we make that change, calling it no longer
+requires an <code>unsafe</code> block, as shown in Listing 20-9.</p>
+<p><Listing number="20-9" file-name="src/main.rs" caption="Explicitly marking a function as <code>safe</code> within an <code>unsafe extern</code> block and calling it safely"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-09/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>Marking a function as <code>safe</code> does not inherently make it safe! Instead, it is
+like a promise you are making to Rust that it is safe. It is still your
+responsibility to make sure that promise is kept!</p>
+<h4>Calling Rust Functions from Other Languages</h4>
+<p>We can also use <code>extern</code> to create an interface that allows other languages to
+call Rust functions. Instead of creating a whole <code>extern</code> block, we add the
+<code>extern</code> keyword and specify the ABI to use just before the <code>fn</code> keyword for
+the relevant function. We also need to add an <code>#[unsafe(no_mangle)]</code> annotation
+to tell the Rust compiler not to mangle the name of this function. <em>Mangling</em>
+is when a compiler changes the name we’ve given a function to a different name
+that contains more information for other parts of the compilation process to
+consume but is less human readable. Every programming language compiler mangles
+names slightly differently, so for a Rust function to be nameable by other
+languages, we must disable the Rust compiler’s name mangling. This is unsafe
+because there might be name collisions across libraries without the built-in
+mangling, so it is our responsibility to make sure the name we choose is safe
+to export without mangling.</p>
+<p>In the following example, we make the <code>call_from_c</code> function accessible from C
+code, after it’s compiled to a shared library and linked from C:</p>
+<pre><code>#[unsafe(no_mangle)]
+pub extern &quot;C&quot; fn call_from_c() {
+    println!(&quot;Just called a Rust function from C!&quot;);
+}
+</code></pre>
+<p>This usage of <code>extern</code> requires <code>unsafe</code> only in the attribute, not on the
+<code>extern</code> block.</p>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Accessing or Modifying a Mutable Static Variable</title>
+</head>
+<body>
+<h1>Accessing or Modifying a Mutable Static Variable</h1>
+<p>In this book, we’ve not yet talked about global variables, which Rust does
+support but which can be problematic with Rust’s ownership rules. If two
+threads are accessing the same mutable global variable, it can cause a data
+race.</p>
+<p>In Rust, global variables are called <em>static</em> variables. Listing 20-10 shows an
+example declaration and use of a static variable with a string slice as a
+value.</p>
+<p><Listing number="20-10" file-name="src/main.rs" caption="Defining and using an immutable static variable"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-10/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>Static variables are similar to constants, which we discussed in the
+[“Declaring Constants”][constants]<!-- ignore --> section in Chapter 3. The
+names of static variables are in <code>SCREAMING_SNAKE_CASE</code> by convention. Static
+variables can only store references with the <code>'static</code> lifetime, which means
+the Rust compiler can figure out the lifetime and we aren’t required to
+annotate it explicitly. Accessing an immutable static variable is safe.</p>
+<p>A subtle difference between constants and immutable static variables is that
+values in a static variable have a fixed address in memory. Using the value
+will always access the same data. Constants, on the other hand, are allowed to
+duplicate their data whenever they’re used. Another difference is that static
+variables can be mutable. Accessing and modifying mutable static variables is
+<em>unsafe</em>. Listing 20-11 shows how to declare, access, and modify a mutable
+static variable named <code>COUNTER</code>.</p>
+<p><Listing number="20-11" file-name="src/main.rs" caption="Reading from or writing to a mutable static variable is unsafe."></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-11/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>As with regular variables, we specify mutability using the <code>mut</code> keyword. Any
+code that reads or writes from <code>COUNTER</code> must be within an <code>unsafe</code> block. The
+code in Listing 20-11 compiles and prints <code>COUNTER: 3</code> as we would expect
+because it’s single threaded. Having multiple threads access <code>COUNTER</code> would
+likely result in data races, so it is undefined behavior. Therefore, we need to
+mark the entire function as <code>unsafe</code> and document the safety limitation so that
+anyone calling the function knows what they are and are not allowed to do
+safely.</p>
+<p>Whenever we write an unsafe function, it is idiomatic to write a comment
+starting with <code>SAFETY</code> and explaining what the caller needs to do to call the
+function safely. Likewise, whenever we perform an unsafe operation, it is
+idiomatic to write a comment starting with <code>SAFETY</code> to explain how the safety
+rules are upheld.</p>
+<p>Additionally, the compiler will deny by default any attempt to create
+references to a mutable static variable through a compiler lint. You must
+either explicitly opt out of that lint’s protections by adding an
+<code>#[allow(static_mut_refs)]</code> annotation or access the mutable static variable
+via a raw pointer created with one of the raw borrow operators. That includes
+cases where the reference is created invisibly, as when it is used in the
+<code>println!</code> in this code listing. Requiring references to static mutable
+variables to be created via raw pointers helps make the safety requirements for
+using them more obvious.</p>
+<p>With mutable data that is globally accessible, it’s difficult to ensure that
+there are no data races, which is why Rust considers mutable static variables
+to be unsafe. Where possible, it’s preferable to use the concurrency techniques
+and thread-safe smart pointers we discussed in Chapter 16 so that the compiler
+checks that data access from different threads is done safely.</p>
+</body>
+</html>

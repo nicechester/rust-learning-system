@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Handling Deref Coercion with Mutable References</title>
+</head>
+<body>
+<h1>Handling Deref Coercion with Mutable References</h1>
+<p>Similar to how you use the <code>Deref</code> trait to override the <code>*</code> operator on
+immutable references, you can use the <code>DerefMut</code> trait to override the <code>*</code>
+operator on mutable references.</p>
+<p>Rust does deref coercion when it finds types and trait implementations in three
+cases:</p>
+<ol>
+<li>From <code>&amp;T</code> to <code>&amp;U</code> when <code>T: Deref&lt;Target=U&gt;</code></li>
+<li>From <code>&amp;mut T</code> to <code>&amp;mut U</code> when <code>T: DerefMut&lt;Target=U&gt;</code></li>
+<li>From <code>&amp;mut T</code> to <code>&amp;U</code> when <code>T: Deref&lt;Target=U&gt;</code></li>
+</ol>
+<p>The first two cases are the same except that the second implements mutability.
+The first case states that if you have a <code>&amp;T</code>, and <code>T</code> implements <code>Deref</code> to
+some type <code>U</code>, you can get a <code>&amp;U</code> transparently. The second case states that
+the same deref coercion happens for mutable references.</p>
+<p>The third case is trickier: Rust will also coerce a mutable reference to an
+immutable one. But the reverse is <em>not</em> possible: Immutable references will
+never coerce to mutable references. Because of the borrowing rules, if you have
+a mutable reference, that mutable reference must be the only reference to that
+data (otherwise, the program wouldn’t compile). Converting one mutable
+reference to one immutable reference will never break the borrowing rules.
+Converting an immutable reference to a mutable reference would require that the
+initial immutable reference is the only immutable reference to that data, but
+the borrowing rules don’t guarantee that. Therefore, Rust can’t make the
+assumption that converting an immutable reference to a mutable reference is
+possible.</p>
+</body>
+</html>

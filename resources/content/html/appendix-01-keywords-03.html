@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Raw Identifiers</title>
+</head>
+<body>
+<h1>Raw Identifiers</h1>
+<p><em>Raw identifiers</em> are the syntax that lets you use keywords where they wouldn’t
+normally be allowed. You use a raw identifier by prefixing a keyword with <code>r#</code>.</p>
+<p>For example, <code>match</code> is a keyword. If you try to compile the following function
+that uses <code>match</code> as its name:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<p>```rust,ignore,does_not_compile
+fn match(needle: &amp;str, haystack: &amp;str) -&gt; bool {
+    haystack.contains(needle)
+}</p>
+<pre><code>
+you’ll get this error:
+
+```text
+error: expected identifier, found keyword `match`
+ --&gt; src/main.rs:4:4
+  |
+4 | fn match(needle: &amp;str, haystack: &amp;str) -&gt; bool {
+  |    ^^^^^ expected identifier, found keyword
+</code></pre>
+<p>The error shows that you can’t use the keyword <code>match</code> as the function
+identifier. To use <code>match</code> as a function name, you need to use the raw
+identifier syntax, like this:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust">fn r#match(needle: &amp;str, haystack: &amp;str) -&gt; bool {
+    haystack.contains(needle)
+}
+
+fn main() {
+    assert!(r#match(&quot;foo&quot;, &quot;foobar&quot;));
+}
+</code></pre>
+<p>This code will compile without any errors. Note the <code>r#</code> prefix on the function
+name in its definition as well as where the function is called in <code>main</code>.</p>
+<p>Raw identifiers allow you to use any word you choose as an identifier, even if
+that word happens to be a reserved keyword. This gives us more freedom to choose
+identifier names, as well as lets us integrate with programs written in a
+language where these words aren’t keywords. In addition, raw identifiers allow
+you to use libraries written in a different Rust edition than your crate uses.
+For example, <code>try</code> isn’t a keyword in the 2015 edition but is in the 2018, 2021,
+and 2024 editions. If you depend on a library that is written using the 2015
+edition and has a <code>try</code> function, you’ll need to use the raw identifier syntax,
+<code>r#try</code> in this case, to call that function from your code on later editions.
+See <a href="appendix-05-editions.html">Appendix E</a><!-- ignore --> for more information on editions.</p>
+</body>
+</html>

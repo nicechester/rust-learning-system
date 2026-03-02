@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Matching on Different Errors</title>
+</head>
+<body>
+<h1>Matching on Different Errors</h1>
+<p>The code in Listing 9-4 will <code>panic!</code> no matter why <code>File::open</code> failed.
+However, we want to take different actions for different failure reasons. If
+<code>File::open</code> failed because the file doesn’t exist, we want to create the file
+and return the handle to the new file. If <code>File::open</code> failed for any other
+reason—for example, because we didn’t have permission to open the file—we still
+want the code to <code>panic!</code> in the same way it did in Listing 9-4. For this, we
+add an inner <code>match</code> expression, shown in Listing 9-5.</p>
+<p><Listing number="9-5" file-name="src/main.rs" caption="Handling different kinds of errors in different ways"></p>
+<!-- ignore this test because otherwise it creates hello.txt which causes other
+tests to fail lol -->
+
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch09-error-handling/listing-09-05/src/main.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+The type of the value that `File::open` returns inside the `Err` variant is
+`io::Error`, which is a struct provided by the standard library. This struct
+has a method, `kind`, that we can call to get an `io::ErrorKind` value. The
+enum `io::ErrorKind` is provided by the standard library and has variants
+representing the different kinds of errors that might result from an `io`
+operation. The variant we want to use is `ErrorKind::NotFound`, which indicates
+the file we’re trying to open doesn’t exist yet. So, we match on
+`greeting_file_result`, but we also have an inner match on `error.kind()`.
+
+The condition we want to check in the inner match is whether the value returned
+by `error.kind()` is the `NotFound` variant of the `ErrorKind` enum. If it is,
+we try to create the file with `File::create`. However, because `File::create`
+could also fail, we need a second arm in the inner `match` expression. When the
+file can’t be created, a different error message is printed. The second arm of
+the outer `match` stays the same, so the program panics on any error besides
+the missing file error.
+
+&gt; #### Alternatives to Using `match` with `Result&lt;T, E&gt;`
+&gt;
+&gt; That’s a lot of `match`! The `match` expression is very useful but also very
+&gt; much a primitive. In Chapter 13, you’ll learn about closures, which are used
+&gt; with many of the methods defined on `Result&lt;T, E&gt;`. These methods can be more
+&gt; concise than using `match` when handling `Result&lt;T, E&gt;` values in your code.
+&gt;
+&gt; For example, here’s another way to write the same logic as shown in Listing
+&gt; 9-5, this time using closures and the `unwrap_or_else` method:
+&gt;
+&gt; &lt;!-- CAN'T EXTRACT SEE https://github.com/rust-lang/mdBook/issues/1127 --&gt;
+&gt;
+&gt; ```rust,ignore
+&gt; use std::fs::File;
+&gt; use std::io::ErrorKind;
+&gt;
+&gt; fn main() {
+&gt;     let greeting_file = File::open(&quot;hello.txt&quot;).unwrap_or_else(|error| {
+&gt;         if error.kind() == ErrorKind::NotFound {
+&gt;             File::create(&quot;hello.txt&quot;).unwrap_or_else(|error| {
+&gt;                 panic!(&quot;Problem creating the file: {error:?}&quot;);
+&gt;             })
+&gt;         } else {
+&gt;             panic!(&quot;Problem opening the file: {error:?}&quot;);
+&gt;         }
+&gt;     });
+&gt; }
+&gt; ```
+&gt;
+&gt; Although this code has the same behavior as Listing 9-5, it doesn’t contain
+&gt; any `match` expressions and is cleaner to read. Come back to this example
+&gt; after you’ve read Chapter 13 and look up the `unwrap_or_else` method in the
+&gt; standard library documentation. Many more of these methods can clean up huge,
+&gt; nested `match` expressions when you’re dealing with errors.
+
+&lt;!-- Old headings. Do not remove or links may break. --&gt;
+
+&lt;a id=&quot;shortcuts-for-panic-on-error-unwrap-and-expect&quot;&gt;&lt;/a&gt;
+
+#### Shortcuts for Panic on Error
+
+Using `match` works well enough, but it can be a bit verbose and doesn’t always
+communicate intent well. The `Result&lt;T, E&gt;` type has many helper methods
+defined on it to do various, more specific tasks. The `unwrap` method is a
+shortcut method implemented just like the `match` expression we wrote in
+Listing 9-4. If the `Result` value is the `Ok` variant, `unwrap` will return
+the value inside the `Ok`. If the `Result` is the `Err` variant, `unwrap` will
+call the `panic!` macro for us. Here is an example of `unwrap` in action:
+
+&lt;Listing file-name=&quot;src/main.rs&quot;&gt;
+
+```rust,should_panic
+{{#rustdoc_include ../listings/ch09-error-handling/no-listing-04-unwrap/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>If we run this code without a <em>hello.txt</em> file, we’ll see an error message from
+the <code>panic!</code> call that the <code>unwrap</code> method makes:</p>
+<!-- manual-regeneration
+cd listings/ch09-error-handling/no-listing-04-unwrap
+cargo run
+copy and paste relevant text
+-->
+
+<pre><code class="language-text">thread 'main' panicked at src/main.rs:4:49:
+called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: &quot;No such file or directory&quot; }
+</code></pre>
+<p>Similarly, the <code>expect</code> method lets us also choose the <code>panic!</code> error message.
+Using <code>expect</code> instead of <code>unwrap</code> and providing good error messages can convey
+your intent and make tracking down the source of a panic easier. The syntax of
+<code>expect</code> looks like this:</p>
+<p><Listing file-name="src/main.rs"></p>
+<p>```rust,should_panic
+{{#rustdoc_include ../listings/ch09-error-handling/no-listing-05-expect/src/main.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+We use `expect` in the same way as `unwrap`: to return the file handle or call
+the `panic!` macro. The error message used by `expect` in its call to `panic!`
+will be the parameter that we pass to `expect`, rather than the default
+`panic!` message that `unwrap` uses. Here’s what it looks like:
+
+&lt;!-- manual-regeneration
+cd listings/ch09-error-handling/no-listing-05-expect
+cargo run
+copy and paste relevant text
+--&gt;
+
+```text
+thread 'main' panicked at src/main.rs:5:10:
+hello.txt should be included in this project: Os { code: 2, kind: NotFound, message: &quot;No such file or directory&quot; }
+</code></pre>
+<p>In production-quality code, most Rustaceans choose <code>expect</code> rather than
+<code>unwrap</code> and give more context about why the operation is expected to always
+succeed. That way, if your assumptions are ever proven wrong, you have more
+information to use in debugging.</p>
+</body>
+</html>

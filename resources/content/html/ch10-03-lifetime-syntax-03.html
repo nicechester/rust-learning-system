@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Generic Lifetimes in Functions</title>
+</head>
+<body>
+<h1>Generic Lifetimes in Functions</h1>
+<p>We’ll write a function that returns the longer of two string slices. This
+function will take two string slices and return a single string slice. After
+we’ve implemented the <code>longest</code> function, the code in Listing 10-19 should
+print <code>The longest string is abcd</code>.</p>
+<p><Listing number="10-19" file-name="src/main.rs" caption="A <code>main</code> function that calls the <code>longest</code> function to find the longer of two string slices"></p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-19/src/main.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+Note that we want the function to take string slices, which are references,
+rather than strings, because we don’t want the `longest` function to take
+ownership of its parameters. Refer to [“String Slices as
+Parameters”][string-slices-as-parameters]&lt;!-- ignore --&gt; in Chapter 4 for more
+discussion about why the parameters we use in Listing 10-19 are the ones we
+want.
+
+If we try to implement the `longest` function as shown in Listing 10-20, it
+won’t compile.
+
+&lt;Listing number=&quot;10-20&quot; file-name=&quot;src/main.rs&quot; caption=&quot;An implementation of the `longest` function that returns the longer of two string slices but does not yet compile&quot;&gt;
+
+```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-20/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Instead, we get the following error that talks about lifetimes:</p>
+<pre><code class="language-console">{{#include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-20/output.txt}}
+</code></pre>
+<p>The help text reveals that the return type needs a generic lifetime parameter
+on it because Rust can’t tell whether the reference being returned refers to
+<code>x</code> or <code>y</code>. Actually, we don’t know either, because the <code>if</code> block in the body
+of this function returns a reference to <code>x</code> and the <code>else</code> block returns a
+reference to <code>y</code>!</p>
+<p>When we’re defining this function, we don’t know the concrete values that will
+be passed into this function, so we don’t know whether the <code>if</code> case or the
+<code>else</code> case will execute. We also don’t know the concrete lifetimes of the
+references that will be passed in, so we can’t look at the scopes as we did in
+Listings 10-17 and 10-18 to determine whether the reference we return will
+always be valid. The borrow checker can’t determine this either, because it
+doesn’t know how the lifetimes of <code>x</code> and <code>y</code> relate to the lifetime of the
+return value. To fix this error, we’ll add generic lifetime parameters that
+define the relationship between the references so that the borrow checker can
+perform its analysis.</p>
+</body>
+</html>

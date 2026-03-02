@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Adding Metadata to a New Crate</title>
+</head>
+<body>
+<h1>Adding Metadata to a New Crate</h1>
+<p>Let’s say you have a crate you want to publish. Before publishing, you’ll need
+to add some metadata in the <code>[package]</code> section of the crate’s <em>Cargo.toml</em>
+file.</p>
+<p>Your crate will need a unique name. While you’re working on a crate locally,
+you can name a crate whatever you’d like. However, crate names on
+<a href="https://crates.io/">crates.io</a><!-- ignore --> are allocated on a first-come,
+first-served basis. Once a crate name is taken, no one else can publish a crate
+with that name. Before attempting to publish a crate, search for the name you
+want to use. If the name has been used, you will need to find another name and
+edit the <code>name</code> field in the <em>Cargo.toml</em> file under the <code>[package]</code> section to
+use the new name for publishing, like so:</p>
+<p><span class="filename">Filename: Cargo.toml</span></p>
+<pre><code class="language-toml">[package]
+name = &quot;guessing_game&quot;
+</code></pre>
+<p>Even if you’ve chosen a unique name, when you run <code>cargo publish</code> to publish
+the crate at this point, you’ll get a warning and then an error:</p>
+<!-- manual-regeneration
+Create a new package with an unregistered name, making no further modifications
+  to the generated package, so it is missing the description and license fields.
+cargo publish
+copy just the relevant lines below
+-->
+
+<pre><code class="language-console">$ cargo publish
+    Updating crates.io index
+warning: manifest has no description, license, license-file, documentation, homepage or repository.
+See https://doc.rust-lang.org/cargo/reference/manifest.html#package-metadata for more info.
+--snip--
+error: failed to publish to registry at https://crates.io
+
+Caused by:
+  the remote server responded with an error (status 400 Bad Request): missing or empty metadata fields: description, license. Please see https://doc.rust-lang.org/cargo/reference/manifest.html for more information on configuring these fields
+</code></pre>
+<p>This results in an error because you’re missing some crucial information: A
+description and license are required so that people will know what your crate
+does and under what terms they can use it. In <em>Cargo.toml</em>, add a description
+that's just a sentence or two, because it will appear with your crate in search
+results. For the <code>license</code> field, you need to give a <em>license identifier
+value</em>. The [Linux Foundation’s Software Package Data Exchange (SPDX)][spdx]
+lists the identifiers you can use for this value. For example, to specify that
+you’ve licensed your crate using the MIT License, add the <code>MIT</code> identifier:</p>
+<p><span class="filename">Filename: Cargo.toml</span></p>
+<pre><code class="language-toml">[package]
+name = &quot;guessing_game&quot;
+license = &quot;MIT&quot;
+</code></pre>
+<p>If you want to use a license that doesn’t appear in the SPDX, you need to place
+the text of that license in a file, include the file in your project, and then
+use <code>license-file</code> to specify the name of that file instead of using the
+<code>license</code> key.</p>
+<p>Guidance on which license is appropriate for your project is beyond the scope
+of this book. Many people in the Rust community license their projects in the
+same way as Rust by using a dual license of <code>MIT OR Apache-2.0</code>. This practice
+demonstrates that you can also specify multiple license identifiers separated
+by <code>OR</code> to have multiple licenses for your project.</p>
+<p>With a unique name, the version, your description, and a license added, the
+<em>Cargo.toml</em> file for a project that is ready to publish might look like this:</p>
+<p><span class="filename">Filename: Cargo.toml</span></p>
+<pre><code class="language-toml">[package]
+name = &quot;guessing_game&quot;
+version = &quot;0.1.0&quot;
+edition = &quot;2024&quot;
+description = &quot;A fun game where you guess what number the computer has chosen.&quot;
+license = &quot;MIT OR Apache-2.0&quot;
+
+[dependencies]
+</code></pre>
+<p><a href="https://doc.rust-lang.org/cargo/">Cargo’s documentation</a> describes other
+metadata you can specify to ensure that others can discover and use your crate
+more easily.</p>
+</body>
+</html>

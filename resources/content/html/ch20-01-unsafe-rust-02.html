@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Dereferencing a Raw Pointer</title>
+</head>
+<body>
+<h1>Dereferencing a Raw Pointer</h1>
+<p>In Chapter 4, in the [“Dangling References”][dangling-references]<!-- ignore
+--> section, we mentioned that the compiler ensures that references are always
+valid. Unsafe Rust has two new types called <em>raw pointers</em> that are similar to
+references. As with references, raw pointers can be immutable or mutable and
+are written as <code>*const T</code> and <code>*mut T</code>, respectively. The asterisk isn’t the
+dereference operator; it’s part of the type name. In the context of raw
+pointers, <em>immutable</em> means that the pointer can’t be directly assigned to
+after being dereferenced.</p>
+<p>Different from references and smart pointers, raw pointers:</p>
+<ul>
+<li>Are allowed to ignore the borrowing rules by having both immutable and
+  mutable pointers or multiple mutable pointers to the same location</li>
+<li>Aren’t guaranteed to point to valid memory</li>
+<li>Are allowed to be null</li>
+<li>Don’t implement any automatic cleanup</li>
+</ul>
+<p>By opting out of having Rust enforce these guarantees, you can give up
+guaranteed safety in exchange for greater performance or the ability to
+interface with another language or hardware where Rust’s guarantees don’t apply.</p>
+<p>Listing 20-1 shows how to create an immutable and a mutable raw pointer.</p>
+<p><Listing number="20-1" caption="Creating raw pointers with the raw borrow operators"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-01/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Notice that we don’t include the <code>unsafe</code> keyword in this code. We can create
+raw pointers in safe code; we just can’t dereference raw pointers outside an
+unsafe block, as you’ll see in a bit.</p>
+<p>We’ve created raw pointers by using the raw borrow operators: <code>&amp;raw const num</code>
+creates a <code>*const i32</code> immutable raw pointer, and <code>&amp;raw mut num</code> creates a <code>*mut
+i32</code> mutable raw pointer. Because we created them directly from a local
+variable, we know these particular raw pointers are valid, but we can’t make
+that assumption about just any raw pointer.</p>
+<p>To demonstrate this, next we’ll create a raw pointer whose validity we can’t be
+so certain of, using the keyword <code>as</code> to cast a value instead of using the raw
+borrow operator. Listing 20-2 shows how to create a raw pointer to an arbitrary
+location in memory. Trying to use arbitrary memory is undefined: There might be
+data at that address or there might not, the compiler might optimize the code
+so that there is no memory access, or the program might terminate with a
+segmentation fault. Usually, there is no good reason to write code like this,
+especially in cases where you can use a raw borrow operator instead, but it is
+possible.</p>
+<p><Listing number="20-2" caption="Creating a raw pointer to an arbitrary memory address"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-02/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Recall that we can create raw pointers in safe code, but we can’t dereference
+raw pointers and read the data being pointed to. In Listing 20-3, we use the
+dereference operator <code>*</code> on a raw pointer that requires an <code>unsafe</code> block.</p>
+<p><Listing number="20-3" caption="Dereferencing raw pointers within an <code>unsafe</code> block"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-03/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Creating a pointer does no harm; it’s only when we try to access the value that
+it points at that we might end up dealing with an invalid value.</p>
+<p>Note also that in Listings 20-1 and 20-3, we created <code>*const i32</code> and <code>*mut
+i32</code> raw pointers that both pointed to the same memory location, where <code>num</code> is
+stored. If we instead tried to create an immutable and a mutable reference to
+<code>num</code>, the code would not have compiled because Rust’s ownership rules don’t
+allow a mutable reference at the same time as any immutable references. With
+raw pointers, we can create a mutable pointer and an immutable pointer to the
+same location and change data through the mutable pointer, potentially creating
+a data race. Be careful!</p>
+<p>With all of these dangers, why would you ever use raw pointers? One major use
+case is when interfacing with C code, as you’ll see in the next section.
+Another case is when building up safe abstractions that the borrow checker
+doesn’t understand. We’ll introduce unsafe functions and then look at an
+example of a safe abstraction that uses unsafe code.</p>
+</body>
+</html>

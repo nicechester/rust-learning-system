@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Patterns That Bind to Values</title>
+</head>
+<body>
+<h1>Patterns That Bind to Values</h1>
+<p>Another useful feature of match arms is that they can bind to the parts of the
+values that match the pattern. This is how we can extract values out of enum
+variants.</p>
+<p>As an example, let’s change one of our enum variants to hold data inside it.
+From 1999 through 2008, the United States minted quarters with different
+designs for each of the 50 states on one side. No other coins got state
+designs, so only quarters have this extra value. We can add this information to
+our <code>enum</code> by changing the <code>Quarter</code> variant to include a <code>UsState</code> value
+stored inside it, which we’ve done in Listing 6-4.</p>
+<p><Listing number="6-4" caption="A <code>Coin</code> enum in which the <code>Quarter</code> variant also holds a <code>UsState</code> value"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/listing-06-04/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Let’s imagine that a friend is trying to collect all 50 state quarters. While
+we sort our loose change by coin type, we’ll also call out the name of the
+state associated with each quarter so that if it’s one our friend doesn’t have,
+they can add it to their collection.</p>
+<p>In the match expression for this code, we add a variable called <code>state</code> to the
+pattern that matches values of the variant <code>Coin::Quarter</code>. When a
+<code>Coin::Quarter</code> matches, the <code>state</code> variable will bind to the value of that
+quarter’s state. Then, we can use <code>state</code> in the code for that arm, like so:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-09-variable-in-pattern/src/main.rs:here}}
+</code></pre>
+<p>If we were to call <code>value_in_cents(Coin::Quarter(UsState::Alaska))</code>, <code>coin</code>
+would be <code>Coin::Quarter(UsState::Alaska)</code>. When we compare that value with each
+of the match arms, none of them match until we reach <code>Coin::Quarter(state)</code>. At
+that point, the binding for <code>state</code> will be the value <code>UsState::Alaska</code>. We can
+then use that binding in the <code>println!</code> expression, thus getting the inner
+state value out of the <code>Coin</code> enum variant for <code>Quarter</code>.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="matching-with-optiont"></a></p>
+</body>
+</html>

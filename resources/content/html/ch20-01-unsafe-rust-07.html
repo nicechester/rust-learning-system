@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Using Miri to Check Unsafe Code</title>
+</head>
+<body>
+<h1>Using Miri to Check Unsafe Code</h1>
+<p>When writing unsafe code, you might want to check that what you have written
+actually is safe and correct. One of the best ways to do that is to use Miri,
+an official Rust tool for detecting undefined behavior. Whereas the borrow
+checker is a <em>static</em> tool that works at compile time, Miri is a <em>dynamic</em>
+tool that works at runtime. It checks your code by running your program, or
+its test suite, and detecting when you violate the rules it understands about
+how Rust should work.</p>
+<p>Using Miri requires a nightly build of Rust (which we talk about more in
+[Appendix G: How Rust is Made and “Nightly Rust”][nightly]<!-- ignore -->). You
+can install both a nightly version of Rust and the Miri tool by typing <code>rustup
++nightly component add miri</code>. This does not change what version of Rust your
+project uses; it only adds the tool to your system so you can use it when you
+want to. You can run Miri on a project by typing <code>cargo +nightly miri run</code> or
+<code>cargo +nightly miri test</code>.</p>
+<p>For an example of how helpful this can be, consider what happens when we run it
+against Listing 20-7.</p>
+<pre><code class="language-console">{{#include ../listings/ch20-advanced-features/listing-20-07/output.txt}}
+</code></pre>
+<p>Miri correctly warns us that we’re casting an integer to a pointer, which might
+be a problem, but Miri can’t determine whether a problem exists because it
+doesn’t know how the pointer originated. Then, Miri returns an error where
+Listing 20-7 has undefined behavior because we have a dangling pointer. Thanks
+to Miri, we now know there is a risk of undefined behavior, and we can think
+about how to make the code safe. In some cases, Miri can even make
+recommendations about how to fix errors.</p>
+<p>Miri doesn’t catch everything you might get wrong when writing unsafe code.
+Miri is a dynamic analysis tool, so it only catches problems with code that
+actually gets run. That means you will need to use it in conjunction with good
+testing techniques to increase your confidence about the unsafe code you have
+written. Miri also does not cover every possible way your code can be unsound.</p>
+<p>Put another way: If Miri <em>does</em> catch a problem, you know there’s a bug, but
+just because Miri <em>doesn’t</em> catch a bug doesn’t mean there isn’t a problem. It
+can catch a lot, though. Try running it on the other examples of unsafe code in
+this chapter and see what it says!</p>
+<p>You can learn more about Miri at [its GitHub repository][miri].</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="when-to-use-unsafe-code"></a></p>
+</body>
+</html>

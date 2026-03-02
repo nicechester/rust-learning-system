@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Introduction</title>
+</head>
+<body>
+<h1>Introduction</h1>
+<h2>Futures and the Async Syntax</h2>
+<p>The key elements of asynchronous programming in Rust are <em>futures</em> and Rust’s
+<code>async</code> and <code>await</code> keywords.</p>
+<p>A <em>future</em> is a value that may not be ready now but will become ready at some
+point in the future. (This same concept shows up in many languages, sometimes
+under other names such as <em>task</em> or <em>promise</em>.) Rust provides a <code>Future</code> trait
+as a building block so that different async operations can be implemented with
+different data structures but with a common interface. In Rust, futures are
+types that implement the <code>Future</code> trait. Each future holds its own information
+about the progress that has been made and what “ready” means.</p>
+<p>You can apply the <code>async</code> keyword to blocks and functions to specify that they
+can be interrupted and resumed. Within an async block or async function, you
+can use the <code>await</code> keyword to <em>await a future</em> (that is, wait for it to become
+ready). Any point where you await a future within an async block or function is
+a potential spot for that block or function to pause and resume. The process of
+checking with a future to see if its value is available yet is called <em>polling</em>.</p>
+<p>Some other languages, such as C# and JavaScript, also use <code>async</code> and <code>await</code>
+keywords for async programming. If you’re familiar with those languages, you
+may notice some significant differences in how Rust handles the syntax. That’s
+for good reason, as we’ll see!</p>
+<p>When writing async Rust, we use the <code>async</code> and <code>await</code> keywords most of the
+time. Rust compiles them into equivalent code using the <code>Future</code> trait, much as
+it compiles <code>for</code> loops into equivalent code using the <code>Iterator</code> trait.
+Because Rust provides the <code>Future</code> trait, though, you can also implement it for
+your own data types when you need to. Many of the functions we’ll see
+throughout this chapter return types with their own implementations of
+<code>Future</code>. We’ll return to the definition of the trait at the end of the chapter
+and dig into more of how it works, but this is enough detail to keep us moving
+forward.</p>
+<p>This may all feel a bit abstract, so let’s write our first async program: a
+little web scraper. We’ll pass in two URLs from the command line, fetch both of
+them concurrently, and return the result of whichever one finishes first. This
+example will have a fair bit of new syntax, but don’t worry—we’ll explain
+everything you need to know as we go.</p>
+<h2>Our First Async Program</h2>
+<p>To keep the focus of this chapter on learning async rather than juggling parts
+of the ecosystem, we’ve created the <code>trpl</code> crate (<code>trpl</code> is short for “The Rust
+Programming Language”). It re-exports all the types, traits, and functions
+you’ll need, primarily from the [<code>futures</code>][futures-crate]<!-- ignore --> and
+[<code>tokio</code>][tokio]<!-- ignore --> crates. The <code>futures</code> crate is an official home
+for Rust experimentation for async code, and it’s actually where the <code>Future</code>
+trait was originally designed. Tokio is the most widely used async runtime in
+Rust today, especially for web applications. There are other great runtimes out
+there, and they may be more suitable for your purposes. We use the <code>tokio</code>
+crate under the hood for <code>trpl</code> because it’s well tested and widely used.</p>
+<p>In some cases, <code>trpl</code> also renames or wraps the original APIs to keep you
+focused on the details relevant to this chapter. If you want to understand what
+the crate does, we encourage you to check out [its source code][crate-source].
+You’ll be able to see what crate each re-export comes from, and we’ve left
+extensive comments explaining what the crate does.</p>
+<p>Create a new binary project named <code>hello-async</code> and add the <code>trpl</code> crate as a
+dependency:</p>
+<pre><code class="language-console">$ cargo new hello-async
+$ cd hello-async
+$ cargo add trpl
+</code></pre>
+<p>Now we can use the various pieces provided by <code>trpl</code> to write our first async
+program. We’ll build a little command line tool that fetches two web pages,
+pulls the <code>&lt;title&gt;</code> element from each, and prints out the title of whichever
+page finishes that whole process first.</p>
+</body>
+</html>

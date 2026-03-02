@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Enforcing Borrowing Rules at Runtime</title>
+</head>
+<body>
+<h1>Enforcing Borrowing Rules at Runtime</h1>
+<p>Unlike <code>Rc&lt;T&gt;</code>, the <code>RefCell&lt;T&gt;</code> type represents single ownership over the data
+it holds. So, what makes <code>RefCell&lt;T&gt;</code> different from a type like <code>Box&lt;T&gt;</code>?
+Recall the borrowing rules you learned in Chapter 4:</p>
+<ul>
+<li>At any given time, you can have <em>either</em> one mutable reference or any number
+  of immutable references (but not both).</li>
+<li>References must always be valid.</li>
+</ul>
+<p>With references and <code>Box&lt;T&gt;</code>, the borrowing rules’ invariants are enforced at
+compile time. With <code>RefCell&lt;T&gt;</code>, these invariants are enforced <em>at runtime</em>.
+With references, if you break these rules, you’ll get a compiler error. With
+<code>RefCell&lt;T&gt;</code>, if you break these rules, your program will panic and exit.</p>
+<p>The advantages of checking the borrowing rules at compile time are that errors
+will be caught sooner in the development process, and there is no impact on
+runtime performance because all the analysis is completed beforehand. For those
+reasons, checking the borrowing rules at compile time is the best choice in the
+majority of cases, which is why this is Rust’s default.</p>
+<p>The advantage of checking the borrowing rules at runtime instead is that
+certain memory-safe scenarios are then allowed, where they would’ve been
+disallowed by the compile-time checks. Static analysis, like the Rust compiler,
+is inherently conservative. Some properties of code are impossible to detect by
+analyzing the code: The most famous example is the Halting Problem, which is
+beyond the scope of this book but is an interesting topic to research.</p>
+<p>Because some analysis is impossible, if the Rust compiler can’t be sure the
+code complies with the ownership rules, it might reject a correct program; in
+this way, it’s conservative. If Rust accepted an incorrect program, users
+wouldn’t be able to trust the guarantees Rust makes. However, if Rust rejects a
+correct program, the programmer will be inconvenienced, but nothing
+catastrophic can occur. The <code>RefCell&lt;T&gt;</code> type is useful when you’re sure your
+code follows the borrowing rules but the compiler is unable to understand and
+guarantee that.</p>
+<p>Similar to <code>Rc&lt;T&gt;</code>, <code>RefCell&lt;T&gt;</code> is only for use in single-threaded scenarios
+and will give you a compile-time error if you try using it in a multithreaded
+context. We’ll talk about how to get the functionality of <code>RefCell&lt;T&gt;</code> in a
+multithreaded program in Chapter 16.</p>
+<p>Here is a recap of the reasons to choose <code>Box&lt;T&gt;</code>, <code>Rc&lt;T&gt;</code>, or <code>RefCell&lt;T&gt;</code>:</p>
+<ul>
+<li><code>Rc&lt;T&gt;</code> enables multiple owners of the same data; <code>Box&lt;T&gt;</code> and <code>RefCell&lt;T&gt;</code>
+  have single owners.</li>
+<li><code>Box&lt;T&gt;</code> allows immutable or mutable borrows checked at compile time; <code>Rc&lt;T&gt;</code>
+  allows only immutable borrows checked at compile time; <code>RefCell&lt;T&gt;</code> allows
+  immutable or mutable borrows checked at runtime.</li>
+<li>Because <code>RefCell&lt;T&gt;</code> allows mutable borrows checked at runtime, you can
+  mutate the value inside the <code>RefCell&lt;T&gt;</code> even when the <code>RefCell&lt;T&gt;</code> is
+  immutable.</li>
+</ul>
+<p>Mutating the value inside an immutable value is the interior mutability
+pattern. Let’s look at a situation in which interior mutability is useful and
+examine how it’s possible.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="interior-mutability-a-mutable-borrow-to-an-immutable-value"></a></p>
+</body>
+</html>

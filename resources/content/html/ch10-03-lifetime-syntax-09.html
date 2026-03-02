@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>In Method Definitions</title>
+</head>
+<body>
+<h1>In Method Definitions</h1>
+<p>When we implement methods on a struct with lifetimes, we use the same syntax as
+that of generic type parameters, as shown in Listing 10-11. Where we declare
+and use the lifetime parameters depends on whether they’re related to the
+struct fields or the method parameters and return values.</p>
+<p>Lifetime names for struct fields always need to be declared after the <code>impl</code>
+keyword and then used after the struct’s name because those lifetimes are part
+of the struct’s type.</p>
+<p>In method signatures inside the <code>impl</code> block, references might be tied to the
+lifetime of references in the struct’s fields, or they might be independent. In
+addition, the lifetime elision rules often make it so that lifetime annotations
+aren’t necessary in method signatures. Let’s look at some examples using the
+struct named <code>ImportantExcerpt</code> that we defined in Listing 10-24.</p>
+<p>First, we’ll use a method named <code>level</code> whose only parameter is a reference to
+<code>self</code> and whose return value is an <code>i32</code>, which is not a reference to anything:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-10-lifetimes-on-methods/src/main.rs:1st}}
+</code></pre>
+<p>The lifetime parameter declaration after <code>impl</code> and its use after the type name
+are required, but because of the first elision rule, we’re not required to
+annotate the lifetime of the reference to <code>self</code>.</p>
+<p>Here is an example where the third lifetime elision rule applies:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-10-lifetimes-on-methods/src/main.rs:3rd}}
+</code></pre>
+<p>There are two input lifetimes, so Rust applies the first lifetime elision rule
+and gives both <code>&amp;self</code> and <code>announcement</code> their own lifetimes. Then, because
+one of the parameters is <code>&amp;self</code>, the return type gets the lifetime of <code>&amp;self</code>,
+and all lifetimes have been accounted for.</p>
+</body>
+</html>

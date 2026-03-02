@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Defining the page_title Function</title>
+</head>
+<body>
+<h1>Defining the page_title Function</h1>
+<p>Let’s start by writing a function that takes one page URL as a parameter, makes
+a request to it, and returns the text of the <code>&lt;title&gt;</code> element (see Listing
+17-1).</p>
+<p><Listing number="17-1" file-name="src/main.rs" caption="Defining an async function to get the title element from an HTML page"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch17-async-await/listing-17-01/src/main.rs:all}}
+</code></pre>
+<p></Listing></p>
+<p>First, we define a function named <code>page_title</code> and mark it with the <code>async</code>
+keyword. Then we use the <code>trpl::get</code> function to fetch whatever URL is passed
+in and add the <code>await</code> keyword to await the response. To get the text of the
+<code>response</code>, we call its <code>text</code> method and once again await it with the <code>await</code>
+keyword. Both of these steps are asynchronous. For the <code>get</code> function, we have
+to wait for the server to send back the first part of its response, which will
+include HTTP headers, cookies, and so on and can be delivered separately from
+the response body. Especially if the body is very large, it can take some time
+for it all to arrive. Because we have to wait for the <em>entirety</em> of the
+response to arrive, the <code>text</code> method is also async.</p>
+<p>We have to explicitly await both of these futures, because futures in Rust are
+<em>lazy</em>: they don’t do anything until you ask them to with the <code>await</code> keyword.
+(In fact, Rust will show a compiler warning if you don’t use a future.) This
+might remind you of the discussion of iterators in the [“Processing a Series of
+Items with Iterators”][iterators-lazy]<!-- ignore --> section in Chapter 13.
+Iterators do nothing unless you call their <code>next</code> method—whether directly or by
+using <code>for</code> loops or methods such as <code>map</code> that use <code>next</code> under the hood.
+Likewise, futures do nothing unless you explicitly ask them to. This laziness
+allows Rust to avoid running async code until it’s actually needed.</p>
+<blockquote>
+<p>Note: This is different from the behavior we saw when using <code>thread::spawn</code>
+in the [“Creating a New Thread with spawn”][thread-spawn]<!-- ignore -->
+section in Chapter 16, where the closure we passed to another thread started
+running immediately. It’s also different from how many other languages
+approach async. But it’s important for Rust to be able to provide its
+performance guarantees, just as it is with iterators.</p>
+</blockquote>
+<p>Once we have <code>response_text</code>, we can parse it into an instance of the <code>Html</code>
+type using <code>Html::parse</code>. Instead of a raw string, we now have a data type we
+can use to work with the HTML as a richer data structure. In particular, we can
+use the <code>select_first</code> method to find the first instance of a given CSS
+selector. By passing the string <code>"title"</code>, we’ll get the first <code>&lt;title&gt;</code>
+element in the document, if there is one. Because there may not be any matching
+element, <code>select_first</code> returns an <code>Option&lt;ElementRef&gt;</code>. Finally, we use the
+<code>Option::map</code> method, which lets us work with the item in the <code>Option</code> if it’s
+present, and do nothing if it isn’t. (We could also use a <code>match</code> expression
+here, but <code>map</code> is more idiomatic.) In the body of the function we supply to
+<code>map</code>, we call <code>inner_html</code> on the <code>title</code> to get its content, which is a
+<code>String</code>. When all is said and done, we have an <code>Option&lt;String&gt;</code>.</p>
+<p>Notice that Rust’s <code>await</code> keyword goes <em>after</em> the expression you’re awaiting,
+not before it. That is, it’s a <em>postfix</em> keyword. This may differ from what
+you’re used to if you’ve used <code>async</code> in other languages, but in Rust it makes
+chains of methods much nicer to work with. As a result, we could change the
+body of <code>page_title</code> to chain the <code>trpl::get</code> and <code>text</code> function calls
+together with <code>await</code> between them, as shown in Listing 17-2.</p>
+<p><Listing number="17-2" file-name="src/main.rs" caption="Chaining with the <code>await</code> keyword"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch17-async-await/listing-17-02/src/main.rs:chaining}}
+</code></pre>
+<p></Listing></p>
+<p>With that, we have successfully written our first async function! Before we add
+some code in <code>main</code> to call it, let’s talk a little more about what we’ve
+written and what it means.</p>
+<p>When Rust sees a <em>block</em> marked with the <code>async</code> keyword, it compiles it into a
+unique, anonymous data type that implements the <code>Future</code> trait. When Rust sees
+a <em>function</em> marked with <code>async</code>, it compiles it into a non-async function
+whose body is an async block. An async function’s return type is the type of
+the anonymous data type the compiler creates for that async block.</p>
+<p>Thus, writing <code>async fn</code> is equivalent to writing a function that returns a
+<em>future</em> of the return type. To the compiler, a function definition such as the
+<code>async fn page_title</code> in Listing 17-1 is roughly equivalent to a non-async
+function defined like this:</p>
+<pre><code class="language-rust"># extern crate trpl; // required for mdbook test
+use std::future::Future;
+use trpl::Html;
+
+fn page_title(url: &amp;str) -&gt; impl Future&lt;Output = Option&lt;String&gt;&gt; {
+    async move {
+        let text = trpl::get(url).await.text().await;
+        Html::parse(&amp;text)
+            .select_first(&quot;title&quot;)
+            .map(|title| title.inner_html())
+    }
+}
+</code></pre>
+<p>Let’s walk through each part of the transformed version:</p>
+<ul>
+<li>It uses the <code>impl Trait</code> syntax we discussed back in Chapter 10 in the
+  [“Traits as Parameters”][impl-trait]<!-- ignore --> section.</li>
+<li>The returned value implements the <code>Future</code> trait with an associated type of
+  <code>Output</code>. Notice that the <code>Output</code> type is <code>Option&lt;String&gt;</code>, which is the
+  same as the original return type from the <code>async fn</code> version of <code>page_title</code>.</li>
+<li>All of the code called in the body of the original function is wrapped in
+  an <code>async move</code> block. Remember that blocks are expressions. This whole block
+  is the expression returned from the function.</li>
+<li>This async block produces a value with the type <code>Option&lt;String&gt;</code>, as just
+  described. That value matches the <code>Output</code> type in the return type. This is
+  just like other blocks you have seen.</li>
+<li>The new function body is an <code>async move</code> block because of how it uses the
+  <code>url</code> parameter. (We’ll talk much more about <code>async</code> versus <code>async move</code>
+  later in the chapter.)</li>
+</ul>
+<p>Now we can call <code>page_title</code> in <code>main</code>.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id ="determining-a-single-pages-title"></a></p>
+</body>
+</html>

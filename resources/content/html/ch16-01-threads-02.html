@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Waiting for All Threads to Finish</title>
+</head>
+<body>
+<h1>Waiting for All Threads to Finish</h1>
+<p>The code in Listing 16-1 not only stops the spawned thread prematurely most of
+the time due to the main thread ending, but because there is no guarantee on
+the order in which threads run, we also can’t guarantee that the spawned thread
+will get to run at all!</p>
+<p>We can fix the problem of the spawned thread not running or of it ending
+prematurely by saving the return value of <code>thread::spawn</code> in a variable. The
+return type of <code>thread::spawn</code> is <code>JoinHandle&lt;T&gt;</code>. A <code>JoinHandle&lt;T&gt;</code> is an
+owned value that, when we call the <code>join</code> method on it, will wait for its
+thread to finish. Listing 16-2 shows how to use the <code>JoinHandle&lt;T&gt;</code> of the
+thread we created in Listing 16-1 and how to call <code>join</code> to make sure the
+spawned thread finishes before <code>main</code> exits.</p>
+<p><Listing number="16-2" file-name="src/main.rs" caption="Saving a <code>JoinHandle&lt;T&gt;</code> from <code>thread::spawn</code> to guarantee the thread is run to completion"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch16-fearless-concurrency/listing-16-02/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>Calling <code>join</code> on the handle blocks the thread currently running until the
+thread represented by the handle terminates. <em>Blocking</em> a thread means that
+thread is prevented from performing work or exiting. Because we’ve put the call
+to <code>join</code> after the main thread’s <code>for</code> loop, running Listing 16-2 should
+produce output similar to this:</p>
+<!-- Not extracting output because changes to this output aren't significant;
+the changes are likely to be due to the threads running differently rather than
+changes in the compiler -->
+
+<pre><code class="language-text">hi number 1 from the main thread!
+hi number 2 from the main thread!
+hi number 1 from the spawned thread!
+hi number 3 from the main thread!
+hi number 2 from the spawned thread!
+hi number 4 from the main thread!
+hi number 3 from the spawned thread!
+hi number 4 from the spawned thread!
+hi number 5 from the spawned thread!
+hi number 6 from the spawned thread!
+hi number 7 from the spawned thread!
+hi number 8 from the spawned thread!
+hi number 9 from the spawned thread!
+</code></pre>
+<p>The two threads continue alternating, but the main thread waits because of the
+call to <code>handle.join()</code> and does not end until the spawned thread is finished.</p>
+<p>But let’s see what happens when we instead move <code>handle.join()</code> before the
+<code>for</code> loop in <code>main</code>, like this:</p>
+<p><Listing file-name="src/main.rs"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch16-fearless-concurrency/no-listing-01-join-too-early/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>The main thread will wait for the spawned thread to finish and then run its
+<code>for</code> loop, so the output won’t be interleaved anymore, as shown here:</p>
+<!-- Not extracting output because changes to this output aren't significant;
+the changes are likely to be due to the threads running differently rather than
+changes in the compiler -->
+
+<pre><code class="language-text">hi number 1 from the spawned thread!
+hi number 2 from the spawned thread!
+hi number 3 from the spawned thread!
+hi number 4 from the spawned thread!
+hi number 5 from the spawned thread!
+hi number 6 from the spawned thread!
+hi number 7 from the spawned thread!
+hi number 8 from the spawned thread!
+hi number 9 from the spawned thread!
+hi number 1 from the main thread!
+hi number 2 from the main thread!
+hi number 3 from the main thread!
+hi number 4 from the main thread!
+</code></pre>
+<p>Small details, such as where <code>join</code> is called, can affect whether or not your
+threads run at the same time.</p>
+</body>
+</html>

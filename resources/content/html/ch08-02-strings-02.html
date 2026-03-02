@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Creating a New String</title>
+</head>
+<body>
+<h1>Creating a New String</h1>
+<p>Many of the same operations available with <code>Vec&lt;T&gt;</code> are available with <code>String</code>
+as well because <code>String</code> is actually implemented as a wrapper around a vector
+of bytes with some extra guarantees, restrictions, and capabilities. An example
+of a function that works the same way with <code>Vec&lt;T&gt;</code> and <code>String</code> is the <code>new</code>
+function to create an instance, shown in Listing 8-11.</p>
+<p><Listing number="8-11" caption="Creating a new, empty <code>String</code>"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch08-common-collections/listing-08-11/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>This line creates a new, empty string called <code>s</code>, into which we can then load
+data. Often, we’ll have some initial data with which we want to start the
+string. For that, we use the <code>to_string</code> method, which is available on any type
+that implements the <code>Display</code> trait, as string literals do. Listing 8-12 shows
+two examples.</p>
+<p><Listing number="8-12" caption="Using the <code>to_string</code> method to create a <code>String</code> from a string literal"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch08-common-collections/listing-08-12/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>This code creates a string containing <code>initial contents</code>.</p>
+<p>We can also use the function <code>String::from</code> to create a <code>String</code> from a string
+literal. The code in Listing 8-13 is equivalent to the code in Listing 8-12
+that uses <code>to_string</code>.</p>
+<p><Listing number="8-13" caption="Using the <code>String::from</code> function to create a <code>String</code> from a string literal"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch08-common-collections/listing-08-13/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Because strings are used for so many things, we can use many different generic
+APIs for strings, providing us with a lot of options. Some of them can seem
+redundant, but they all have their place! In this case, <code>String::from</code> and
+<code>to_string</code> do the same thing, so which one you choose is a matter of style and
+readability.</p>
+<p>Remember that strings are UTF-8 encoded, so we can include any properly encoded
+data in them, as shown in Listing 8-14.</p>
+<p><Listing number="8-14" caption="Storing greetings in different languages in strings"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch08-common-collections/listing-08-14/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>All of these are valid <code>String</code> values.</p>
+</body>
+</html>

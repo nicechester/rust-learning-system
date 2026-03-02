@@ -1,0 +1,585 @@
+[
+  {
+    "id": "ch01-00-getting-started",
+    "title": "Getting Started",
+    "file": "ch01-00-getting-started.md",
+    "lessons": [
+      {
+        "id": "ch01-01-installation",
+        "title": "Installation",
+        "file": "ch01-01-installation.md"
+      },
+      {
+        "id": "ch01-02-hello-world",
+        "title": "Hello, World!",
+        "file": "ch01-02-hello-world.md"
+      },
+      {
+        "id": "ch01-03-hello-cargo",
+        "title": "Hello, Cargo!",
+        "file": "ch01-03-hello-cargo.md"
+      }
+    ]
+  },
+  {
+    "id": "ch02-00-guessing-game-tutorial",
+    "title": "Programming a Guessing Game",
+    "file": "ch02-00-guessing-game-tutorial.md",
+    "lessons": []
+  },
+  {
+    "id": "ch03-00-common-programming-concepts",
+    "title": "Common Programming Concepts",
+    "file": "ch03-00-common-programming-concepts.md",
+    "lessons": [
+      {
+        "id": "ch03-01-variables-and-mutability",
+        "title": "Variables and Mutability",
+        "file": "ch03-01-variables-and-mutability.md"
+      },
+      {
+        "id": "ch03-02-data-types",
+        "title": "Data Types",
+        "file": "ch03-02-data-types.md"
+      },
+      {
+        "id": "ch03-03-how-functions-work",
+        "title": "Functions",
+        "file": "ch03-03-how-functions-work.md"
+      },
+      {
+        "id": "ch03-04-comments",
+        "title": "Comments",
+        "file": "ch03-04-comments.md"
+      },
+      {
+        "id": "ch03-05-control-flow",
+        "title": "Control Flow",
+        "file": "ch03-05-control-flow.md"
+      }
+    ]
+  },
+  {
+    "id": "ch04-00-understanding-ownership",
+    "title": "Understanding Ownership",
+    "file": "ch04-00-understanding-ownership.md",
+    "lessons": [
+      {
+        "id": "ch04-01-what-is-ownership",
+        "title": "What is Ownership?",
+        "file": "ch04-01-what-is-ownership.md"
+      },
+      {
+        "id": "ch04-02-references-and-borrowing",
+        "title": "References and Borrowing",
+        "file": "ch04-02-references-and-borrowing.md"
+      },
+      {
+        "id": "ch04-03-slices",
+        "title": "The Slice Type",
+        "file": "ch04-03-slices.md"
+      }
+    ]
+  },
+  {
+    "id": "ch05-00-structs",
+    "title": "Using Structs to Structure Related Data",
+    "file": "ch05-00-structs.md",
+    "lessons": [
+      {
+        "id": "ch05-01-defining-structs",
+        "title": "Defining and Instantiating Structs",
+        "file": "ch05-01-defining-structs.md"
+      },
+      {
+        "id": "ch05-02-example-structs",
+        "title": "An Example Program Using Structs",
+        "file": "ch05-02-example-structs.md"
+      },
+      {
+        "id": "ch05-03-method-syntax",
+        "title": "Methods",
+        "file": "ch05-03-method-syntax.md"
+      }
+    ]
+  },
+  {
+    "id": "ch06-00-enums",
+    "title": "Enums and Pattern Matching",
+    "file": "ch06-00-enums.md",
+    "lessons": [
+      {
+        "id": "ch06-01-defining-an-enum",
+        "title": "Defining an Enum",
+        "file": "ch06-01-defining-an-enum.md"
+      },
+      {
+        "id": "ch06-02-match",
+        "title": "The `match` Control Flow Construct",
+        "file": "ch06-02-match.md"
+      },
+      {
+        "id": "ch06-03-if-let",
+        "title": "Concise Control Flow with `if let` and `let...else`",
+        "file": "ch06-03-if-let.md"
+      }
+    ]
+  },
+  {
+    "id": "ch07-00-managing-growing-projects-with-packages-crates-and-modules",
+    "title": "Packages, Crates, and Modules",
+    "file": "ch07-00-managing-growing-projects-with-packages-crates-and-modules.md",
+    "lessons": [
+      {
+        "id": "ch07-01-packages-and-crates",
+        "title": "Packages and Crates",
+        "file": "ch07-01-packages-and-crates.md"
+      },
+      {
+        "id": "ch07-02-defining-modules-to-control-scope-and-privacy",
+        "title": "Control Scope and Privacy with Modules",
+        "file": "ch07-02-defining-modules-to-control-scope-and-privacy.md"
+      },
+      {
+        "id": "ch07-03-paths-for-referring-to-an-item-in-the-module-tree",
+        "title": "Paths for Referring to an Item in the Module Tree",
+        "file": "ch07-03-paths-for-referring-to-an-item-in-the-module-tree.md"
+      },
+      {
+        "id": "ch07-04-bringing-paths-into-scope-with-the-use-keyword",
+        "title": "Bringing Paths Into Scope with the `use` Keyword",
+        "file": "ch07-04-bringing-paths-into-scope-with-the-use-keyword.md"
+      },
+      {
+        "id": "ch07-05-separating-modules-into-different-files",
+        "title": "Separating Modules into Different Files",
+        "file": "ch07-05-separating-modules-into-different-files.md"
+      }
+    ]
+  },
+  {
+    "id": "ch08-00-common-collections",
+    "title": "Common Collections",
+    "file": "ch08-00-common-collections.md",
+    "lessons": [
+      {
+        "id": "ch08-01-vectors",
+        "title": "Storing Lists of Values with Vectors",
+        "file": "ch08-01-vectors.md"
+      },
+      {
+        "id": "ch08-02-strings",
+        "title": "Storing UTF-8 Encoded Text with Strings",
+        "file": "ch08-02-strings.md"
+      },
+      {
+        "id": "ch08-03-hash-maps",
+        "title": "Storing Keys with Associated Values in Hash Maps",
+        "file": "ch08-03-hash-maps.md"
+      }
+    ]
+  },
+  {
+    "id": "ch09-00-error-handling",
+    "title": "Error Handling",
+    "file": "ch09-00-error-handling.md",
+    "lessons": [
+      {
+        "id": "ch09-01-unrecoverable-errors-with-panic",
+        "title": "Unrecoverable Errors with `panic!`",
+        "file": "ch09-01-unrecoverable-errors-with-panic.md"
+      },
+      {
+        "id": "ch09-02-recoverable-errors-with-result",
+        "title": "Recoverable Errors with `Result`",
+        "file": "ch09-02-recoverable-errors-with-result.md"
+      },
+      {
+        "id": "ch09-03-to-panic-or-not-to-panic",
+        "title": "To `panic!` or Not to `panic!`",
+        "file": "ch09-03-to-panic-or-not-to-panic.md"
+      }
+    ]
+  },
+  {
+    "id": "ch10-00-generics",
+    "title": "Generic Types, Traits, and Lifetimes",
+    "file": "ch10-00-generics.md",
+    "lessons": [
+      {
+        "id": "ch10-01-syntax",
+        "title": "Generic Data Types",
+        "file": "ch10-01-syntax.md"
+      },
+      {
+        "id": "ch10-02-traits",
+        "title": "Defining Shared Behavior with Traits",
+        "file": "ch10-02-traits.md"
+      },
+      {
+        "id": "ch10-03-lifetime-syntax",
+        "title": "Validating References with Lifetimes",
+        "file": "ch10-03-lifetime-syntax.md"
+      }
+    ]
+  },
+  {
+    "id": "ch11-00-testing",
+    "title": "Writing Automated Tests",
+    "file": "ch11-00-testing.md",
+    "lessons": [
+      {
+        "id": "ch11-01-writing-tests",
+        "title": "How to Write Tests",
+        "file": "ch11-01-writing-tests.md"
+      },
+      {
+        "id": "ch11-02-running-tests",
+        "title": "Controlling How Tests Are Run",
+        "file": "ch11-02-running-tests.md"
+      },
+      {
+        "id": "ch11-03-test-organization",
+        "title": "Test Organization",
+        "file": "ch11-03-test-organization.md"
+      }
+    ]
+  },
+  {
+    "id": "ch12-00-an-io-project",
+    "title": "An I/O Project: Building a Command Line Program",
+    "file": "ch12-00-an-io-project.md",
+    "lessons": [
+      {
+        "id": "ch12-01-accepting-command-line-arguments",
+        "title": "Accepting Command Line Arguments",
+        "file": "ch12-01-accepting-command-line-arguments.md"
+      },
+      {
+        "id": "ch12-02-reading-a-file",
+        "title": "Reading a File",
+        "file": "ch12-02-reading-a-file.md"
+      },
+      {
+        "id": "ch12-03-improving-error-handling-and-modularity",
+        "title": "Refactoring to Improve Modularity and Error Handling",
+        "file": "ch12-03-improving-error-handling-and-modularity.md"
+      },
+      {
+        "id": "ch12-04-testing-the-librarys-functionality",
+        "title": "Adding Functionality with Test Driven Development",
+        "file": "ch12-04-testing-the-librarys-functionality.md"
+      },
+      {
+        "id": "ch12-05-working-with-environment-variables",
+        "title": "Working with Environment Variables",
+        "file": "ch12-05-working-with-environment-variables.md"
+      },
+      {
+        "id": "ch12-06-writing-to-stderr-instead-of-stdout",
+        "title": "Redirecting Errors to Standard Error",
+        "file": "ch12-06-writing-to-stderr-instead-of-stdout.md"
+      }
+    ]
+  },
+  {
+    "id": "ch13-00-functional-features",
+    "title": "Functional Language Features: Iterators and Closures",
+    "file": "ch13-00-functional-features.md",
+    "lessons": [
+      {
+        "id": "ch13-01-closures",
+        "title": "Closures",
+        "file": "ch13-01-closures.md"
+      },
+      {
+        "id": "ch13-02-iterators",
+        "title": "Processing a Series of Items with Iterators",
+        "file": "ch13-02-iterators.md"
+      },
+      {
+        "id": "ch13-03-improving-our-io-project",
+        "title": "Improving Our I/O Project",
+        "file": "ch13-03-improving-our-io-project.md"
+      },
+      {
+        "id": "ch13-04-performance",
+        "title": "Performance in Loops vs. Iterators",
+        "file": "ch13-04-performance.md"
+      }
+    ]
+  },
+  {
+    "id": "ch14-00-more-about-cargo",
+    "title": "More about Cargo and Crates.io",
+    "file": "ch14-00-more-about-cargo.md",
+    "lessons": [
+      {
+        "id": "ch14-01-release-profiles",
+        "title": "Customizing Builds with Release Profiles",
+        "file": "ch14-01-release-profiles.md"
+      },
+      {
+        "id": "ch14-02-publishing-to-crates-io",
+        "title": "Publishing a Crate to Crates.io",
+        "file": "ch14-02-publishing-to-crates-io.md"
+      },
+      {
+        "id": "ch14-03-cargo-workspaces",
+        "title": "Cargo Workspaces",
+        "file": "ch14-03-cargo-workspaces.md"
+      },
+      {
+        "id": "ch14-04-installing-binaries",
+        "title": "Installing Binaries with `cargo install`",
+        "file": "ch14-04-installing-binaries.md"
+      },
+      {
+        "id": "ch14-05-extending-cargo",
+        "title": "Extending Cargo with Custom Commands",
+        "file": "ch14-05-extending-cargo.md"
+      }
+    ]
+  },
+  {
+    "id": "ch15-00-smart-pointers",
+    "title": "Smart Pointers",
+    "file": "ch15-00-smart-pointers.md",
+    "lessons": [
+      {
+        "id": "ch15-01-box",
+        "title": "Using `Box<T>` to Point to Data on the Heap",
+        "file": "ch15-01-box.md"
+      },
+      {
+        "id": "ch15-02-deref",
+        "title": "Treating Smart Pointers Like Regular References",
+        "file": "ch15-02-deref.md"
+      },
+      {
+        "id": "ch15-03-drop",
+        "title": "Running Code on Cleanup with the `Drop` Trait",
+        "file": "ch15-03-drop.md"
+      },
+      {
+        "id": "ch15-04-rc",
+        "title": "`Rc<T>`, the Reference Counted Smart Pointer",
+        "file": "ch15-04-rc.md"
+      },
+      {
+        "id": "ch15-05-interior-mutability",
+        "title": "`RefCell<T>` and the Interior Mutability Pattern",
+        "file": "ch15-05-interior-mutability.md"
+      },
+      {
+        "id": "ch15-06-reference-cycles",
+        "title": "Reference Cycles Can Leak Memory",
+        "file": "ch15-06-reference-cycles.md"
+      }
+    ]
+  },
+  {
+    "id": "ch16-00-concurrency",
+    "title": "Fearless Concurrency",
+    "file": "ch16-00-concurrency.md",
+    "lessons": [
+      {
+        "id": "ch16-01-threads",
+        "title": "Using Threads to Run Code Simultaneously",
+        "file": "ch16-01-threads.md"
+      },
+      {
+        "id": "ch16-02-message-passing",
+        "title": "Transfer Data Between Threads with Message Passing",
+        "file": "ch16-02-message-passing.md"
+      },
+      {
+        "id": "ch16-03-shared-state",
+        "title": "Shared-State Concurrency",
+        "file": "ch16-03-shared-state.md"
+      },
+      {
+        "id": "ch16-04-extensible-concurrency-sync-and-send",
+        "title": "Extensible Concurrency with `Send` and `Sync`",
+        "file": "ch16-04-extensible-concurrency-sync-and-send.md"
+      }
+    ]
+  },
+  {
+    "id": "ch17-00-async-await",
+    "title": "Fundamentals of Asynchronous Programming: Async, Await, Futures, and Streams",
+    "file": "ch17-00-async-await.md",
+    "lessons": [
+      {
+        "id": "ch17-01-futures-and-syntax",
+        "title": "Futures and the Async Syntax",
+        "file": "ch17-01-futures-and-syntax.md"
+      },
+      {
+        "id": "ch17-02-concurrency-with-async",
+        "title": "Applying Concurrency with Async",
+        "file": "ch17-02-concurrency-with-async.md"
+      },
+      {
+        "id": "ch17-03-more-futures",
+        "title": "Working With Any Number of Futures",
+        "file": "ch17-03-more-futures.md"
+      },
+      {
+        "id": "ch17-04-streams",
+        "title": "Streams: Futures in Sequence",
+        "file": "ch17-04-streams.md"
+      },
+      {
+        "id": "ch17-05-traits-for-async",
+        "title": "A Closer Look at the Traits for Async",
+        "file": "ch17-05-traits-for-async.md"
+      },
+      {
+        "id": "ch17-06-futures-tasks-threads",
+        "title": "Futures, Tasks, and Threads",
+        "file": "ch17-06-futures-tasks-threads.md"
+      }
+    ]
+  },
+  {
+    "id": "ch18-00-oop",
+    "title": "Object Oriented Programming Features",
+    "file": "ch18-00-oop.md",
+    "lessons": [
+      {
+        "id": "ch18-01-what-is-oo",
+        "title": "Characteristics of Object-Oriented Languages",
+        "file": "ch18-01-what-is-oo.md"
+      },
+      {
+        "id": "ch18-02-trait-objects",
+        "title": "Using Trait Objects to Abstract over Shared Behavior",
+        "file": "ch18-02-trait-objects.md"
+      },
+      {
+        "id": "ch18-03-oo-design-patterns",
+        "title": "Implementing an Object-Oriented Design Pattern",
+        "file": "ch18-03-oo-design-patterns.md"
+      }
+    ]
+  },
+  {
+    "id": "ch19-00-patterns",
+    "title": "Patterns and Matching",
+    "file": "ch19-00-patterns.md",
+    "lessons": [
+      {
+        "id": "ch19-01-all-the-places-for-patterns",
+        "title": "All the Places Patterns Can Be Used",
+        "file": "ch19-01-all-the-places-for-patterns.md"
+      },
+      {
+        "id": "ch19-02-refutability",
+        "title": "Refutability: Whether a Pattern Might Fail to Match",
+        "file": "ch19-02-refutability.md"
+      },
+      {
+        "id": "ch19-03-pattern-syntax",
+        "title": "Pattern Syntax",
+        "file": "ch19-03-pattern-syntax.md"
+      }
+    ]
+  },
+  {
+    "id": "ch20-00-advanced-features",
+    "title": "Advanced Features",
+    "file": "ch20-00-advanced-features.md",
+    "lessons": [
+      {
+        "id": "ch20-01-unsafe-rust",
+        "title": "Unsafe Rust",
+        "file": "ch20-01-unsafe-rust.md"
+      },
+      {
+        "id": "ch20-02-advanced-traits",
+        "title": "Advanced Traits",
+        "file": "ch20-02-advanced-traits.md"
+      },
+      {
+        "id": "ch20-03-advanced-types",
+        "title": "Advanced Types",
+        "file": "ch20-03-advanced-types.md"
+      },
+      {
+        "id": "ch20-04-advanced-functions-and-closures",
+        "title": "Advanced Functions and Closures",
+        "file": "ch20-04-advanced-functions-and-closures.md"
+      },
+      {
+        "id": "ch20-05-macros",
+        "title": "Macros",
+        "file": "ch20-05-macros.md"
+      }
+    ]
+  },
+  {
+    "id": "ch21-00-final-project-a-web-server",
+    "title": "Final Project: Building a Multithreaded Web Server",
+    "file": "ch21-00-final-project-a-web-server.md",
+    "lessons": [
+      {
+        "id": "ch21-01-single-threaded",
+        "title": "Building a Single-Threaded Web Server",
+        "file": "ch21-01-single-threaded.md"
+      },
+      {
+        "id": "ch21-02-multithreaded",
+        "title": "From Single-Threaded to Multithreaded Server",
+        "file": "ch21-02-multithreaded.md"
+      },
+      {
+        "id": "ch21-03-graceful-shutdown-and-cleanup",
+        "title": "Graceful Shutdown and Cleanup",
+        "file": "ch21-03-graceful-shutdown-and-cleanup.md"
+      }
+    ]
+  },
+  {
+    "id": "appendix-00",
+    "title": "Appendix",
+    "file": "appendix-00.md",
+    "lessons": [
+      {
+        "id": "appendix-01-keywords",
+        "title": "A - Keywords",
+        "file": "appendix-01-keywords.md"
+      },
+      {
+        "id": "appendix-02-operators",
+        "title": "B - Operators and Symbols",
+        "file": "appendix-02-operators.md"
+      },
+      {
+        "id": "appendix-03-derivable-traits",
+        "title": "C - Derivable Traits",
+        "file": "appendix-03-derivable-traits.md"
+      },
+      {
+        "id": "appendix-04-useful-development-tools",
+        "title": "D - Useful Development Tools",
+        "file": "appendix-04-useful-development-tools.md"
+      },
+      {
+        "id": "appendix-05-editions",
+        "title": "E - Editions",
+        "file": "appendix-05-editions.md"
+      },
+      {
+        "id": "appendix-06-translation",
+        "title": "F - Translations of the Book",
+        "file": "appendix-06-translation.md"
+      },
+      {
+        "id": "appendix-07-nightly-rust",
+        "title": "G - How Rust is Made and \u201cNightly Rust\u201d",
+        "file": "appendix-07-nightly-rust.md"
+      }
+    ]
+  }
+]

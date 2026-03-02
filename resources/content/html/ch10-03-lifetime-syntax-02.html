@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>The Borrow Checker</title>
+</head>
+<body>
+<h1>The Borrow Checker</h1>
+<p>The Rust compiler has a <em>borrow checker</em> that compares scopes to determine
+whether all borrows are valid. Listing 10-17 shows the same code as Listing
+10-16 but with annotations showing the lifetimes of the variables.</p>
+<p><Listing number="10-17" caption="Annotations of the lifetimes of <code>r</code> and <code>x</code>, named <code>'a</code> and <code>'b</code>, respectively"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-17/src/main.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+Here, we’ve annotated the lifetime of `r` with `'a` and the lifetime of `x`
+with `'b`. As you can see, the inner `'b` block is much smaller than the outer
+`'a` lifetime block. At compile time, Rust compares the size of the two
+lifetimes and sees that `r` has a lifetime of `'a` but that it refers to memory
+with a lifetime of `'b`. The program is rejected because `'b` is shorter than
+`'a`: The subject of the reference doesn’t live as long as the reference.
+
+Listing 10-18 fixes the code so that it doesn’t have a dangling reference and
+it compiles without any errors.
+
+&lt;Listing number=&quot;10-18&quot; caption=&quot;A valid reference because the data has a longer lifetime than the reference&quot;&gt;
+
+```rust
+{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-18/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>Here, <code>x</code> has the lifetime <code>'b</code>, which in this case is larger than <code>'a</code>. This
+means <code>r</code> can reference <code>x</code> because Rust knows that the reference in <code>r</code> will
+always be valid while <code>x</code> is valid.</p>
+<p>Now that you know where the lifetimes of references are and how Rust analyzes
+lifetimes to ensure that references will always be valid, let’s explore generic
+lifetimes in function parameters and return values.</p>
+</body>
+</html>

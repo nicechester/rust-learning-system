@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Parameters</title>
+</head>
+<body>
+<h1>Parameters</h1>
+<p>We can define functions to have <em>parameters</em>, which are special variables that
+are part of a function’s signature. When a function has parameters, you can
+provide it with concrete values for those parameters. Technically, the concrete
+values are called <em>arguments</em>, but in casual conversation, people tend to use
+the words <em>parameter</em> and <em>argument</em> interchangeably for either the variables
+in a function’s definition or the concrete values passed in when you call a
+function.</p>
+<p>In this version of <code>another_function</code> we add a parameter:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-17-functions-with-parameters/src/main.rs}}
+</code></pre>
+<p>Try running this program; you should get the following output:</p>
+<pre><code class="language-console">{{#include ../listings/ch03-common-programming-concepts/no-listing-17-functions-with-parameters/output.txt}}
+</code></pre>
+<p>The declaration of <code>another_function</code> has one parameter named <code>x</code>. The type of
+<code>x</code> is specified as <code>i32</code>. When we pass <code>5</code> in to <code>another_function</code>, the
+<code>println!</code> macro puts <code>5</code> where the pair of curly brackets containing <code>x</code> was
+in the format string.</p>
+<p>In function signatures, you <em>must</em> declare the type of each parameter. This is
+a deliberate decision in Rust’s design: Requiring type annotations in function
+definitions means the compiler almost never needs you to use them elsewhere in
+the code to figure out what type you mean. The compiler is also able to give
+more-helpful error messages if it knows what types the function expects.</p>
+<p>When defining multiple parameters, separate the parameter declarations with
+commas, like this:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-18-functions-with-multiple-parameters/src/main.rs}}
+</code></pre>
+<p>This example creates a function named <code>print_labeled_measurement</code> with two
+parameters. The first parameter is named <code>value</code> and is an <code>i32</code>. The second is
+named <code>unit_label</code> and is type <code>char</code>. The function then prints text containing
+both the <code>value</code> and the <code>unit_label</code>.</p>
+<p>Let’s try running this code. Replace the program currently in your <em>functions</em>
+project’s <em>src/main.rs</em> file with the preceding example and run it using <code>cargo
+run</code>:</p>
+<pre><code class="language-console">{{#include ../listings/ch03-common-programming-concepts/no-listing-18-functions-with-multiple-parameters/output.txt}}
+</code></pre>
+<p>Because we called the function with <code>5</code> as the value for <code>value</code> and <code>'h'</code> as
+the value for <code>unit_label</code>, the program output contains those values.</p>
+</body>
+</html>

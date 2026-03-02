@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Slicing Strings</title>
+</head>
+<body>
+<h1>Slicing Strings</h1>
+<p>Indexing into a string is often a bad idea because it’s not clear what the
+return type of the string-indexing operation should be: a byte value, a
+character, a grapheme cluster, or a string slice. If you really need to use
+indices to create string slices, therefore, Rust asks you to be more specific.</p>
+<p>Rather than indexing using <code>[]</code> with a single number, you can use <code>[]</code> with a
+range to create a string slice containing particular bytes:</p>
+<pre><code class="language-rust">let hello = &quot;Здравствуйте&quot;;
+
+let s = &amp;hello[0..4];
+</code></pre>
+<p>Here, <code>s</code> will be a <code>&amp;str</code> that contains the first 4 bytes of the string.
+Earlier, we mentioned that each of these characters was 2 bytes, which means
+<code>s</code> will be <code>Зд</code>.</p>
+<p>If we were to try to slice only part of a character’s bytes with something like
+<code>&amp;hello[0..1]</code>, Rust would panic at runtime in the same way as if an invalid
+index were accessed in a vector:</p>
+<pre><code class="language-console">{{#include ../listings/ch08-common-collections/output-only-01-not-char-boundary/output.txt}}
+</code></pre>
+<p>You should use caution when creating string slices with ranges, because doing
+so can crash your program.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="methods-for-iterating-over-strings"></a></p>
+</body>
+</html>

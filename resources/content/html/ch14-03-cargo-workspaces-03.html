@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Depending on an External Package</title>
+</head>
+<body>
+<h1>Depending on an External Package</h1>
+<p>Notice that the workspace has only one <em>Cargo.lock</em> file at the top level,
+rather than having a <em>Cargo.lock</em> in each crate’s directory. This ensures that
+all crates are using the same version of all dependencies. If we add the <code>rand</code>
+package to the <em>adder/Cargo.toml</em> and <em>add_one/Cargo.toml</em> files, Cargo will
+resolve both of those to one version of <code>rand</code> and record that in the one
+<em>Cargo.lock</em>. Making all crates in the workspace use the same dependencies
+means the crates will always be compatible with each other. Let’s add the
+<code>rand</code> crate to the <code>[dependencies]</code> section in the <em>add_one/Cargo.toml</em> file
+so that we can use the <code>rand</code> crate in the <code>add_one</code> crate:</p>
+<!-- When updating the version of `rand` used, also update the version of
+`rand` used in these files so they all match:
+* ch02-00-guessing-game-tutorial.md
+* ch07-04-bringing-paths-into-scope-with-the-use-keyword.md
+-->
+
+<p><span class="filename">Filename: add_one/Cargo.toml</span></p>
+<pre><code class="language-toml">{{#include ../listings/ch14-more-about-cargo/no-listing-03-workspace-with-external-dependency/add/add_one/Cargo.toml:6:7}}
+</code></pre>
+<p>We can now add <code>use rand;</code> to the <em>add_one/src/lib.rs</em> file, and building the
+whole workspace by running <code>cargo build</code> in the <em>add</em> directory will bring in
+and compile the <code>rand</code> crate. We will get one warning because we aren’t
+referring to the <code>rand</code> we brought into scope:</p>
+<!-- manual-regeneration
+cd listings/ch14-more-about-cargo/no-listing-03-workspace-with-external-dependency/add
+cargo build
+copy output below; the output updating script doesn't handle subdirectories in paths properly
+-->
+
+<pre><code class="language-console">$ cargo build
+    Updating crates.io index
+  Downloaded rand v0.8.5
+   --snip--
+   Compiling rand v0.8.5
+   Compiling add_one v0.1.0 (file:///projects/add/add_one)
+warning: unused import: `rand`
+ --&gt; add_one/src/lib.rs:1:5
+  |
+1 | use rand;
+  |     ^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: `add_one` (lib) generated 1 warning (run `cargo fix --lib -p add_one` to apply 1 suggestion)
+   Compiling adder v0.1.0 (file:///projects/add/adder)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.95s
+</code></pre>
+<p>The top-level <em>Cargo.lock</em> now contains information about the dependency of
+<code>add_one</code> on <code>rand</code>. However, even though <code>rand</code> is used somewhere in the
+workspace, we can’t use it in other crates in the workspace unless we add
+<code>rand</code> to their <em>Cargo.toml</em> files as well. For example, if we add <code>use rand;</code>
+to the <em>adder/src/main.rs</em> file for the <code>adder</code> package, we’ll get an error:</p>
+<!-- manual-regeneration
+cd listings/ch14-more-about-cargo/output-only-03-use-rand/add
+cargo build
+copy output below; the output updating script doesn't handle subdirectories in paths properly
+-->
+
+<pre><code class="language-console">$ cargo build
+  --snip--
+   Compiling adder v0.1.0 (file:///projects/add/adder)
+error[E0432]: unresolved import `rand`
+ --&gt; adder/src/main.rs:2:5
+  |
+2 | use rand;
+  |     ^^^^ no external crate `rand`
+</code></pre>
+<p>To fix this, edit the <em>Cargo.toml</em> file for the <code>adder</code> package and indicate
+that <code>rand</code> is a dependency for it as well. Building the <code>adder</code> package will
+add <code>rand</code> to the list of dependencies for <code>adder</code> in <em>Cargo.lock</em>, but no
+additional copies of <code>rand</code> will be downloaded. Cargo will ensure that every
+crate in every package in the workspace using the <code>rand</code> package will use the
+same version as long as they specify compatible versions of <code>rand</code>, saving us
+space and ensuring that the crates in the workspace will be compatible with
+each other.</p>
+<p>If crates in the workspace specify incompatible versions of the same
+dependency, Cargo will resolve each of them but will still try to resolve as
+few versions as possible.</p>
+</body>
+</html>

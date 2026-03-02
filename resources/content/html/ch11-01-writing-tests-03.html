@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Testing Equality with `assert_eq!` and `assert_ne!`</title>
+</head>
+<body>
+<h1>Testing Equality with `assert_eq!` and `assert_ne!`</h1>
+<p>A common way to verify functionality is to test for equality between the result
+of the code under test and the value you expect the code to return. You could
+do this by using the <code>assert!</code> macro and passing it an expression using the
+<code>==</code> operator. However, this is such a common test that the standard library
+provides a pair of macros—<code>assert_eq!</code> and <code>assert_ne!</code>—to perform this test
+more conveniently. These macros compare two arguments for equality or
+inequality, respectively. They’ll also print the two values if the assertion
+fails, which makes it easier to see <em>why</em> the test failed; conversely, the
+<code>assert!</code> macro only indicates that it got a <code>false</code> value for the <code>==</code>
+expression, without printing the values that led to the <code>false</code> value.</p>
+<p>In Listing 11-7, we write a function named <code>add_two</code> that adds <code>2</code> to its
+parameter, and then we test this function using the <code>assert_eq!</code> macro.</p>
+<p><Listing number="11-7" file-name="src/lib.rs" caption="Testing the function <code>add_two</code> using the <code>assert_eq!</code> macro"></p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-07/src/lib.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+Let’s check that it passes!
+
+```console
+{{#include ../listings/ch11-writing-automated-tests/listing-11-07/output.txt}}
+</code></pre>
+<p>We create a variable named <code>result</code> that holds the result of calling
+<code>add_two(2)</code>. Then, we pass <code>result</code> and <code>4</code> as the arguments to the
+<code>assert_eq!</code> macro. The output line for this test is <code>test tests::it_adds_two
+... ok</code>, and the <code>ok</code> text indicates that our test passed!</p>
+<p>Let’s introduce a bug into our code to see what <code>assert_eq!</code> looks like when it
+fails. Change the implementation of the <code>add_two</code> function to instead add <code>3</code>:</p>
+<p>```rust,not_desired_behavior,noplayground
+{{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-04-bug-in-add-two/src/lib.rs:here}}</p>
+<pre><code>
+Run the tests again:
+
+```console
+{{#include ../listings/ch11-writing-automated-tests/no-listing-04-bug-in-add-two/output.txt}}
+</code></pre>
+<p>Our test caught the bug! The <code>tests::it_adds_two</code> test failed, and the message
+tells us that the assertion that failed was <code>left == right</code> and what the <code>left</code>
+and <code>right</code> values are. This message helps us start debugging: The <code>left</code>
+argument, where we had the result of calling <code>add_two(2)</code>, was <code>5</code>, but the
+<code>right</code> argument was <code>4</code>. You can imagine that this would be especially helpful
+when we have a lot of tests going on.</p>
+<p>Note that in some languages and test frameworks, the parameters to equality
+assertion functions are called <code>expected</code> and <code>actual</code>, and the order in which
+we specify the arguments matters. However, in Rust, they’re called <code>left</code> and
+<code>right</code>, and the order in which we specify the value we expect and the value
+the code produces doesn’t matter. We could write the assertion in this test as
+<code>assert_eq!(4, result)</code>, which would result in the same failure message that
+displays <code>assertion `left == right` failed</code>.</p>
+<p>The <code>assert_ne!</code> macro will pass if the two values we give it are not equal and
+will fail if they are equal. This macro is most useful for cases when we’re not
+sure what a value <em>will</em> be, but we know what the value definitely <em>shouldn’t</em>
+be. For example, if we’re testing a function that is guaranteed to change its
+input in some way, but the way in which the input is changed depends on the day
+of the week that we run our tests, the best thing to assert might be that the
+output of the function is not equal to the input.</p>
+<p>Under the surface, the <code>assert_eq!</code> and <code>assert_ne!</code> macros use the operators
+<code>==</code> and <code>!=</code>, respectively. When the assertions fail, these macros print their
+arguments using debug formatting, which means the values being compared must
+implement the <code>PartialEq</code> and <code>Debug</code> traits. All primitive types and most of
+the standard library types implement these traits. For structs and enums that
+you define yourself, you’ll need to implement <code>PartialEq</code> to assert equality of
+those types. You’ll also need to implement <code>Debug</code> to print the values when the
+assertion fails. Because both traits are derivable traits, as mentioned in
+Listing 5-12 in Chapter 5, this is usually as straightforward as adding the
+<code>#[derive(PartialEq, Debug)]</code> annotation to your struct or enum definition. See
+Appendix C, [“Derivable Traits,”][derivable-traits]<!-- ignore --> for more
+details about these and other derivable traits.</p>
+</body>
+</html>

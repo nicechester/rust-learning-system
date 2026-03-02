@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>`for` Loops</title>
+</head>
+<body>
+<h1>`for` Loops</h1>
+<p>In a <code>for</code> loop, the value that directly follows the keyword <code>for</code> is a
+pattern. For example, in <code>for x in y</code>, the <code>x</code> is the pattern. Listing 19-5
+demonstrates how to use a pattern in a <code>for</code> loop to destructure, or break
+apart, a tuple as part of the <code>for</code> loop.</p>
+<p><Listing number="19-5" caption="Using a pattern in a <code>for</code> loop to destructure a tuple"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-05/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>The code in Listing 19-5 will print the following:</p>
+<pre><code class="language-console">{{#include ../listings/ch19-patterns-and-matching/listing-19-05/output.txt}}
+</code></pre>
+<p>We adapt an iterator using the <code>enumerate</code> method so that it produces a value
+and the index for that value, placed into a tuple. The first value produced is
+the tuple <code>(0, 'a')</code>. When this value is matched to the pattern <code>(index,
+value)</code>, index will be <code>0</code> and value will be <code>'a'</code>, printing the first line of
+the output.</p>
+</body>
+</html>

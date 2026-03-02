@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Introduction</title>
+</head>
+<body>
+<h1>Introduction</h1>
+<h2>Building a Single-Threaded Web Server</h2>
+<p>We’ll start by getting a single-threaded web server working. Before we begin,
+let’s look at a quick overview of the protocols involved in building web
+servers. The details of these protocols are beyond the scope of this book, but
+a brief overview will give you the information you need.</p>
+<p>The two main protocols involved in web servers are <em>Hypertext Transfer
+Protocol</em> <em>(HTTP)</em> and <em>Transmission Control Protocol</em> <em>(TCP)</em>. Both protocols
+are <em>request-response</em> protocols, meaning a <em>client</em> initiates requests and a
+<em>server</em> listens to the requests and provides a response to the client. The
+contents of those requests and responses are defined by the protocols.</p>
+<p>TCP is the lower-level protocol that describes the details of how information
+gets from one server to another but doesn’t specify what that information is.
+HTTP builds on top of TCP by defining the contents of the requests and
+responses. It’s technically possible to use HTTP with other protocols, but in
+the vast majority of cases, HTTP sends its data over TCP. We’ll work with the
+raw bytes of TCP and HTTP requests and responses.</p>
+</body>
+</html>

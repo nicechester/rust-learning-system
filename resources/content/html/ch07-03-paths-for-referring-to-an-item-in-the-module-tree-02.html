@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Starting Relative Paths with `super`</title>
+</head>
+<body>
+<h1>Starting Relative Paths with `super`</h1>
+<p>We can construct relative paths that begin in the parent module, rather than
+the current module or the crate root, by using <code>super</code> at the start of the
+path. This is like starting a filesystem path with the <code>..</code> syntax that means
+to go to the parent directory. Using <code>super</code> allows us to reference an item
+that we know is in the parent module, which can make rearranging the module
+tree easier when the module is closely related to the parent but the parent
+might be moved elsewhere in the module tree someday.</p>
+<p>Consider the code in Listing 7-8 that models the situation in which a chef
+fixes an incorrect order and personally brings it out to the customer. The
+function <code>fix_incorrect_order</code> defined in the <code>back_of_house</code> module calls the
+function <code>deliver_order</code> defined in the parent module by specifying the path to
+<code>deliver_order</code>, starting with <code>super</code>.</p>
+<p><Listing number="7-8" file-name="src/lib.rs" caption="Calling a function using a relative path starting with <code>super</code>"></p>
+<p><code>rust,noplayground,test_harness
+{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-08/src/lib.rs}}</code></p>
+<p></Listing></p>
+<p>The <code>fix_incorrect_order</code> function is in the <code>back_of_house</code> module, so we can
+use <code>super</code> to go to the parent module of <code>back_of_house</code>, which in this case
+is <code>crate</code>, the root. From there, we look for <code>deliver_order</code> and find it.
+Success! We think the <code>back_of_house</code> module and the <code>deliver_order</code> function
+are likely to stay in the same relationship to each other and get moved
+together should we decide to reorganize the crate’s module tree. Therefore, we
+used <code>super</code> so that we’ll have fewer places to update code in the future if
+this code gets moved to a different module.</p>
+</body>
+</html>

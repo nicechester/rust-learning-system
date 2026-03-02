@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Writing a Response</title>
+</head>
+<body>
+<h1>Writing a Response</h1>
+<p>We’re going to implement sending data in response to a client request.
+Responses have the following format:</p>
+<pre><code class="language-text">HTTP-Version Status-Code Reason-Phrase CRLF
+headers CRLF
+message-body
+</code></pre>
+<p>The first line is a <em>status line</em> that contains the HTTP version used in the
+response, a numeric status code that summarizes the result of the request, and
+a reason phrase that provides a text description of the status code. After the
+CRLF sequence are any headers, another CRLF sequence, and the body of the
+response.</p>
+<p>Here is an example response that uses HTTP version 1.1 and has a status code of
+200, an OK reason phrase, no headers, and no body:</p>
+<pre><code class="language-text">HTTP/1.1 200 OK\r\n\r\n
+</code></pre>
+<p>The status code 200 is the standard success response. The text is a tiny
+successful HTTP response. Let’s write this to the stream as our response to a
+successful request! From the <code>handle_connection</code> function, remove the
+<code>println!</code> that was printing the request data and replace it with the code in
+Listing 21-3.</p>
+<p><Listing number="21-3" file-name="src/main.rs" caption="Writing a tiny successful HTTP response to the stream"></p>
+<p><code>rust,no_run
+{{#rustdoc_include ../listings/ch21-web-server/listing-21-03/src/main.rs:here}}</code></p>
+<p></Listing></p>
+<p>The first new line defines the <code>response</code> variable that holds the success
+message’s data. Then, we call <code>as_bytes</code> on our <code>response</code> to convert the
+string data to bytes. The <code>write_all</code> method on <code>stream</code> takes a <code>&amp;[u8]</code> and
+sends those bytes directly down the connection. Because the <code>write_all</code>
+operation could fail, we use <code>unwrap</code> on any error result as before. Again, in
+a real application, you would add error handling here.</p>
+<p>With these changes, let’s run our code and make a request. We’re no longer
+printing any data to the terminal, so we won’t see any output other than the
+output from Cargo. When you load <em>127.0.0.1:7878</em> in a web browser, you should
+get a blank page instead of an error. You’ve just handcoded receiving an HTTP
+request and sending a response!</p>
+</body>
+</html>

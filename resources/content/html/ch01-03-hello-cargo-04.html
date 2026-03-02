@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Leveraging Cargo’s Conventions</title>
+</head>
+<body>
+<h1>Leveraging Cargo’s Conventions</h1>
+<p>With simple projects, Cargo doesn’t provide a lot of value over just using
+<code>rustc</code>, but it will prove its worth as your programs become more intricate.
+Once programs grow to multiple files or need a dependency, it’s much easier to
+let Cargo coordinate the build.</p>
+<p>Even though the <code>hello_cargo</code> project is simple, it now uses much of the real
+tooling you’ll use in the rest of your Rust career. In fact, to work on any
+existing projects, you can use the following commands to check out the code
+using Git, change to that project’s directory, and build:</p>
+<pre><code class="language-console">$ git clone example.org/someproject
+$ cd someproject
+$ cargo build
+</code></pre>
+<p>For more information about Cargo, check out <a href="https://doc.rust-lang.org/cargo/">its documentation</a>.</p>
+<h2>Summary</h2>
+<p>You’re already off to a great start on your Rust journey! In this chapter, you
+learned how to:</p>
+<ul>
+<li>Install the latest stable version of Rust using <code>rustup</code>.</li>
+<li>Update to a newer Rust version.</li>
+<li>Open locally installed documentation.</li>
+<li>Write and run a “Hello, world!” program using <code>rustc</code> directly.</li>
+<li>Create and run a new project using the conventions of Cargo.</li>
+</ul>
+<p>This is a great time to build a more substantial program to get used to reading
+and writing Rust code. So, in Chapter 2, we’ll build a guessing game program.
+If you would rather start by learning how common programming concepts work in
+Rust, see Chapter 3 and then return to Chapter 2.</p>
+</body>
+</html>

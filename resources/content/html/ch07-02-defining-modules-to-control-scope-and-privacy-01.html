@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Modules Cheat Sheet</title>
+</head>
+<body>
+<h1>Modules Cheat Sheet</h1>
+<p>Before we get to the details of modules and paths, here we provide a quick
+reference on how modules, paths, the <code>use</code> keyword, and the <code>pub</code> keyword work
+in the compiler, and how most developers organize their code. We’ll be going
+through examples of each of these rules throughout this chapter, but this is a
+great place to refer to as a reminder of how modules work.</p>
+<ul>
+<li><strong>Start from the crate root</strong>: When compiling a crate, the compiler first
+  looks in the crate root file (usually <em>src/lib.rs</em> for a library crate and
+  <em>src/main.rs</em> for a binary crate) for code to compile.</li>
+<li><strong>Declaring modules</strong>: In the crate root file, you can declare new modules;
+  say you declare a “garden” module with <code>mod garden;</code>. The compiler will look
+  for the module’s code in these places:</li>
+<li>Inline, within curly brackets that replace the semicolon following <code>mod
+    garden</code></li>
+<li>In the file <em>src/garden.rs</em></li>
+<li>In the file <em>src/garden/mod.rs</em></li>
+<li><strong>Declaring submodules</strong>: In any file other than the crate root, you can
+  declare submodules. For example, you might declare <code>mod vegetables;</code> in
+  <em>src/garden.rs</em>. The compiler will look for the submodule’s code within the
+  directory named for the parent module in these places:</li>
+<li>Inline, directly following <code>mod vegetables</code>, within curly brackets instead
+    of the semicolon</li>
+<li>In the file <em>src/garden/vegetables.rs</em></li>
+<li>In the file <em>src/garden/vegetables/mod.rs</em></li>
+<li><strong>Paths to code in modules</strong>: Once a module is part of your crate, you can
+  refer to code in that module from anywhere else in that same crate, as long
+  as the privacy rules allow, using the path to the code. For example, an
+  <code>Asparagus</code> type in the garden vegetables module would be found at
+  <code>crate::garden::vegetables::Asparagus</code>.</li>
+<li><strong>Private vs. public</strong>: Code within a module is private from its parent
+  modules by default. To make a module public, declare it with <code>pub mod</code>
+  instead of <code>mod</code>. To make items within a public module public as well, use
+  <code>pub</code> before their declarations.</li>
+<li><strong>The <code>use</code> keyword</strong>: Within a scope, the <code>use</code> keyword creates shortcuts to
+  items to reduce repetition of long paths. In any scope that can refer to
+  <code>crate::garden::vegetables::Asparagus</code>, you can create a shortcut with <code>use
+  crate::garden::vegetables::Asparagus;</code>, and from then on you only need to
+  write <code>Asparagus</code> to make use of that type in the scope.</li>
+</ul>
+<p>Here, we create a binary crate named <code>backyard</code> that illustrates these rules.
+The crate’s directory, also named <em>backyard</em>, contains these files and
+directories:</p>
+<pre><code class="language-text">backyard
+├── Cargo.lock
+├── Cargo.toml
+└── src
+    ├── garden
+    │   └── vegetables.rs
+    ├── garden.rs
+    └── main.rs
+</code></pre>
+<p>The crate root file in this case is <em>src/main.rs</em>, and it contains:</p>
+<p><Listing file-name="src/main.rs"></p>
+<p>```rust,noplayground,ignore
+{{#rustdoc_include ../listings/ch07-managing-growing-projects/quick-reference-example/src/main.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+The `pub mod garden;` line tells the compiler to include the code it finds in
+_src/garden.rs_, which is:
+
+&lt;Listing file-name=&quot;src/garden.rs&quot;&gt;
+
+```rust,noplayground,ignore
+{{#rustdoc_include ../listings/ch07-managing-growing-projects/quick-reference-example/src/garden.rs}}
+</code></pre>
+<p></Listing></p>
+<p>Here, <code>pub mod vegetables;</code> means the code in <em>src/garden/vegetables.rs</em> is
+included too. That code is:</p>
+<p><code>rust,noplayground,ignore
+{{#rustdoc_include ../listings/ch07-managing-growing-projects/quick-reference-example/src/garden/vegetables.rs}}</code></p>
+<p>Now let’s get into the details of these rules and demonstrate them in action!</p>
+</body>
+</html>

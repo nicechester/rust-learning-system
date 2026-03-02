@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Deprecating Versions from Crates.io</title>
+</head>
+<body>
+<h1>Deprecating Versions from Crates.io</h1>
+<p>Although you can’t remove previous versions of a crate, you can prevent any
+future projects from adding them as a new dependency. This is useful when a
+crate version is broken for one reason or another. In such situations, Cargo
+supports yanking a crate version.</p>
+<p><em>Yanking</em> a version prevents new projects from depending on that version while
+allowing all existing projects that depend on it to continue. Essentially, a
+yank means that all projects with a <em>Cargo.lock</em> will not break, and any future
+<em>Cargo.lock</em> files generated will not use the yanked version.</p>
+<p>To yank a version of a crate, in the directory of the crate that you’ve
+previously published, run <code>cargo yank</code> and specify which version you want to
+yank. For example, if we’ve published a crate named <code>guessing_game</code> version
+1.0.1 and we want to yank it, then we’d run the following in the project
+directory for <code>guessing_game</code>:</p>
+<!-- manual-regeneration:
+cargo yank carol-test --version 2.1.0
+cargo yank carol-test --version 2.1.0 --undo
+-->
+
+<pre><code class="language-console">$ cargo yank --vers 1.0.1
+    Updating crates.io index
+        Yank guessing_game@1.0.1
+</code></pre>
+<p>By adding <code>--undo</code> to the command, you can also undo a yank and allow projects
+to start depending on a version again:</p>
+<pre><code class="language-console">$ cargo yank --vers 1.0.1 --undo
+    Updating crates.io index
+      Unyank guessing_game@1.0.1
+</code></pre>
+<p>A yank <em>does not</em> delete any code. It cannot, for example, delete accidentally
+uploaded secrets. If that happens, you must reset those secrets immediately.</p>
+</body>
+</html>

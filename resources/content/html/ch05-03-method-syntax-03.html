@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Associated Functions</title>
+</head>
+<body>
+<h1>Associated Functions</h1>
+<p>All functions defined within an <code>impl</code> block are called <em>associated functions</em>
+because they’re associated with the type named after the <code>impl</code>. We can define
+associated functions that don’t have <code>self</code> as their first parameter (and thus
+are not methods) because they don’t need an instance of the type to work with.
+We’ve already used one function like this: the <code>String::from</code> function that’s
+defined on the <code>String</code> type.</p>
+<p>Associated functions that aren’t methods are often used for constructors that
+will return a new instance of the struct. These are often called <code>new</code>, but
+<code>new</code> isn’t a special name and isn’t built into the language. For example, we
+could choose to provide an associated function named <code>square</code> that would have
+one dimension parameter and use that as both width and height, thus making it
+easier to create a square <code>Rectangle</code> rather than having to specify the same
+value twice:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/no-listing-03-associated-functions/src/main.rs:here}}
+</code></pre>
+<p>The <code>Self</code> keywords in the return type and in the body of the function are
+aliases for the type that appears after the <code>impl</code> keyword, which in this case
+is <code>Rectangle</code>.</p>
+<p>To call this associated function, we use the <code>::</code> syntax with the struct name;
+<code>let sq = Rectangle::square(3);</code> is an example. This function is namespaced by
+the struct: The <code>::</code> syntax is used for both associated functions and
+namespaces created by modules. We’ll discuss modules in [Chapter
+7][modules]<!-- ignore -->.</p>
+</body>
+</html>

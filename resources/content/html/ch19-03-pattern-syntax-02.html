@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Matching Named Variables</title>
+</head>
+<body>
+<h1>Matching Named Variables</h1>
+<p>Named variables are irrefutable patterns that match any value, and we’ve used
+them many times in this book. However, there is a complication when you use
+named variables in <code>match</code>, <code>if let</code>, or <code>while let</code> expressions. Because each
+of these kinds of expressions starts a new scope, variables declared as part of
+a pattern inside these expressions will shadow those with the same name outside
+the constructs, as is the case with all variables. In Listing 19-11, we declare
+a variable named <code>x</code> with the value <code>Some(5)</code> and a variable <code>y</code> with the value
+<code>10</code>. We then create a <code>match</code> expression on the value <code>x</code>. Look at the
+patterns in the match arms and <code>println!</code> at the end, and try to figure out
+what the code will print before running this code or reading further.</p>
+<p><Listing number="19-11" file-name="src/main.rs" caption="A <code>match</code> expression with an arm that introduces a new variable which shadows an existing variable <code>y</code>"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-11/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Let’s walk through what happens when the <code>match</code> expression runs. The pattern
+in the first match arm doesn’t match the defined value of <code>x</code>, so the code
+continues.</p>
+<p>The pattern in the second match arm introduces a new variable named <code>y</code> that
+will match any value inside a <code>Some</code> value. Because we’re in a new scope inside
+the <code>match</code> expression, this is a new <code>y</code> variable, not the <code>y</code> we declared at
+the beginning with the value <code>10</code>. This new <code>y</code> binding will match any value
+inside a <code>Some</code>, which is what we have in <code>x</code>. Therefore, this new <code>y</code> binds to
+the inner value of the <code>Some</code> in <code>x</code>. That value is <code>5</code>, so the expression for
+that arm executes and prints <code>Matched, y = 5</code>.</p>
+<p>If <code>x</code> had been a <code>None</code> value instead of <code>Some(5)</code>, the patterns in the first
+two arms wouldn’t have matched, so the value would have matched to the
+underscore. We didn’t introduce the <code>x</code> variable in the pattern of the
+underscore arm, so the <code>x</code> in the expression is still the outer <code>x</code> that hasn’t
+been shadowed. In this hypothetical case, the <code>match</code> would print <code>Default case,
+x = None</code>.</p>
+<p>When the <code>match</code> expression is done, its scope ends, and so does the scope of
+the inner <code>y</code>. The last <code>println!</code> produces <code>at the end: x = Some(5), y = 10</code>.</p>
+<p>To create a <code>match</code> expression that compares the values of the outer <code>x</code> and
+<code>y</code>, rather than introducing a new variable that shadows the existing <code>y</code>
+variable, we would need to use a match guard conditional instead. We’ll talk
+about match guards later in the <a href="#adding-conditionals-with-match-guards">“Adding Conditionals with Match
+Guards”</a><!-- ignore --> section.</p>
+<!-- Old headings. Do not remove or links may break. -->
+<p><a id="multiple-patterns"></a></p>
+</body>
+</html>

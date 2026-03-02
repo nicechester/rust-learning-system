@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Writing a Failing Test</title>
+</head>
+<body>
+<h1>Writing a Failing Test</h1>
+<p>In <em>src/lib.rs</em>, we’ll add a <code>tests</code> module with a test function, as we did in
+[Chapter 11][ch11-anatomy]<!-- ignore -->. The test function specifies the
+behavior we want the <code>search</code> function to have: It will take a query and the
+text to search, and it will return only the lines from the text that contain
+the query. Listing 12-15 shows this test.</p>
+<p><Listing number="12-15" file-name="src/lib.rs" caption="Creating a failing test for the <code>search</code> function for the functionality we wish we had"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-15/src/lib.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+This test searches for the string `&quot;duct&quot;`. The text we’re searching is three
+lines, only one of which contains `&quot;duct&quot;` (note that the backslash after the
+opening double quote tells Rust not to put a newline character at the beginning
+of the contents of this string literal). We assert that the value returned from
+the `search` function contains only the line we expect.
+
+If we run this test, it will currently fail because the `unimplemented!` macro
+panics with the message “not implemented”. In accordance with TDD principles,
+we’ll take a small step of adding just enough code to get the test to not panic
+when calling the function by defining the `search` function to always return an
+empty vector, as shown in Listing 12-16. Then, the test should compile and fail
+because an empty vector doesn’t match a vector containing the line `&quot;safe,
+fast, productive.&quot;`.
+
+&lt;Listing number=&quot;12-16&quot; file-name=&quot;src/lib.rs&quot; caption=&quot;Defining just enough of the `search` function so that calling it won’t panic&quot;&gt;
+
+```rust,noplayground
+{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-16/src/lib.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Now let’s discuss why we need to define an explicit lifetime <code>'a</code> in the
+signature of <code>search</code> and use that lifetime with the <code>contents</code> argument and
+the return value. Recall in [Chapter 10][ch10-lifetimes]<!-- ignore --> that
+the lifetime parameters specify which argument lifetime is connected to the
+lifetime of the return value. In this case, we indicate that the returned
+vector should contain string slices that reference slices of the argument
+<code>contents</code> (rather than the argument <code>query</code>).</p>
+<p>In other words, we tell Rust that the data returned by the <code>search</code> function
+will live as long as the data passed into the <code>search</code> function in the
+<code>contents</code> argument. This is important! The data referenced <em>by</em> a slice needs
+to be valid for the reference to be valid; if the compiler assumes we’re making
+string slices of <code>query</code> rather than <code>contents</code>, it will do its safety checking
+incorrectly.</p>
+<p>If we forget the lifetime annotations and try to compile this function, we’ll
+get this error:</p>
+<pre><code class="language-console">{{#include ../listings/ch12-an-io-project/output-only-02-missing-lifetimes/output.txt}}
+</code></pre>
+<p>Rust can’t know which of the two parameters we need for the output, so we need
+to tell it explicitly. Note that the help text suggests specifying the same
+lifetime parameter for all the parameters and the output type, which is
+incorrect! Because <code>contents</code> is the parameter that contains all of our text
+and we want to return the parts of that text that match, we know <code>contents</code> is
+the only parameter that should be connected to the return value using the
+lifetime syntax.</p>
+<p>Other programming languages don’t require you to connect arguments to return
+values in the signature, but this practice will get easier over time. You might
+want to compare this example with the examples in the [“Validating References
+with Lifetimes”][validating-references-with-lifetimes]<!-- ignore --> section
+in Chapter 10.</p>
+</body>
+</html>

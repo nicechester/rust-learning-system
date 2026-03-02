@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Implementing the `Drop` Trait on `ThreadPool`</title>
+</head>
+<body>
+<h1>Implementing the `Drop` Trait on `ThreadPool`</h1>
+<p>Let’s start with implementing <code>Drop</code> on our thread pool. When the pool is
+dropped, our threads should all join to make sure they finish their work.
+Listing 21-22 shows a first attempt at a <code>Drop</code> implementation; this code won’t
+quite work yet.</p>
+<p><Listing number="21-22" file-name="src/lib.rs" caption="Joining each thread when the thread pool goes out of scope"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch21-web-server/listing-21-22/src/lib.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+First, we loop through each of the thread pool `workers`. We use `&amp;mut` for this
+because `self` is a mutable reference, and we also need to be able to mutate
+`worker`. For each `worker`, we print a message saying that this particular
+`Worker` instance is shutting down, and then we call `join` on that `Worker`
+instance’s thread. If the call to `join` fails, we use `unwrap` to make Rust
+panic and go into an ungraceful shutdown.
+
+Here is the error we get when we compile this code:
+
+```console
+{{#include ../listings/ch21-web-server/listing-21-22/output.txt}}
+</code></pre>
+<p>The error tells us we can’t call <code>join</code> because we only have a mutable borrow
+of each <code>worker</code> and <code>join</code> takes ownership of its argument. To solve this
+issue, we need to move the thread out of the <code>Worker</code> instance that owns
+<code>thread</code> so that <code>join</code> can consume the thread. One way to do this is to take
+the same approach we took in Listing 18-15. If <code>Worker</code> held an
+<code>Option&lt;thread::JoinHandle&lt;()&gt;&gt;</code>, we could call the <code>take</code> method on the
+<code>Option</code> to move the value out of the <code>Some</code> variant and leave a <code>None</code> variant
+in its place. In other words, a <code>Worker</code> that is running would have a <code>Some</code>
+variant in <code>thread</code>, and when we wanted to clean up a <code>Worker</code>, we’d replace
+<code>Some</code> with <code>None</code> so that the <code>Worker</code> wouldn’t have a thread to run.</p>
+<p>However, the <em>only</em> time this would come up would be when dropping the
+<code>Worker</code>. In exchange, we’d have to deal with an
+<code>Option&lt;thread::JoinHandle&lt;()&gt;&gt;</code> anywhere we accessed <code>worker.thread</code>.
+Idiomatic Rust uses <code>Option</code> quite a bit, but when you find yourself wrapping
+something you know will always be present in an <code>Option</code> as a workaround like
+this, it’s a good idea to look for alternative approaches to make your code
+cleaner and less error-prone.</p>
+<p>In this case, a better alternative exists: the <code>Vec::drain</code> method. It accepts
+a range parameter to specify which items to remove from the vector and returns
+an iterator of those items. Passing the <code>..</code> range syntax will remove <em>every</em>
+value from the vector.</p>
+<p>So, we need to update the <code>ThreadPool</code> <code>drop</code> implementation like this:</p>
+<p><Listing file-name="src/lib.rs"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch21-web-server/no-listing-04-update-drop-definition/src/lib.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>This resolves the compiler error and does not require any other changes to our
+code. Note that, because drop can be called when panicking, the unwrap
+could also panic and cause a double panic, which immediately crashes the
+program and ends any cleanup in progress. This is fine for an example program,
+but it isn’t recommended for production code.</p>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Using Unsafe Code Correctly</title>
+</head>
+<body>
+<h1>Using Unsafe Code Correctly</h1>
+<p>Using <code>unsafe</code> to use one of the five superpowers just discussed isn’t wrong or
+even frowned upon, but it is trickier to get <code>unsafe</code> code correct because the
+compiler can’t help uphold memory safety. When you have a reason to use
+<code>unsafe</code> code, you can do so, and having the explicit <code>unsafe</code> annotation makes
+it easier to track down the source of problems when they occur. Whenever you
+write unsafe code, you can use Miri to help you be more confident that the code
+you have written upholds Rust’s rules.</p>
+<p>For a much deeper exploration of how to work effectively with unsafe Rust, read
+Rust’s official guide for <code>unsafe</code>, <a href="https://doc.rust-lang.org/nomicon/">The Rustonomicon</a>.</p>
+</body>
+</html>

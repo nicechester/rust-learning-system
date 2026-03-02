@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>The RFC Process and Teams</title>
+</head>
+<body>
+<h1>The RFC Process and Teams</h1>
+<p>So how do you learn about these new features? Rust’s development model follows
+a <em>Request For Comments (RFC) process</em>. If you’d like an improvement in Rust,
+you can write up a proposal, called an RFC.</p>
+<p>Anyone can write RFCs to improve Rust, and the proposals are reviewed and
+discussed by the Rust team, which is comprised of many topic subteams. There’s
+a full list of the teams <a href="https://www.rust-lang.org/governance">on Rust’s website</a>, which includes teams for
+each area of the project: language design, compiler implementation,
+infrastructure, documentation, and more. The appropriate team reads the
+proposal and the comments, writes some comments of their own, and eventually,
+there’s consensus to accept or reject the feature.</p>
+<p>If the feature is accepted, an issue is opened on the Rust repository, and
+someone can implement it. The person who implements it very well may not be the
+person who proposed the feature in the first place! When the implementation is
+ready, it lands on the main branch behind a feature gate, as we discussed in
+the <a href="#unstable-features">“Unstable Features”</a><!-- ignore --> section.</p>
+<p>After some time, once Rust developers who use nightly releases have been able
+to try out the new feature, team members will discuss the feature, how it’s
+worked out on nightly, and decide if it should make it into stable Rust or not.
+If the decision is to move forward, the feature gate is removed, and the
+feature is now considered stable! It rides the trains into a new stable release
+of Rust.</p>
+</body>
+</html>

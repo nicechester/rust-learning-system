@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Creating a New Task with `spawn_task`</title>
+</head>
+<body>
+<h1>Creating a New Task with `spawn_task`</h1>
+<p>The first operation we tackled in the [“Creating a New Thread with
+<code>spawn</code>”][thread-spawn]<!-- ignore --> section in Chapter 16 was counting up on
+two separate threads. Let’s do the same using async. The <code>trpl</code> crate supplies
+a <code>spawn_task</code> function that looks very similar to the <code>thread::spawn</code> API, and
+a <code>sleep</code> function that is an async version of the <code>thread::sleep</code> API. We can
+use these together to implement the counting example, as shown in Listing 17-6.</p>
+<p><Listing number="17-6" caption="Creating a new task to print one thing while the main task prints something else" file-name="src/main.rs"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch17-async-await/listing-17-06/src/main.rs:all}}
+</code></pre>
+<p></Listing></p>
+<p>As our starting point, we set up our <code>main</code> function with <code>trpl::block_on</code> so
+that our top-level function can be async.</p>
+<blockquote>
+<p>Note: From this point forward in the chapter, every example will include this
+exact same wrapping code with <code>trpl::block_on</code> in <code>main</code>, so we’ll often skip it
+just as we do with <code>main</code>. Remember to include it in your code!</p>
+</blockquote>
+<p>Then we write two loops within that block, each containing a <code>trpl::sleep</code>
+call, which waits for half a second (500 milliseconds) before sending the next
+message. We put one loop in the body of a <code>trpl::spawn_task</code> and the other in a
+top-level <code>for</code> loop. We also add an <code>await</code> after the <code>sleep</code> calls.</p>
+<p>This code behaves similarly to the thread-based implementation—including the
+fact that you may see the messages appear in a different order in your own
+terminal when you run it:</p>
+<!-- Not extracting output because changes to this output aren't significant;
+the changes are likely to be due to the threads running differently rather than
+changes in the compiler -->
+
+<pre><code class="language-text">hi number 1 from the second task!
+hi number 1 from the first task!
+hi number 2 from the first task!
+hi number 2 from the second task!
+hi number 3 from the first task!
+hi number 3 from the second task!
+hi number 4 from the first task!
+hi number 4 from the second task!
+hi number 5 from the first task!
+</code></pre>
+<p>This version stops as soon as the <code>for</code> loop in the body of the main async
+block finishes, because the task spawned by <code>spawn_task</code> is shut down when the
+<code>main</code> function ends. If you want it to run all the way to the task’s
+completion, you will need to use a join handle to wait for the first task to
+complete. With threads, we used the <code>join</code> method to “block” until the thread
+was done running. In Listing 17-7, we can use <code>await</code> to do the same thing,
+because the task handle itself is a future. Its <code>Output</code> type is a <code>Result</code>, so
+we also unwrap it after awaiting it.</p>
+<p><Listing number="17-7" caption="Using <code>await</code> with a join handle to run a task to completion" file-name="src/main.rs"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch17-async-await/listing-17-07/src/main.rs:handle}}
+</code></pre>
+<p></Listing></p>
+<p>This updated version runs until <em>both</em> loops finish:</p>
+<!-- Not extracting output because changes to this output aren't significant;
+the changes are likely to be due to the threads running differently rather than
+changes in the compiler -->
+
+<pre><code class="language-text">hi number 1 from the second task!
+hi number 1 from the first task!
+hi number 2 from the first task!
+hi number 2 from the second task!
+hi number 3 from the first task!
+hi number 3 from the second task!
+hi number 4 from the first task!
+hi number 4 from the second task!
+hi number 5 from the first task!
+hi number 6 from the first task!
+hi number 7 from the first task!
+hi number 8 from the first task!
+hi number 9 from the first task!
+</code></pre>
+<p>So far, it looks like async and threads give us similar outcomes, just with
+different syntax: using <code>await</code> instead of calling <code>join</code> on the join handle,
+and awaiting the <code>sleep</code> calls.</p>
+<p>The bigger difference is that we didn’t need to spawn another operating system
+thread to do this. In fact, we don’t even need to spawn a task here. Because
+async blocks compile to anonymous futures, we can put each loop in an async
+block and have the runtime run them both to completion using the <code>trpl::join</code>
+function.</p>
+<p>In the [“Waiting for All Threads to Finish”][join-handles]<!-- ignore -->
+section in Chapter 16, we showed how to use the <code>join</code> method on the
+<code>JoinHandle</code> type returned when you call <code>std::thread::spawn</code>. The <code>trpl::join</code>
+function is similar, but for futures. When you give it two futures, it produces
+a single new future whose output is a tuple containing the output of each
+future you passed in once they <em>both</em> complete. Thus, in Listing 17-8, we use
+<code>trpl::join</code> to wait for both <code>fut1</code> and <code>fut2</code> to finish. We do <em>not</em> await
+<code>fut1</code> and <code>fut2</code> but instead the new future produced by <code>trpl::join</code>. We
+ignore the output, because it’s just a tuple containing two unit values.</p>
+<p><Listing number="17-8" caption="Using <code>trpl::join</code> to await two anonymous futures" file-name="src/main.rs"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch17-async-await/listing-17-08/src/main.rs:join}}
+</code></pre>
+<p></Listing></p>
+<p>When we run this, we see both futures run to completion:</p>
+<!-- Not extracting output because changes to this output aren't significant;
+the changes are likely to be due to the threads running differently rather than
+changes in the compiler -->
+
+<pre><code class="language-text">hi number 1 from the first task!
+hi number 1 from the second task!
+hi number 2 from the first task!
+hi number 2 from the second task!
+hi number 3 from the first task!
+hi number 3 from the second task!
+hi number 4 from the first task!
+hi number 4 from the second task!
+hi number 5 from the first task!
+hi number 6 from the first task!
+hi number 7 from the first task!
+hi number 8 from the first task!
+hi number 9 from the first task!
+</code></pre>
+<p>Now, you’ll see the exact same order every time, which is very different from
+what we saw with threads and with <code>trpl::spawn_task</code> in Listing 17-7. That is
+because the <code>trpl::join</code> function is <em>fair</em>, meaning it checks each future
+equally often, alternating between them, and never lets one race ahead if the
+other is ready. With threads, the operating system decides which thread to
+check and how long to let it run. With async Rust, the runtime decides which
+task to check. (In practice, the details get complicated because an async
+runtime might use operating system threads under the hood as part of how it
+manages concurrency, so guaranteeing fairness can be more work for a
+runtime—but it’s still possible!) Runtimes don’t have to guarantee fairness for
+any given operation, and they often offer different APIs to let you choose
+whether or not you want fairness.</p>
+<p>Try some of these variations on awaiting the futures and see what they do:</p>
+<ul>
+<li>Remove the async block from around either or both of the loops.</li>
+<li>Await each async block immediately after defining it.</li>
+<li>Wrap only the first loop in an async block, and await the resulting future
+  after the body of second loop.</li>
+</ul>
+<p>For an extra challenge, see if you can figure out what the output will be in
+each case <em>before</em> running the code!</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="message-passing"></a>
+<a id="counting-up-on-two-tasks-using-message-passing"></a></p>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Re-exporting Names with `pub use`</title>
+</head>
+<body>
+<h1>Re-exporting Names with `pub use`</h1>
+<p>When we bring a name into scope with the <code>use</code> keyword, the name is private to
+the scope into which we imported it. To enable code outside that scope to refer
+to that name as if it had been defined in that scope, we can combine <code>pub</code> and
+<code>use</code>. This technique is called <em>re-exporting</em> because we’re bringing an item
+into scope but also making that item available for others to bring into their
+scope.</p>
+<p>Listing 7-17 shows the code in Listing 7-11 with <code>use</code> in the root module
+changed to <code>pub use</code>.</p>
+<p><Listing number="7-17" file-name="src/lib.rs" caption="Making a name available for any code to use from a new scope with <code>pub use</code>"></p>
+<p><code>rust,noplayground,test_harness
+{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-17/src/lib.rs}}</code></p>
+<p></Listing></p>
+<p>Before this change, external code would have to call the <code>add_to_waitlist</code>
+function by using the path
+<code>restaurant::front_of_house::hosting::add_to_waitlist()</code>, which also would have
+required the <code>front_of_house</code> module to be marked as <code>pub</code>. Now that this <code>pub
+use</code> has re-exported the <code>hosting</code> module from the root module, external code
+can use the path <code>restaurant::hosting::add_to_waitlist()</code> instead.</p>
+<p>Re-exporting is useful when the internal structure of your code is different
+from how programmers calling your code would think about the domain. For
+example, in this restaurant metaphor, the people running the restaurant think
+about “front of house” and “back of house.” But customers visiting a restaurant
+probably won’t think about the parts of the restaurant in those terms. With <code>pub
+use</code>, we can write our code with one structure but expose a different structure.
+Doing so makes our library well organized for programmers working on the library
+and programmers calling the library. We’ll look at another example of <code>pub use</code>
+and how it affects your crate’s documentation in [“Exporting a Convenient Public
+API”][ch14-pub-use]<!-- ignore --> in Chapter 14.</p>
+</body>
+</html>

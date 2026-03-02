@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Showing Function Output</title>
+</head>
+<body>
+<h1>Showing Function Output</h1>
+<p>By default, if a test passes, Rust’s test library captures anything printed to
+standard output. For example, if we call <code>println!</code> in a test and the test
+passes, we won’t see the <code>println!</code> output in the terminal; we’ll see only the
+line that indicates the test passed. If a test fails, we’ll see whatever was
+printed to standard output with the rest of the failure message.</p>
+<p>As an example, Listing 11-10 has a silly function that prints the value of its
+parameter and returns 10, as well as a test that passes and a test that fails.</p>
+<p><Listing number="11-10" file-name="src/lib.rs" caption="Tests for a function that calls <code>println!</code>"></p>
+<p>```rust,panics,noplayground
+{{#rustdoc_include ../listings/ch11-writing-automated-tests/listing-11-10/src/lib.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+When we run these tests with `cargo test`, we’ll see the following output:
+
+```console
+{{#include ../listings/ch11-writing-automated-tests/listing-11-10/output.txt}}
+</code></pre>
+<p>Note that nowhere in this output do we see <code>I got the value 4</code>, which is
+printed when the test that passes runs. That output has been captured. The
+output from the test that failed, <code>I got the value 8</code>, appears in the section
+of the test summary output, which also shows the cause of the test failure.</p>
+<p>If we want to see printed values for passing tests as well, we can tell Rust to
+also show the output of successful tests with <code>--show-output</code>:</p>
+<pre><code class="language-console">$ cargo test -- --show-output
+</code></pre>
+<p>When we run the tests in Listing 11-10 again with the <code>--show-output</code> flag, we
+see the following output:</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/output-only-01-show-output/output.txt}}
+</code></pre>
+</body>
+</html>

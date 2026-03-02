@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Multiple `impl` Blocks</title>
+</head>
+<body>
+<h1>Multiple `impl` Blocks</h1>
+<p>Each struct is allowed to have multiple <code>impl</code> blocks. For example, Listing
+5-15 is equivalent to the code shown in Listing 5-16, which has each method in
+its own <code>impl</code> block.</p>
+<p><Listing number="5-16" caption="Rewriting Listing 5-15 using multiple <code>impl</code> blocks"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-16/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>There’s no reason to separate these methods into multiple <code>impl</code> blocks here,
+but this is valid syntax. We’ll see a case in which multiple <code>impl</code> blocks are
+useful in Chapter 10, where we discuss generic types and traits.</p>
+<h2>Summary</h2>
+<p>Structs let you create custom types that are meaningful for your domain. By
+using structs, you can keep associated pieces of data connected to each other
+and name each piece to make your code clear. In <code>impl</code> blocks, you can define
+functions that are associated with your type, and methods are a kind of
+associated function that let you specify the behavior that instances of your
+structs have.</p>
+<p>But structs aren’t the only way you can create custom types: Let’s turn to
+Rust’s enum feature to add another tool to your toolbox.</p>
+</body>
+</html>

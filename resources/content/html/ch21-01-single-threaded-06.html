@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Validating the Request and Selectively Responding</title>
+</head>
+<body>
+<h1>Validating the Request and Selectively Responding</h1>
+<p>Right now, our web server will return the HTML in the file no matter what the
+client requested. Let’s add functionality to check that the browser is
+requesting <em>/</em> before returning the HTML file and to return an error if the
+browser requests anything else. For this we need to modify <code>handle_connection</code>,
+as shown in Listing 21-6. This new code checks the content of the request
+received against what we know a request for <em>/</em> looks like and adds <code>if</code> and
+<code>else</code> blocks to treat requests differently.</p>
+<p><Listing number="21-6" file-name="src/main.rs" caption="Handling requests to */* differently from other requests"></p>
+<p>```rust,no_run
+{{#rustdoc_include ../listings/ch21-web-server/listing-21-06/src/main.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+We’re only going to be looking at the first line of the HTTP request, so rather
+than reading the entire request into a vector, we’re calling `next` to get the
+first item from the iterator. The first `unwrap` takes care of the `Option` and
+stops the program if the iterator has no items. The second `unwrap` handles the
+`Result` and has the same effect as the `unwrap` that was in the `map` added in
+Listing 21-2.
+
+Next, we check the `request_line` to see if it equals the request line of a GET
+request to the _/_ path. If it does, the `if` block returns the contents of our
+HTML file.
+
+If the `request_line` does _not_ equal the GET request to the _/_ path, it
+means we’ve received some other request. We’ll add code to the `else` block in
+a moment to respond to all other requests.
+
+Run this code now and request _127.0.0.1:7878_; you should get the HTML in
+_hello.html_. If you make any other request, such as
+_127.0.0.1:7878/something-else_, you’ll get a connection error like those you
+saw when running the code in Listing 21-1 and Listing 21-2.
+
+Now let’s add the code in Listing 21-7 to the `else` block to return a response
+with the status code 404, which signals that the content for the request was
+not found. We’ll also return some HTML for a page to render in the browser
+indicating the response to the end user.
+
+&lt;Listing number=&quot;21-7&quot; file-name=&quot;src/main.rs&quot; caption=&quot;Responding with status code 404 and an error page if anything other than */* was requested&quot;&gt;
+
+```rust,no_run
+{{#rustdoc_include ../listings/ch21-web-server/listing-21-07/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Here, our response has a status line with status code 404 and the reason phrase
+<code>NOT FOUND</code>. The body of the response will be the HTML in the file <em>404.html</em>.
+You’ll need to create a <em>404.html</em> file next to <em>hello.html</em> for the error
+page; again, feel free to use any HTML you want, or use the example HTML in
+Listing 21-8.</p>
+<p><Listing number="21-8" file-name="404.html" caption="Sample content for the page to send back with any 404 response"></p>
+<pre><code class="language-html">{{#include ../listings/ch21-web-server/listing-21-07/404.html}}
+</code></pre>
+<p></Listing></p>
+<p>With these changes, run your server again. Requesting <em>127.0.0.1:7878</em> should
+return the contents of <em>hello.html</em>, and any other request, like
+<em>127.0.0.1:7878/foo</em>, should return the error HTML from <em>404.html</em>.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="a-touch-of-refactoring"></a></p>
+</body>
+</html>

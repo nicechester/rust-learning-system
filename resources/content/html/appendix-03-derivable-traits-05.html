@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>`Hash` for Mapping a Value to a Value of Fixed Size</title>
+</head>
+<body>
+<h1>`Hash` for Mapping a Value to a Value of Fixed Size</h1>
+<p>The <code>Hash</code> trait allows you to take an instance of a type of arbitrary size and
+map that instance to a value of fixed size using a hash function. Deriving
+<code>Hash</code> implements the <code>hash</code> method. The derived implementation of the <code>hash</code>
+method combines the result of calling <code>hash</code> on each of the parts of the type,
+meaning all fields or values must also implement <code>Hash</code> to derive <code>Hash</code>.</p>
+<p>An example of when <code>Hash</code> is required is in storing keys in a <code>HashMap&lt;K, V&gt;</code>
+to store data efficiently.</p>
+</body>
+</html>

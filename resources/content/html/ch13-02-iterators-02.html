@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Methods That Consume the Iterator</title>
+</head>
+<body>
+<h1>Methods That Consume the Iterator</h1>
+<p>The <code>Iterator</code> trait has a number of different methods with default
+implementations provided by the standard library; you can find out about these
+methods by looking in the standard library API documentation for the <code>Iterator</code>
+trait. Some of these methods call the <code>next</code> method in their definition, which
+is why you’re required to implement the <code>next</code> method when implementing the
+<code>Iterator</code> trait.</p>
+<p>Methods that call <code>next</code> are called <em>consuming adapters</em> because calling them
+uses up the iterator. One example is the <code>sum</code> method, which takes ownership of
+the iterator and iterates through the items by repeatedly calling <code>next</code>, thus
+consuming the iterator. As it iterates through, it adds each item to a running
+total and returns the total when iteration is complete. Listing 13-13 has a
+test illustrating a use of the <code>sum</code> method.</p>
+<p><Listing number="13-13" file-name="src/lib.rs" caption="Calling the <code>sum</code> method to get the total of all items in the iterator"></p>
+<p><code>rust,noplayground
+{{#rustdoc_include ../listings/ch13-functional-features/listing-13-13/src/lib.rs:here}}</code></p>
+<p></Listing></p>
+<p>We aren’t allowed to use <code>v1_iter</code> after the call to <code>sum</code>, because <code>sum</code> takes
+ownership of the iterator we call it on.</p>
+</body>
+</html>

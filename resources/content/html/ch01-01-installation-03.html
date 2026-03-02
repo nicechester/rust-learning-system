@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Troubleshooting</title>
+</head>
+<body>
+<h1>Troubleshooting</h1>
+<p>To check whether you have Rust installed correctly, open a shell and enter this
+line:</p>
+<pre><code class="language-console">$ rustc --version
+</code></pre>
+<p>You should see the version number, commit hash, and commit date for the latest
+stable version that has been released, in the following format:</p>
+<pre><code class="language-text">rustc x.y.z (abcabcabc yyyy-mm-dd)
+</code></pre>
+<p>If you see this information, you have installed Rust successfully! If you don’t
+see this information, check that Rust is in your <code>%PATH%</code> system variable as
+follows.</p>
+<p>In Windows CMD, use:</p>
+<pre><code class="language-console">&gt; echo %PATH%
+</code></pre>
+<p>In PowerShell, use:</p>
+<pre><code class="language-powershell">&gt; echo $env:Path
+</code></pre>
+<p>In Linux and macOS, use:</p>
+<pre><code class="language-console">$ echo $PATH
+</code></pre>
+<p>If that’s all correct and Rust still isn’t working, there are a number of
+places you can get help. Find out how to get in touch with other Rustaceans (a
+silly nickname we call ourselves) on [the community page][community].</p>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Extracting Logic from `main`</title>
+</head>
+<body>
+<h1>Extracting Logic from `main`</h1>
+<p>Now that we’ve finished refactoring the configuration parsing, let’s turn to
+the program’s logic. As we stated in <a href="#separation-of-concerns-for-binary-projects">“Separating Concerns in Binary
+Projects”</a><!-- ignore -->, we’ll
+extract a function named <code>run</code> that will hold all the logic currently in the
+<code>main</code> function that isn’t involved with setting up configuration or handling
+errors. When we’re done, the <code>main</code> function will be concise and easy to verify
+by inspection, and we’ll be able to write tests for all the other logic.</p>
+<p>Listing 12-11 shows the small, incremental improvement of extracting a <code>run</code>
+function.</p>
+<p><Listing number="12-11" file-name="src/main.rs" caption="Extracting a <code>run</code> function containing the rest of the program logic"></p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-11/src/main.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+The `run` function now contains all the remaining logic from `main`, starting
+from reading the file. The `run` function takes the `Config` instance as an
+argument.
+
+&lt;!-- Old headings. Do not remove or links may break. --&gt;
+
+&lt;a id=&quot;returning-errors-from-the-run-function&quot;&gt;&lt;/a&gt;
+
+#### Returning Errors from `run`
+
+With the remaining program logic separated into the `run` function, we can
+improve the error handling, as we did with `Config::build` in Listing 12-9.
+Instead of allowing the program to panic by calling `expect`, the `run`
+function will return a `Result&lt;T, E&gt;` when something goes wrong. This will let
+us further consolidate the logic around handling errors into `main` in a
+user-friendly way. Listing 12-12 shows the changes we need to make to the
+signature and body of `run`.
+
+&lt;Listing number=&quot;12-12&quot; file-name=&quot;src/main.rs&quot; caption=&quot;Changing the `run` function to return `Result`&quot;&gt;
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-12/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>We’ve made three significant changes here. First, we changed the return type of
+the <code>run</code> function to <code>Result&lt;(), Box&lt;dyn Error&gt;&gt;</code>. This function previously
+returned the unit type, <code>()</code>, and we keep that as the value returned in the
+<code>Ok</code> case.</p>
+<p>For the error type, we used the trait object <code>Box&lt;dyn Error&gt;</code> (and we brought
+<code>std::error::Error</code> into scope with a <code>use</code> statement at the top). We’ll cover
+trait objects in [Chapter 18][ch18]<!-- ignore -->. For now, just know that
+<code>Box&lt;dyn Error&gt;</code> means the function will return a type that implements the
+<code>Error</code> trait, but we don’t have to specify what particular type the return
+value will be. This gives us flexibility to return error values that may be of
+different types in different error cases. The <code>dyn</code> keyword is short for
+<em>dynamic</em>.</p>
+<p>Second, we’ve removed the call to <code>expect</code> in favor of the <code>?</code> operator, as we
+talked about in [Chapter 9][ch9-question-mark]<!-- ignore -->. Rather than
+<code>panic!</code> on an error, <code>?</code> will return the error value from the current function
+for the caller to handle.</p>
+<p>Third, the <code>run</code> function now returns an <code>Ok</code> value in the success case.
+We’ve declared the <code>run</code> function’s success type as <code>()</code> in the signature,
+which means we need to wrap the unit type value in the <code>Ok</code> value. This
+<code>Ok(())</code> syntax might look a bit strange at first. But using <code>()</code> like this is
+the idiomatic way to indicate that we’re calling <code>run</code> for its side effects
+only; it doesn’t return a value we need.</p>
+<p>When you run this code, it will compile but will display a warning:</p>
+<pre><code class="language-console">{{#include ../listings/ch12-an-io-project/listing-12-12/output.txt}}
+</code></pre>
+<p>Rust tells us that our code ignored the <code>Result</code> value and the <code>Result</code> value
+might indicate that an error occurred. But we’re not checking to see whether or
+not there was an error, and the compiler reminds us that we probably meant to
+have some error-handling code here! Let’s rectify that problem now.</p>
+<h4>Handling Errors Returned from <code>run</code> in <code>main</code></h4>
+<p>We’ll check for errors and handle them using a technique similar to one we used
+with <code>Config::build</code> in Listing 12-10, but with a slight difference:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<p><code>rust,ignore
+{{#rustdoc_include ../listings/ch12-an-io-project/no-listing-01-handling-errors-in-main/src/main.rs:here}}</code></p>
+<p>We use <code>if let</code> rather than <code>unwrap_or_else</code> to check whether <code>run</code> returns an
+<code>Err</code> value and to call <code>process::exit(1)</code> if it does. The <code>run</code> function
+doesn’t return a value that we want to <code>unwrap</code> in the same way that
+<code>Config::build</code> returns the <code>Config</code> instance. Because <code>run</code> returns <code>()</code> in
+the success case, we only care about detecting an error, so we don’t need
+<code>unwrap_or_else</code> to return the unwrapped value, which would only be <code>()</code>.</p>
+<p>The bodies of the <code>if let</code> and the <code>unwrap_or_else</code> functions are the same in
+both cases: We print the error and exit.</p>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Matching Ranges of Values with `..=`</title>
+</head>
+<body>
+<h1>Matching Ranges of Values with `..=`</h1>
+<p>The <code>..=</code> syntax allows us to match to an inclusive range of values. In the
+following code, when a pattern matches any of the values within the given
+range, that arm will execute:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/no-listing-03-ranges/src/main.rs:here}}
+</code></pre>
+<p>If <code>x</code> is <code>1</code>, <code>2</code>, <code>3</code>, <code>4</code>, or <code>5</code>, the first arm will match. This syntax is
+more convenient for multiple match values than using the <code>|</code> operator to
+express the same idea; if we were to use <code>|</code>, we would have to specify <code>1 | 2 |
+3 | 4 | 5</code>. Specifying a range is much shorter, especially if we want to match,
+say, any number between 1 and 1,000!</p>
+<p>The compiler checks that the range isn’t empty at compile time, and because the
+only types for which Rust can tell if a range is empty or not are <code>char</code> and
+numeric values, ranges are only allowed with numeric or <code>char</code> values.</p>
+<p>Here is an example using ranges of <code>char</code> values:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/no-listing-04-ranges-of-char/src/main.rs:here}}
+</code></pre>
+<p>Rust can tell that <code>'c'</code> is within the first pattern’s range and prints <code>early
+ASCII letter</code>.</p>
+</body>
+</html>

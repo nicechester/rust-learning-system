@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Introduction</title>
+</head>
+<body>
+<h1>Introduction</h1>
+<h2>Defining an Enum</h2>
+<p>Where structs give you a way of grouping together related fields and data, like
+a <code>Rectangle</code> with its <code>width</code> and <code>height</code>, enums give you a way of saying a
+value is one of a possible set of values. For example, we may want to say that
+<code>Rectangle</code> is one of a set of possible shapes that also includes <code>Circle</code> and
+<code>Triangle</code>. To do this, Rust allows us to encode these possibilities as an enum.</p>
+<p>Let’s look at a situation we might want to express in code and see why enums
+are useful and more appropriate than structs in this case. Say we need to work
+with IP addresses. Currently, two major standards are used for IP addresses:
+version four and version six. Because these are the only possibilities for an
+IP address that our program will come across, we can <em>enumerate</em> all possible
+variants, which is where enumeration gets its name.</p>
+<p>Any IP address can be either a version four or a version six address, but not
+both at the same time. That property of IP addresses makes the enum data
+structure appropriate because an enum value can only be one of its variants.
+Both version four and version six addresses are still fundamentally IP
+addresses, so they should be treated as the same type when the code is handling
+situations that apply to any kind of IP address.</p>
+<p>We can express this concept in code by defining an <code>IpAddrKind</code> enumeration and
+listing the possible kinds an IP address can be, <code>V4</code> and <code>V6</code>. These are the
+variants of the enum:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-01-defining-enums/src/main.rs:def}}
+</code></pre>
+<p><code>IpAddrKind</code> is now a custom data type that we can use elsewhere in our code.</p>
+</body>
+</html>

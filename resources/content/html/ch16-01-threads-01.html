@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Creating a New Thread with `spawn`</title>
+</head>
+<body>
+<h1>Creating a New Thread with `spawn`</h1>
+<p>To create a new thread, we call the <code>thread::spawn</code> function and pass it a
+closure (we talked about closures in Chapter 13) containing the code we want to
+run in the new thread. The example in Listing 16-1 prints some text from a main
+thread and other text from a new thread.</p>
+<p><Listing number="16-1" file-name="src/main.rs" caption="Creating a new thread to print one thing while the main thread prints something else"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch16-fearless-concurrency/listing-16-01/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>Note that when the main thread of a Rust program completes, all spawned threads
+are shut down, whether or not they have finished running. The output from this
+program might be a little different every time, but it will look similar to the
+following:</p>
+<!-- Not extracting output because changes to this output aren't significant;
+the changes are likely to be due to the threads running differently rather than
+changes in the compiler -->
+
+<pre><code class="language-text">hi number 1 from the main thread!
+hi number 1 from the spawned thread!
+hi number 2 from the main thread!
+hi number 2 from the spawned thread!
+hi number 3 from the main thread!
+hi number 3 from the spawned thread!
+hi number 4 from the main thread!
+hi number 4 from the spawned thread!
+hi number 5 from the spawned thread!
+</code></pre>
+<p>The calls to <code>thread::sleep</code> force a thread to stop its execution for a short
+duration, allowing a different thread to run. The threads will probably take
+turns, but that isn’t guaranteed: It depends on how your operating system
+schedules the threads. In this run, the main thread printed first, even though
+the print statement from the spawned thread appears first in the code. And even
+though we told the spawned thread to print until <code>i</code> is <code>9</code>, it only got to <code>5</code>
+before the main thread shut down.</p>
+<p>If you run this code and only see output from the main thread, or don’t see any
+overlap, try increasing the numbers in the ranges to create more opportunities
+for the operating system to switch between the threads.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="waiting-for-all-threads-to-finish-using-join-handles"></a></p>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Returning Closures</title>
+</head>
+<body>
+<h1>Returning Closures</h1>
+<p>Closures are represented by traits, which means you can’t return closures
+directly. In most cases where you might want to return a trait, you can instead
+use the concrete type that implements the trait as the return value of the
+function. However, you can’t usually do that with closures because they don’t
+have a concrete type that is returnable; you’re not allowed to use the function
+pointer <code>fn</code> as a return type if the closure captures any values from its
+scope, for example.</p>
+<p>Instead, you will normally use the <code>impl Trait</code> syntax we learned about in
+Chapter 10. You can return any function type, using <code>Fn</code>, <code>FnOnce</code>, and <code>FnMut</code>.
+For example, the code in Listing 20-32 will compile just fine.</p>
+<p><Listing number="20-32" caption="Returning a closure from a function using the <code>impl Trait</code> syntax"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-32/src/lib.rs}}
+</code></pre>
+<p></Listing></p>
+<p>However, as we noted in the <a href="ch13-01-closures.html#closure-type-inference-and-annotation">“Inferring and Annotating Closure
+Types”</a><!-- ignore --> section in Chapter 13, each closure is
+also its own distinct type. If you need to work with multiple functions that
+have the same signature but different implementations, you will need to use a
+trait object for them. Consider what happens if you write code like that shown
+in Listing 20-33.</p>
+<p><Listing file-name="src/main.rs" number="20-33" caption="Creating a <code>Vec&lt;T&gt;</code> of closures defined by functions that return <code>impl Fn</code> types"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-33/src/main.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+Here we have two functions, `returns_closure` and `returns_initialized_closure`,
+which both return `impl Fn(i32) -&gt; i32`. Notice that the closures that they
+return are different, even though they implement the same type. If we try to
+compile this, Rust lets us know that it won’t work:
+
+```text
+{{#include ../listings/ch20-advanced-features/listing-20-33/output.txt}}
+</code></pre>
+<p>The error message tells us that whenever we return an <code>impl Trait</code>, Rust
+creates a unique <em>opaque type</em>, a type where we cannot see into the details of
+what Rust constructs for us, nor can we guess the type Rust will generate to
+write ourselves. So, even though these functions return closures that implement
+the same trait, <code>Fn(i32) -&gt; i32</code>, the opaque types Rust generates for each are
+distinct. (This is similar to how Rust produces different concrete types for
+distinct async blocks even when they have the same output type, as we saw in
+<a href="ch17-03-more-futures.html">“The <code>Pin</code> Type and the <code>Unpin</code> Trait”</a><!-- ignore --> in
+Chapter 17.) We have seen a solution to this problem a few times now: We can
+use a trait object, as in Listing 20-34.</p>
+<p><Listing number="20-34" caption="Creating a <code>Vec&lt;T&gt;</code> of closures defined by functions that return <code>Box&lt;dyn Fn&gt;</code> so that they have the same type"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-34/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>This code will compile just fine. For more about trait objects, refer to the
+section <a href="ch18-02-trait-objects.html">“Using Trait Objects To Abstract over Shared
+Behavior”</a><!-- ignore --> in Chapter 18.</p>
+<p>Next, let’s look at macros!</p>
+</body>
+</html>

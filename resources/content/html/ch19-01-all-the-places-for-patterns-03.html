@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Conditional `if let` Expressions</title>
+</head>
+<body>
+<h1>Conditional `if let` Expressions</h1>
+<p>In Chapter 6, we discussed how to use <code>if let</code> expressions mainly as a shorter
+way to write the equivalent of a <code>match</code> that only matches one case.
+Optionally, <code>if let</code> can have a corresponding <code>else</code> containing code to run if
+the pattern in the <code>if let</code> doesn’t match.</p>
+<p>Listing 19-3 shows that it’s also possible to mix and match <code>if let</code>, <code>else
+if</code>, and <code>else if let</code> expressions. Doing so gives us more flexibility than a
+<code>match</code> expression in which we can express only one value to compare with the
+patterns. Also, Rust doesn’t require that the conditions in a series of <code>if
+let</code>, <code>else if</code>, and <code>else if let</code> arms relate to each other.</p>
+<p>The code in Listing 19-3 determines what color to make your background based on
+a series of checks for several conditions. For this example, we’ve created
+variables with hardcoded values that a real program might receive from user
+input.</p>
+<p><Listing number="19-3" file-name="src/main.rs" caption="Mixing <code>if let</code>, <code>else if</code>, <code>else if let</code>, and <code>else</code>"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-03/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>If the user specifies a favorite color, that color is used as the background.
+If no favorite color is specified and today is Tuesday, the background color is
+green. Otherwise, if the user specifies their age as a string and we can parse
+it as a number successfully, the color is either purple or orange depending on
+the value of the number. If none of these conditions apply, the background
+color is blue.</p>
+<p>This conditional structure lets us support complex requirements. With the
+hardcoded values we have here, this example will print <code>Using purple as the
+background color</code>.</p>
+<p>You can see that <code>if let</code> can also introduce new variables that shadow existing
+variables in the same way that <code>match</code> arms can: The line <code>if let Ok(age) = age</code>
+introduces a new <code>age</code> variable that contains the value inside the <code>Ok</code> variant,
+shadowing the existing <code>age</code> variable. This means we need to place the <code>if age &gt;
+30</code> condition within that block: We can’t combine these two conditions into <code>if
+let Ok(age) = age &amp;&amp; age &gt; 30</code>. The new <code>age</code> we want to compare to 30 isn’t
+valid until the new scope starts with the curly bracket.</p>
+<p>The downside of using <code>if let</code> expressions is that the compiler doesn’t check
+for exhaustiveness, whereas with <code>match</code> expressions it does. If we omitted the
+last <code>else</code> block and therefore missed handling some cases, the compiler would
+not alert us to the possible logic bug.</p>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Using Interior Mutability</title>
+</head>
+<body>
+<h1>Using Interior Mutability</h1>
+<p>A consequence of the borrowing rules is that when you have an immutable value,
+you can’t borrow it mutably. For example, this code won’t compile:</p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch15-smart-pointers/no-listing-01-cant-borrow-immutable-as-mutable/src/main.rs}}</p>
+<pre><code>
+If you tried to compile this code, you’d get the following error:
+
+```console
+{{#include ../listings/ch15-smart-pointers/no-listing-01-cant-borrow-immutable-as-mutable/output.txt}}
+</code></pre>
+<p>However, there are situations in which it would be useful for a value to mutate
+itself in its methods but appear immutable to other code. Code outside the
+value’s methods would not be able to mutate the value. Using <code>RefCell&lt;T&gt;</code> is
+one way to get the ability to have interior mutability, but <code>RefCell&lt;T&gt;</code>
+doesn’t get around the borrowing rules completely: The borrow checker in the
+compiler allows this interior mutability, and the borrowing rules are checked
+at runtime instead. If you violate the rules, you’ll get a <code>panic!</code> instead of
+a compiler error.</p>
+<p>Let’s work through a practical example where we can use <code>RefCell&lt;T&gt;</code> to mutate
+an immutable value and see why that is useful.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="a-use-case-for-interior-mutability-mock-objects"></a></p>
+<h4>Testing with Mock Objects</h4>
+<p>Sometimes during testing a programmer will use a type in place of another type,
+in order to observe particular behavior and assert that it’s implemented
+correctly. This placeholder type is called a <em>test double</em>. Think of it in the
+sense of a stunt double in filmmaking, where a person steps in and substitutes
+for an actor to do a particularly tricky scene. Test doubles stand in for other
+types when we’re running tests. <em>Mock objects</em> are specific types of test
+doubles that record what happens during a test so that you can assert that the
+correct actions took place.</p>
+<p>Rust doesn’t have objects in the same sense as other languages have objects,
+and Rust doesn’t have mock object functionality built into the standard library
+as some other languages do. However, you can definitely create a struct that
+will serve the same purposes as a mock object.</p>
+<p>Here’s the scenario we’ll test: We’ll create a library that tracks a value
+against a maximum value and sends messages based on how close to the maximum
+value the current value is. This library could be used to keep track of a
+user’s quota for the number of API calls they’re allowed to make, for example.</p>
+<p>Our library will only provide the functionality of tracking how close to the
+maximum a value is and what the messages should be at what times. Applications
+that use our library will be expected to provide the mechanism for sending the
+messages: The application could show the message to the user directly, send an
+email, send a text message, or do something else. The library doesn’t need to
+know that detail. All it needs is something that implements a trait we’ll
+provide, called <code>Messenger</code>. Listing 15-20 shows the library code.</p>
+<p><Listing number="15-20" file-name="src/lib.rs" caption="A library to keep track of how close a value is to a maximum value and warn when the value is at certain levels"></p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-20/src/lib.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+One important part of this code is that the `Messenger` trait has one method
+called `send` that takes an immutable reference to `self` and the text of the
+message. This trait is the interface our mock object needs to implement so that
+the mock can be used in the same way a real object is. The other important part
+is that we want to test the behavior of the `set_value` method on the
+`LimitTracker`. We can change what we pass in for the `value` parameter, but
+`set_value` doesn’t return anything for us to make assertions on. We want to be
+able to say that if we create a `LimitTracker` with something that implements
+the `Messenger` trait and a particular value for `max`, the messenger is told
+to send the appropriate messages when we pass different numbers for `value`.
+
+We need a mock object that, instead of sending an email or text message when we
+call `send`, will only keep track of the messages it’s told to send. We can
+create a new instance of the mock object, create a `LimitTracker` that uses the
+mock object, call the `set_value` method on `LimitTracker`, and then check that
+the mock object has the messages we expect. Listing 15-21 shows an attempt to
+implement a mock object to do just that, but the borrow checker won’t allow it.
+
+&lt;Listing number=&quot;15-21&quot; file-name=&quot;src/lib.rs&quot; caption=&quot;An attempt to implement a `MockMessenger` that isn’t allowed by the borrow checker&quot;&gt;
+
+```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-21/src/lib.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>This test code defines a <code>MockMessenger</code> struct that has a <code>sent_messages</code>
+field with a <code>Vec</code> of <code>String</code> values to keep track of the messages it’s told
+to send. We also define an associated function <code>new</code> to make it convenient to
+create new <code>MockMessenger</code> values that start with an empty list of messages. We
+then implement the <code>Messenger</code> trait for <code>MockMessenger</code> so that we can give a
+<code>MockMessenger</code> to a <code>LimitTracker</code>. In the definition of the <code>send</code> method, we
+take the message passed in as a parameter and store it in the <code>MockMessenger</code>
+list of <code>sent_messages</code>.</p>
+<p>In the test, we’re testing what happens when the <code>LimitTracker</code> is told to set
+<code>value</code> to something that is more than 75 percent of the <code>max</code> value. First, we
+create a new <code>MockMessenger</code>, which will start with an empty list of messages.
+Then, we create a new <code>LimitTracker</code> and give it a reference to the new
+<code>MockMessenger</code> and a <code>max</code> value of <code>100</code>. We call the <code>set_value</code> method on
+the <code>LimitTracker</code> with a value of <code>80</code>, which is more than 75 percent of 100.
+Then, we assert that the list of messages that the <code>MockMessenger</code> is keeping
+track of should now have one message in it.</p>
+<p>However, there’s one problem with this test, as shown here:</p>
+<pre><code class="language-console">{{#include ../listings/ch15-smart-pointers/listing-15-21/output.txt}}
+</code></pre>
+<p>We can’t modify the <code>MockMessenger</code> to keep track of the messages, because the
+<code>send</code> method takes an immutable reference to <code>self</code>. We also can’t take the
+suggestion from the error text to use <code>&amp;mut self</code> in both the <code>impl</code> method and
+the trait definition. We do not want to change the <code>Messenger</code> trait solely for
+the sake of testing. Instead, we need to find a way to make our test code work
+correctly with our existing design.</p>
+<p>This is a situation in which interior mutability can help! We’ll store the
+<code>sent_messages</code> within a <code>RefCell&lt;T&gt;</code>, and then the <code>send</code> method will be able
+to modify <code>sent_messages</code> to store the messages we’ve seen. Listing 15-22 shows
+what that looks like.</p>
+<p><Listing number="15-22" file-name="src/lib.rs" caption="Using <code>RefCell&lt;T&gt;</code> to mutate an inner value while the outer value is considered immutable"></p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-22/src/lib.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+The `sent_messages` field is now of type `RefCell&lt;Vec&lt;String&gt;&gt;` instead of
+`Vec&lt;String&gt;`. In the `new` function, we create a new `RefCell&lt;Vec&lt;String&gt;&gt;`
+instance around the empty vector.
+
+For the implementation of the `send` method, the first parameter is still an
+immutable borrow of `self`, which matches the trait definition. We call
+`borrow_mut` on the `RefCell&lt;Vec&lt;String&gt;&gt;` in `self.sent_messages` to get a
+mutable reference to the value inside the `RefCell&lt;Vec&lt;String&gt;&gt;`, which is the
+vector. Then, we can call `push` on the mutable reference to the vector to keep
+track of the messages sent during the test.
+
+The last change we have to make is in the assertion: To see how many items are
+in the inner vector, we call `borrow` on the `RefCell&lt;Vec&lt;String&gt;&gt;` to get an
+immutable reference to the vector.
+
+Now that you’ve seen how to use `RefCell&lt;T&gt;`, let’s dig into how it works!
+
+&lt;!-- Old headings. Do not remove or links may break. --&gt;
+
+&lt;a id=&quot;keeping-track-of-borrows-at-runtime-with-refcellt&quot;&gt;&lt;/a&gt;
+
+#### Tracking Borrows at Runtime
+
+When creating immutable and mutable references, we use the `&amp;` and `&amp;mut`
+syntax, respectively. With `RefCell&lt;T&gt;`, we use the `borrow` and `borrow_mut`
+methods, which are part of the safe API that belongs to `RefCell&lt;T&gt;`. The
+`borrow` method returns the smart pointer type `Ref&lt;T&gt;`, and `borrow_mut`
+returns the smart pointer type `RefMut&lt;T&gt;`. Both types implement `Deref`, so we
+can treat them like regular references.
+
+The `RefCell&lt;T&gt;` keeps track of how many `Ref&lt;T&gt;` and `RefMut&lt;T&gt;` smart
+pointers are currently active. Every time we call `borrow`, the `RefCell&lt;T&gt;`
+increases its count of how many immutable borrows are active. When a `Ref&lt;T&gt;`
+value goes out of scope, the count of immutable borrows goes down by 1. Just
+like the compile-time borrowing rules, `RefCell&lt;T&gt;` lets us have many immutable
+borrows or one mutable borrow at any point in time.
+
+If we try to violate these rules, rather than getting a compiler error as we
+would with references, the implementation of `RefCell&lt;T&gt;` will panic at
+runtime. Listing 15-23 shows a modification of the implementation of `send` in
+Listing 15-22. We’re deliberately trying to create two mutable borrows active
+for the same scope to illustrate that `RefCell&lt;T&gt;` prevents us from doing this
+at runtime.
+
+&lt;Listing number=&quot;15-23&quot; file-name=&quot;src/lib.rs&quot; caption=&quot;Creating two mutable references in the same scope to see that `RefCell&lt;T&gt;` will panic&quot;&gt;
+
+```rust,ignore,panics
+{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-23/src/lib.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>We create a variable <code>one_borrow</code> for the <code>RefMut&lt;T&gt;</code> smart pointer returned
+from <code>borrow_mut</code>. Then, we create another mutable borrow in the same way in
+the variable <code>two_borrow</code>. This makes two mutable references in the same scope,
+which isn’t allowed. When we run the tests for our library, the code in Listing
+15-23 will compile without any errors, but the test will fail:</p>
+<pre><code class="language-console">{{#include ../listings/ch15-smart-pointers/listing-15-23/output.txt}}
+</code></pre>
+<p>Notice that the code panicked with the message <code>already borrowed:
+BorrowMutError</code>. This is how <code>RefCell&lt;T&gt;</code> handles violations of the borrowing
+rules at runtime.</p>
+<p>Choosing to catch borrowing errors at runtime rather than compile time, as
+we’ve done here, means you’d potentially be finding mistakes in your code later
+in the development process: possibly not until your code was deployed to
+production. Also, your code would incur a small runtime performance penalty as
+a result of keeping track of the borrows at runtime rather than compile time.
+However, using <code>RefCell&lt;T&gt;</code> makes it possible to write a mock object that can
+modify itself to keep track of the messages it has seen while you’re using it
+in a context where only immutable values are allowed. You can use <code>RefCell&lt;T&gt;</code>
+despite its trade-offs to get more functionality than regular references
+provide.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="having-multiple-owners-of-mutable-data-by-combining-rc-t-and-ref-cell-t"></a>
+<a id="allowing-multiple-owners-of-mutable-data-with-rct-and-refcellt"></a></p>
+</body>
+</html>

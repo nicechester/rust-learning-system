@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Introduction</title>
+</head>
+<body>
+<h1>Introduction</h1>
+<h2>Macros</h2>
+<p>We’ve used macros like <code>println!</code> throughout this book, but we haven’t fully
+explored what a macro is and how it works. The term <em>macro</em> refers to a family
+of features in Rust—declarative macros with <code>macro_rules!</code> and three kinds of
+procedural macros:</p>
+<ul>
+<li>Custom <code>#[derive]</code> macros that specify code added with the <code>derive</code> attribute
+  used on structs and enums</li>
+<li>Attribute-like macros that define custom attributes usable on any item</li>
+<li>Function-like macros that look like function calls but operate on the tokens
+  specified as their argument</li>
+</ul>
+<p>We’ll talk about each of these in turn, but first, let’s look at why we even
+need macros when we already have functions.</p>
+</body>
+</html>

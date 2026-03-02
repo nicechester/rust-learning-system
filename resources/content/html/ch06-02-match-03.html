@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Matches Are Exhaustive</title>
+</head>
+<body>
+<h1>Matches Are Exhaustive</h1>
+<p>There’s one other aspect of <code>match</code> we need to discuss: The arms’ patterns must
+cover all possibilities. Consider this version of our <code>plus_one</code> function,
+which has a bug and won’t compile:</p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-10-non-exhaustive-match/src/main.rs:here}}</p>
+<pre><code>
+We didn’t handle the `None` case, so this code will cause a bug. Luckily, it’s
+a bug Rust knows how to catch. If we try to compile this code, we’ll get this
+error:
+
+```console
+{{#include ../listings/ch06-enums-and-pattern-matching/no-listing-10-non-exhaustive-match/output.txt}}
+</code></pre>
+<p>Rust knows that we didn’t cover every possible case and even knows which
+pattern we forgot! Matches in Rust are <em>exhaustive</em>: We must exhaust every last
+possibility in order for the code to be valid. Especially in the case of
+<code>Option&lt;T&gt;</code>, when Rust prevents us from forgetting to explicitly handle the
+<code>None</code> case, it protects us from assuming that we have a value when we might
+have null, thus making the billion-dollar mistake discussed earlier impossible.</p>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>`if` Expressions</title>
+</head>
+<body>
+<h1>`if` Expressions</h1>
+<p>An <code>if</code> expression allows you to branch your code depending on conditions. You
+provide a condition and then state, “If this condition is met, run this block
+of code. If the condition is not met, do not run this block of code.”</p>
+<p>Create a new project called <em>branches</em> in your <em>projects</em> directory to explore
+the <code>if</code> expression. In the <em>src/main.rs</em> file, input the following:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-26-if-true/src/main.rs}}
+</code></pre>
+<p>All <code>if</code> expressions start with the keyword <code>if</code>, followed by a condition. In
+this case, the condition checks whether or not the variable <code>number</code> has a
+value less than 5. We place the block of code to execute if the condition is
+<code>true</code> immediately after the condition inside curly brackets. Blocks of code
+associated with the conditions in <code>if</code> expressions are sometimes called <em>arms</em>,
+just like the arms in <code>match</code> expressions that we discussed in the [“Comparing
+the Guess to the Secret Number”][comparing-the-guess-to-the-secret-number]<!--
+ignore --> section of Chapter 2.</p>
+<p>Optionally, we can also include an <code>else</code> expression, which we chose to do
+here, to give the program an alternative block of code to execute should the
+condition evaluate to <code>false</code>. If you don’t provide an <code>else</code> expression and
+the condition is <code>false</code>, the program will just skip the <code>if</code> block and move on
+to the next bit of code.</p>
+<p>Try running this code; you should see the following output:</p>
+<pre><code class="language-console">{{#include ../listings/ch03-common-programming-concepts/no-listing-26-if-true/output.txt}}
+</code></pre>
+<p>Let’s try changing the value of <code>number</code> to a value that makes the condition
+<code>false</code> to see what happens:</p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-27-if-false/src/main.rs:here}}</p>
+<pre><code>
+Run the program again, and look at the output:
+
+```console
+{{#include ../listings/ch03-common-programming-concepts/no-listing-27-if-false/output.txt}}
+</code></pre>
+<p>It’s also worth noting that the condition in this code <em>must</em> be a <code>bool</code>. If
+the condition isn’t a <code>bool</code>, we’ll get an error. For example, try running the
+following code:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-28-if-condition-must-be-bool/src/main.rs}}</p>
+<pre><code>
+The `if` condition evaluates to a value of `3` this time, and Rust throws an
+error:
+
+```console
+{{#include ../listings/ch03-common-programming-concepts/no-listing-28-if-condition-must-be-bool/output.txt}}
+</code></pre>
+<p>The error indicates that Rust expected a <code>bool</code> but got an integer. Unlike
+languages such as Ruby and JavaScript, Rust will not automatically try to
+convert non-Boolean types to a Boolean. You must be explicit and always provide
+<code>if</code> with a Boolean as its condition. If we want the <code>if</code> code block to run
+only when a number is not equal to <code>0</code>, for example, we can change the <code>if</code>
+expression to the following:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-29-if-not-equal-0/src/main.rs}}
+</code></pre>
+<p>Running this code will print <code>number was something other than zero</code>.</p>
+<h4>Handling Multiple Conditions with <code>else if</code></h4>
+<p>You can use multiple conditions by combining <code>if</code> and <code>else</code> in an <code>else if</code>
+expression. For example:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-30-else-if/src/main.rs}}
+</code></pre>
+<p>This program has four possible paths it can take. After running it, you should
+see the following output:</p>
+<pre><code class="language-console">{{#include ../listings/ch03-common-programming-concepts/no-listing-30-else-if/output.txt}}
+</code></pre>
+<p>When this program executes, it checks each <code>if</code> expression in turn and executes
+the first body for which the condition evaluates to <code>true</code>. Note that even
+though 6 is divisible by 2, we don’t see the output <code>number is divisible by 2</code>,
+nor do we see the <code>number is not divisible by 4, 3, or 2</code> text from the <code>else</code>
+block. That’s because Rust only executes the block for the first <code>true</code>
+condition, and once it finds one, it doesn’t even check the rest.</p>
+<p>Using too many <code>else if</code> expressions can clutter your code, so if you have more
+than one, you might want to refactor your code. Chapter 6 describes a powerful
+Rust branching construct called <code>match</code> for these cases.</p>
+<h4>Using <code>if</code> in a <code>let</code> Statement</h4>
+<p>Because <code>if</code> is an expression, we can use it on the right side of a <code>let</code>
+statement to assign the outcome to a variable, as in Listing 3-2.</p>
+<p><Listing number="3-2" file-name="src/main.rs" caption="Assigning the result of an <code>if</code> expression to a variable"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch03-common-programming-concepts/listing-03-02/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>The <code>number</code> variable will be bound to a value based on the outcome of the <code>if</code>
+expression. Run this code to see what happens:</p>
+<pre><code class="language-console">{{#include ../listings/ch03-common-programming-concepts/listing-03-02/output.txt}}
+</code></pre>
+<p>Remember that blocks of code evaluate to the last expression in them, and
+numbers by themselves are also expressions. In this case, the value of the
+whole <code>if</code> expression depends on which block of code executes. This means the
+values that have the potential to be results from each arm of the <code>if</code> must be
+the same type; in Listing 3-2, the results of both the <code>if</code> arm and the <code>else</code>
+arm were <code>i32</code> integers. If the types are mismatched, as in the following
+example, we’ll get an error:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-31-arms-must-return-same-type/src/main.rs}}</p>
+<pre><code>
+When we try to compile this code, we’ll get an error. The `if` and `else` arms
+have value types that are incompatible, and Rust indicates exactly where to
+find the problem in the program:
+
+```console
+{{#include ../listings/ch03-common-programming-concepts/no-listing-31-arms-must-return-same-type/output.txt}}
+</code></pre>
+<p>The expression in the <code>if</code> block evaluates to an integer, and the expression in
+the <code>else</code> block evaluates to a string. This won’t work, because variables must
+have a single type, and Rust needs to know definitively at compile time what
+type the <code>number</code> variable is. Knowing the type of <code>number</code> lets the compiler
+verify the type is valid everywhere we use <code>number</code>. Rust wouldn’t be able to
+do that if the type of <code>number</code> was only determined at runtime; the compiler
+would be more complex and would make fewer guarantees about the code if it had
+to keep track of multiple hypothetical types for any variable.</p>
+</body>
+</html>

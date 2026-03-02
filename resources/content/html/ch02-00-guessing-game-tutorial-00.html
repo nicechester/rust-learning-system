@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Introduction</title>
+</head>
+<body>
+<h1>Introduction</h1>
+<h1>Programming a Guessing Game</h1>
+<p>Let’s jump into Rust by working through a hands-on project together! This
+chapter introduces you to a few common Rust concepts by showing you how to use
+them in a real program. You’ll learn about <code>let</code>, <code>match</code>, methods, associated
+functions, external crates, and more! In the following chapters, we’ll explore
+these ideas in more detail. In this chapter, you’ll just practice the
+fundamentals.</p>
+<p>We’ll implement a classic beginner programming problem: a guessing game. Here’s
+how it works: The program will generate a random integer between 1 and 100. It
+will then prompt the player to enter a guess. After a guess is entered, the
+program will indicate whether the guess is too low or too high. If the guess is
+correct, the game will print a congratulatory message and exit.</p>
+<h2>Setting Up a New Project</h2>
+<p>To set up a new project, go to the <em>projects</em> directory that you created in
+Chapter 1 and make a new project using Cargo, like so:</p>
+<pre><code class="language-console">$ cargo new guessing_game
+$ cd guessing_game
+</code></pre>
+<p>The first command, <code>cargo new</code>, takes the name of the project (<code>guessing_game</code>)
+as the first argument. The second command changes to the new project’s
+directory.</p>
+<p>Look at the generated <em>Cargo.toml</em> file:</p>
+<!-- manual-regeneration
+cd listings/ch02-guessing-game-tutorial
+rm -rf no-listing-01-cargo-new
+cargo new no-listing-01-cargo-new --name guessing_game
+cd no-listing-01-cargo-new
+cargo run > output.txt 2>&1
+cd ../../..
+-->
+
+<p><span class="filename">Filename: Cargo.toml</span></p>
+<pre><code class="language-toml">{{#include ../listings/ch02-guessing-game-tutorial/no-listing-01-cargo-new/Cargo.toml}}
+</code></pre>
+<p>As you saw in Chapter 1, <code>cargo new</code> generates a “Hello, world!” program for
+you. Check out the <em>src/main.rs</em> file:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/no-listing-01-cargo-new/src/main.rs}}
+</code></pre>
+<p>Now let’s compile this “Hello, world!” program and run it in the same step
+using the <code>cargo run</code> command:</p>
+<pre><code class="language-console">{{#include ../listings/ch02-guessing-game-tutorial/no-listing-01-cargo-new/output.txt}}
+</code></pre>
+<p>The <code>run</code> command comes in handy when you need to rapidly iterate on a project,
+as we’ll do in this game, quickly testing each iteration before moving on to
+the next one.</p>
+<p>Reopen the <em>src/main.rs</em> file. You’ll be writing all the code in this file.</p>
+<h2>Processing a Guess</h2>
+<p>The first part of the guessing game program will ask for user input, process
+that input, and check that the input is in the expected form. To start, we’ll
+allow the player to input a guess. Enter the code in Listing 2-1 into
+<em>src/main.rs</em>.</p>
+<p><Listing number="2-1" file-name="src/main.rs" caption="Code that gets a guess from the user and prints it"></p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:all}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+This code contains a lot of information, so let’s go over it line by line. To
+obtain user input and then print the result as output, we need to bring the
+`io` input/output library into scope. The `io` library comes from the standard
+library, known as `std`:
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:io}}
+</code></pre>
+<p>By default, Rust has a set of items defined in the standard library that it
+brings into the scope of every program. This set is called the <em>prelude</em>, and
+you can see everything in it [in the standard library documentation][prelude].</p>
+<p>If a type you want to use isn’t in the prelude, you have to bring that type
+into scope explicitly with a <code>use</code> statement. Using the <code>std::io</code> library
+provides you with a number of useful features, including the ability to accept
+user input.</p>
+<p>As you saw in Chapter 1, the <code>main</code> function is the entry point into the
+program:</p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:main}}</p>
+<pre><code>
+The `fn` syntax declares a new function; the parentheses, `()`, indicate there
+are no parameters; and the curly bracket, `{`, starts the body of the function.
+
+As you also learned in Chapter 1, `println!` is a macro that prints a string to
+the screen:
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:print}}
+</code></pre>
+<p>This code is printing a prompt stating what the game is and requesting input
+from the user.</p>
+</body>
+</html>

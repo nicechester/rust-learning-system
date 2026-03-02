@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>The `Stream` Trait</title>
+</head>
+<body>
+<h1>The `Stream` Trait</h1>
+<p>Now that you have a deeper grasp on the <code>Future</code>, <code>Pin</code>, and <code>Unpin</code> traits, we
+can turn our attention to the <code>Stream</code> trait. As you learned earlier in the
+chapter, streams are similar to asynchronous iterators. Unlike <code>Iterator</code> and
+<code>Future</code>, however, <code>Stream</code> has no definition in the standard library as of
+this writing, but there <em>is</em> a very common definition from the <code>futures</code> crate
+used throughout the ecosystem.</p>
+<p>Let’s review the definitions of the <code>Iterator</code> and <code>Future</code> traits before
+looking at how a <code>Stream</code> trait might merge them together. From <code>Iterator</code>, we
+have the idea of a sequence: its <code>next</code> method provides an
+<code>Option&lt;Self::Item&gt;</code>. From <code>Future</code>, we have the idea of readiness over time:
+its <code>poll</code> method provides a <code>Poll&lt;Self::Output&gt;</code>. To represent a sequence of
+items that become ready over time, we define a <code>Stream</code> trait that puts those
+features together:</p>
+<pre><code class="language-rust">use std::pin::Pin;
+use std::task::{Context, Poll};
+
+trait Stream {
+    type Item;
+
+    fn poll_next(
+        self: Pin&lt;&amp;mut Self&gt;,
+        cx: &amp;mut Context&lt;'_&gt;
+    ) -&gt; Poll&lt;Option&lt;Self::Item&gt;&gt;;
+}
+</code></pre>
+<p>The <code>Stream</code> trait defines an associated type called <code>Item</code> for the type of the
+items produced by the stream. This is similar to <code>Iterator</code>, where there may be
+zero to many items, and unlike <code>Future</code>, where there is always a single
+<code>Output</code>, even if it’s the unit type <code>()</code>.</p>
+<p><code>Stream</code> also defines a method to get those items. We call it <code>poll_next</code>, to
+make it clear that it polls in the same way <code>Future::poll</code> does and produces a
+sequence of items in the same way <code>Iterator::next</code> does. Its return type
+combines <code>Poll</code> with <code>Option</code>. The outer type is <code>Poll</code>, because it has to be
+checked for readiness, just as a future does. The inner type is <code>Option</code>,
+because it needs to signal whether there are more messages, just as an iterator
+does.</p>
+<p>Something very similar to this definition will likely end up as part of Rust’s
+standard library. In the meantime, it’s part of the toolkit of most runtimes,
+so you can rely on it, and everything we cover next should generally apply!</p>
+<p>In the examples we saw in the <a href="ch17-04-streams.html">“Streams: Futures in Sequence”</a><!--
+ignore --> section, though, we didn’t use <code>poll_next</code> <em>or</em> <code>Stream</code>, but
+instead used <code>next</code> and <code>StreamExt</code>. We <em>could</em> work directly in terms of the
+<code>poll_next</code> API by hand-writing our own <code>Stream</code> state machines, of course,
+just as we <em>could</em> work with futures directly via their <code>poll</code> method. Using
+<code>await</code> is much nicer, though, and the <code>StreamExt</code> trait supplies the <code>next</code>
+method so we can do just that:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch17-async-await/no-listing-stream-ext/src/lib.rs:here}}
+</code></pre>
+<!--
+TODO: update this if/when tokio/etc. update their MSRV and switch to using async functions
+in traits, since the lack thereof is the reason they do not yet have this.
+-->
+
+<blockquote>
+<p>Note: The actual definition we used earlier in the chapter looks slightly
+different than this, because it supports versions of Rust that did not yet
+support using async functions in traits. As a result, it looks like this:</p>
+<p><code>rust,ignore
+fn next(&amp;mut self) -&gt; Next&lt;'_, Self&gt; where Self: Unpin;</code></p>
+<p>That <code>Next</code> type is a <code>struct</code> that implements <code>Future</code> and allows us to name
+the lifetime of the reference to <code>self</code> with <code>Next&lt;'_, Self&gt;</code>, so that <code>await</code>
+can work with this method.</p>
+</blockquote>
+<p>The <code>StreamExt</code> trait is also the home of all the interesting methods available
+to use with streams. <code>StreamExt</code> is automatically implemented for every type
+that implements <code>Stream</code>, but these traits are defined separately to enable the
+community to iterate on convenience APIs without affecting the foundational
+trait.</p>
+<p>In the version of <code>StreamExt</code> used in the <code>trpl</code> crate, the trait not only
+defines the <code>next</code> method but also supplies a default implementation of <code>next</code>
+that correctly handles the details of calling <code>Stream::poll_next</code>. This means
+that even when you need to write your own streaming data type, you <em>only</em> have
+to implement <code>Stream</code>, and then anyone who uses your data type can use
+<code>StreamExt</code> and its methods with it automatically.</p>
+<p>That’s all we’re going to cover for the lower-level details on these traits. To
+wrap up, let’s consider how futures (including streams), tasks, and threads all
+fit together!</p>
+</body>
+</html>

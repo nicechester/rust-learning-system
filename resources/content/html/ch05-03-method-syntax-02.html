@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Methods with More Parameters</title>
+</head>
+<body>
+<h1>Methods with More Parameters</h1>
+<p>Let’s practice using methods by implementing a second method on the <code>Rectangle</code>
+struct. This time we want an instance of <code>Rectangle</code> to take another instance
+of <code>Rectangle</code> and return <code>true</code> if the second <code>Rectangle</code> can fit completely
+within <code>self</code> (the first <code>Rectangle</code>); otherwise, it should return <code>false</code>.
+That is, once we’ve defined the <code>can_hold</code> method, we want to be able to write
+the program shown in Listing 5-14.</p>
+<p><Listing number="5-14" file-name="src/main.rs" caption="Using the as-yet-unwritten <code>can_hold</code> method"></p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-14/src/main.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+The expected output would look like the following because both dimensions of
+`rect2` are smaller than the dimensions of `rect1`, but `rect3` is wider than
+`rect1`:
+
+```text
+Can rect1 hold rect2? true
+Can rect1 hold rect3? false
+</code></pre>
+<p>We know we want to define a method, so it will be within the <code>impl Rectangle</code>
+block. The method name will be <code>can_hold</code>, and it will take an immutable borrow
+of another <code>Rectangle</code> as a parameter. We can tell what the type of the
+parameter will be by looking at the code that calls the method:
+<code>rect1.can_hold(&amp;rect2)</code> passes in <code>&amp;rect2</code>, which is an immutable borrow to
+<code>rect2</code>, an instance of <code>Rectangle</code>. This makes sense because we only need to
+read <code>rect2</code> (rather than write, which would mean we’d need a mutable borrow),
+and we want <code>main</code> to retain ownership of <code>rect2</code> so that we can use it again
+after calling the <code>can_hold</code> method. The return value of <code>can_hold</code> will be a
+Boolean, and the implementation will check whether the width and height of
+<code>self</code> are greater than the width and height of the other <code>Rectangle</code>,
+respectively. Let’s add the new <code>can_hold</code> method to the <code>impl</code> block from
+Listing 5-13, shown in Listing 5-15.</p>
+<p><Listing number="5-15" file-name="src/main.rs" caption="Implementing the <code>can_hold</code> method on <code>Rectangle</code> that takes another <code>Rectangle</code> instance as a parameter"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-15/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>When we run this code with the <code>main</code> function in Listing 5-14, we’ll get our
+desired output. Methods can take multiple parameters that we add to the
+signature after the <code>self</code> parameter, and those parameters work just like
+parameters in functions.</p>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Declarative Macros for General Metaprogramming</title>
+</head>
+<body>
+<h1>Declarative Macros for General Metaprogramming</h1>
+<p>The most widely used form of macros in Rust is the <em>declarative macro</em>. These
+are also sometimes referred to as “macros by example,” “<code>macro_rules!</code> macros,”
+or just plain “macros.” At their core, declarative macros allow you to write
+something similar to a Rust <code>match</code> expression. As discussed in Chapter 6,
+<code>match</code> expressions are control structures that take an expression, compare the
+resultant value of the expression to patterns, and then run the code associated
+with the matching pattern. Macros also compare a value to patterns that are
+associated with particular code: In this situation, the value is the literal
+Rust source code passed to the macro; the patterns are compared with the
+structure of that source code; and the code associated with each pattern, when
+matched, replaces the code passed to the macro. This all happens during
+compilation.</p>
+<p>To define a macro, you use the <code>macro_rules!</code> construct. Let’s explore how to
+use <code>macro_rules!</code> by looking at how the <code>vec!</code> macro is defined. Chapter 8
+covered how we can use the <code>vec!</code> macro to create a new vector with particular
+values. For example, the following macro creates a new vector containing three
+integers:</p>
+<pre><code class="language-rust">let v: Vec&lt;u32&gt; = vec![1, 2, 3];
+</code></pre>
+<p>We could also use the <code>vec!</code> macro to make a vector of two integers or a vector
+of five string slices. We wouldn’t be able to use a function to do the same
+because we wouldn’t know the number or type of values up front.</p>
+<p>Listing 20-35 shows a slightly simplified definition of the <code>vec!</code> macro.</p>
+<p><Listing number="20-35" file-name="src/lib.rs" caption="A simplified version of the <code>vec!</code> macro definition"></p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch20-advanced-features/listing-20-35/src/lib.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+&gt; Note: The actual definition of the `vec!` macro in the standard library
+&gt; includes code to pre-allocate the correct amount of memory up front. That code
+&gt; is an optimization that we don’t include here, to make the example simpler.
+
+The `#[macro_export]` annotation indicates that this macro should be made
+available whenever the crate in which the macro is defined is brought into
+scope. Without this annotation, the macro can’t be brought into scope.
+
+We then start the macro definition with `macro_rules!` and the name of the
+macro we’re defining _without_ the exclamation mark. The name, in this case
+`vec`, is followed by curly brackets denoting the body of the macro definition.
+
+The structure in the `vec!` body is similar to the structure of a `match`
+expression. Here we have one arm with the pattern `( $( $x:expr ),* )`,
+followed by `=&gt;` and the block of code associated with this pattern. If the
+pattern matches, the associated block of code will be emitted. Given that this
+is the only pattern in this macro, there is only one valid way to match; any
+other pattern will result in an error. More complex macros will have more than
+one arm.
+
+Valid pattern syntax in macro definitions is different from the pattern syntax
+covered in Chapter 19 because macro patterns are matched against Rust code
+structure rather than values. Let’s walk through what the pattern pieces in
+Listing 20-29 mean; for the full macro pattern syntax, see the [Rust
+Reference][ref].
+
+First, we use a set of parentheses to encompass the whole pattern. We use a
+dollar sign (`$`) to declare a variable in the macro system that will contain
+the Rust code matching the pattern. The dollar sign makes it clear this is a
+macro variable as opposed to a regular Rust variable. Next comes a set of
+parentheses that captures values that match the pattern within the parentheses
+for use in the replacement code. Within `$()` is `$x:expr`, which matches any
+Rust expression and gives the expression the name `$x`.
+
+The comma following `$()` indicates that a literal comma separator character
+must appear between each instance of the code that matches the code in `$()`.
+The `*` specifies that the pattern matches zero or more of whatever precedes
+the `*`.
+
+When we call this macro with `vec![1, 2, 3];`, the `$x` pattern matches three
+times with the three expressions `1`, `2`, and `3`.
+
+Now let’s look at the pattern in the body of the code associated with this arm:
+`temp_vec.push()` within `$()*` is generated for each part that matches `$()`
+in the pattern zero or more times depending on how many times the pattern
+matches. The `$x` is replaced with each expression matched. When we call this
+macro with `vec![1, 2, 3];`, the code generated that replaces this macro call
+will be the following:
+
+```rust,ignore
+{
+    let mut temp_vec = Vec::new();
+    temp_vec.push(1);
+    temp_vec.push(2);
+    temp_vec.push(3);
+    temp_vec
+}
+</code></pre>
+<p>We’ve defined a macro that can take any number of arguments of any type and can
+generate code to create a vector containing the specified elements.</p>
+<p>To learn more about how to write macros, consult the online documentation or
+other resources, such as [“The Little Book of Rust Macros”][tlborm] started by
+Daniel Keep and continued by Lukas Wirth.</p>
+</body>
+</html>

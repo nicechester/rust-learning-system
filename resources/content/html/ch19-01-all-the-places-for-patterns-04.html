@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>`while let` Conditional Loops</title>
+</head>
+<body>
+<h1>`while let` Conditional Loops</h1>
+<p>Similar in construction to <code>if let</code>, the <code>while let</code> conditional loop allows a
+<code>while</code> loop to run for as long as a pattern continues to match. In Listing
+19-4, we show a <code>while let</code> loop that waits on messages sent between threads,
+but in this case checking a <code>Result</code> instead of an <code>Option</code>.</p>
+<p><Listing number="19-4" caption="Using a <code>while let</code> loop to print values for as long as <code>rx.recv()</code> returns <code>Ok</code>"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-04/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>This example prints <code>1</code>, <code>2</code>, and then <code>3</code>. The <code>recv</code> method takes the first
+message out of the receiver side of the channel and returns an <code>Ok(value)</code>. When
+we first saw <code>recv</code> back in Chapter 16, we unwrapped the error directly, or
+we interacted with it as an iterator using a <code>for</code> loop. As Listing 19-4 shows,
+though, we can also use <code>while let</code>, because the <code>recv</code> method returns an <code>Ok</code>
+each time a message arrives, as long as the sender exists, and then produces an
+<code>Err</code> once the sender side disconnects.</p>
+</body>
+</html>

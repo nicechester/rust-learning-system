@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Variable Scope</title>
+</head>
+<body>
+<h1>Variable Scope</h1>
+<p>Now that we’re past basic Rust syntax, we won’t include all the <code>fn main() {</code>
+code in the examples, so if you’re following along, make sure to put the
+following examples inside a <code>main</code> function manually. As a result, our examples
+will be a bit more concise, letting us focus on the actual details rather than
+boilerplate code.</p>
+<p>As a first example of ownership, we’ll look at the scope of some variables. A
+<em>scope</em> is the range within a program for which an item is valid. Take the
+following variable:</p>
+<pre><code class="language-rust">let s = &quot;hello&quot;;
+</code></pre>
+<p>The variable <code>s</code> refers to a string literal, where the value of the string is
+hardcoded into the text of our program. The variable is valid from the point at
+which it’s declared until the end of the current scope. Listing 4-1 shows a
+program with comments annotating where the variable <code>s</code> would be valid.</p>
+<p><Listing number="4-1" caption="A variable and the scope in which it is valid"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch04-understanding-ownership/listing-04-01/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>In other words, there are two important points in time here:</p>
+<ul>
+<li>When <code>s</code> comes <em>into</em> scope, it is valid.</li>
+<li>It remains valid until it goes <em>out of</em> scope.</li>
+</ul>
+<p>At this point, the relationship between scopes and when variables are valid is
+similar to that in other programming languages. Now we’ll build on top of this
+understanding by introducing the <code>String</code> type.</p>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Creating Idiomatic `use` Paths</title>
+</head>
+<body>
+<h1>Creating Idiomatic `use` Paths</h1>
+<p>In Listing 7-11, you might have wondered why we specified <code>use
+crate::front_of_house::hosting</code> and then called <code>hosting::add_to_waitlist</code> in
+<code>eat_at_restaurant</code>, rather than specifying the <code>use</code> path all the way out to
+the <code>add_to_waitlist</code> function to achieve the same result, as in Listing 7-13.</p>
+<p><Listing number="7-13" file-name="src/lib.rs" caption="Bringing the <code>add_to_waitlist</code> function into scope with <code>use</code>, which is unidiomatic"></p>
+<p>```rust,noplayground,test_harness
+{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-13/src/lib.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+Although both Listing 7-11 and Listing 7-13 accomplish the same task, Listing
+7-11 is the idiomatic way to bring a function into scope with `use`. Bringing
+the function’s parent module into scope with `use` means we have to specify the
+parent module when calling the function. Specifying the parent module when
+calling the function makes it clear that the function isn’t locally defined
+while still minimizing repetition of the full path. The code in Listing 7-13 is
+unclear as to where `add_to_waitlist` is defined.
+
+On the other hand, when bringing in structs, enums, and other items with `use`,
+it’s idiomatic to specify the full path. Listing 7-14 shows the idiomatic way
+to bring the standard library’s `HashMap` struct into the scope of a binary
+crate.
+
+&lt;Listing number=&quot;7-14&quot; file-name=&quot;src/main.rs&quot; caption=&quot;Bringing `HashMap` into scope in an idiomatic way&quot;&gt;
+
+```rust
+{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-14/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>There’s no strong reason behind this idiom: It’s just the convention that has
+emerged, and folks have gotten used to reading and writing Rust code this way.</p>
+<p>The exception to this idiom is if we’re bringing two items with the same name
+into scope with <code>use</code> statements, because Rust doesn’t allow that. Listing 7-15
+shows how to bring two <code>Result</code> types into scope that have the same name but
+different parent modules, and how to refer to them.</p>
+<p><Listing number="7-15" file-name="src/lib.rs" caption="Bringing two types with the same name into the same scope requires using their parent modules."></p>
+<p><code>rust,noplayground
+{{#rustdoc_include ../listings/ch07-managing-growing-projects/listing-07-15/src/lib.rs:here}}</code></p>
+<p></Listing></p>
+<p>As you can see, using the parent modules distinguishes the two <code>Result</code> types.
+If instead we specified <code>use std::fmt::Result</code> and <code>use std::io::Result</code>, we’d
+have two <code>Result</code> types in the same scope, and Rust wouldn’t know which one we
+meant when we used <code>Result</code>.</p>
+</body>
+</html>

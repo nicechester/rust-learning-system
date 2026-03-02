@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Attribute-Like Macros</title>
+</head>
+<body>
+<h1>Attribute-Like Macros</h1>
+<p>Attribute-like macros are similar to custom <code>derive</code> macros, but instead of
+generating code for the <code>derive</code> attribute, they allow you to create new
+attributes. They’re also more flexible: <code>derive</code> only works for structs and
+enums; attributes can be applied to other items as well, such as functions.
+Here’s an example of using an attribute-like macro. Say you have an attribute
+named <code>route</code> that annotates functions when using a web application framework:</p>
+<p>```rust,ignore</p>
+<h1>[route(GET, "/")]</h1>
+<p>fn index() {</p>
+<pre><code>
+This `#[route]` attribute would be defined by the framework as a procedural
+macro. The signature of the macro definition function would look like this:
+
+```rust,ignore
+#[proc_macro_attribute]
+pub fn route(attr: TokenStream, item: TokenStream) -&gt; TokenStream {
+</code></pre>
+<p>Here, we have two parameters of type <code>TokenStream</code>. The first is for the
+contents of the attribute: the <code>GET, "/"</code> part. The second is the body of the
+item the attribute is attached to: in this case, <code>fn index() {}</code> and the rest
+of the function’s body.</p>
+<p>Other than that, attribute-like macros work the same way as custom <code>derive</code>
+macros: You create a crate with the <code>proc-macro</code> crate type and implement a
+function that generates the code you want!</p>
+</body>
+</html>

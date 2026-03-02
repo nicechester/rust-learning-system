@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Using Traits as Parameters</title>
+</head>
+<body>
+<h1>Using Traits as Parameters</h1>
+<p>Now that you know how to define and implement traits, we can explore how to use
+traits to define functions that accept many different types. We’ll use the
+<code>Summary</code> trait we implemented on the <code>NewsArticle</code> and <code>SocialPost</code> types in
+Listing 10-13 to define a <code>notify</code> function that calls the <code>summarize</code> method
+on its <code>item</code> parameter, which is of some type that implements the <code>Summary</code>
+trait. To do this, we use the <code>impl Trait</code> syntax, like this:</p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-04-traits-as-parameters/src/lib.rs:here}}</p>
+<pre><code>
+Instead of a concrete type for the `item` parameter, we specify the `impl`
+keyword and the trait name. This parameter accepts any type that implements the
+specified trait. In the body of `notify`, we can call any methods on `item`
+that come from the `Summary` trait, such as `summarize`. We can call `notify`
+and pass in any instance of `NewsArticle` or `SocialPost`. Code that calls the
+function with any other type, such as a `String` or an `i32`, won’t compile,
+because those types don’t implement `Summary`.
+
+&lt;!-- Old headings. Do not remove or links may break. --&gt;
+
+&lt;a id=&quot;fixing-the-largest-function-with-trait-bounds&quot;&gt;&lt;/a&gt;
+
+#### Trait Bound Syntax
+
+The `impl Trait` syntax works for straightforward cases but is actually syntax
+sugar for a longer form known as a _trait bound_; it looks like this:
+
+```rust,ignore
+pub fn notify&lt;T: Summary&gt;(item: &amp;T) {
+    println!(&quot;Breaking news! {}&quot;, item.summarize());
+}
+</code></pre>
+<p>This longer form is equivalent to the example in the previous section but is
+more verbose. We place trait bounds with the declaration of the generic type
+parameter after a colon and inside angle brackets.</p>
+<p>The <code>impl Trait</code> syntax is convenient and makes for more concise code in simple
+cases, while the fuller trait bound syntax can express more complexity in other
+cases. For example, we can have two parameters that implement <code>Summary</code>. Doing
+so with the <code>impl Trait</code> syntax looks like this:</p>
+<p>```rust,ignore
+pub fn notify(item1: &amp;impl Summary, item2: &amp;impl Summary) {</p>
+<pre><code>
+Using `impl Trait` is appropriate if we want this function to allow `item1` and
+`item2` to have different types (as long as both types implement `Summary`). If
+we want to force both parameters to have the same type, however, we must use a
+trait bound, like this:
+
+```rust,ignore
+pub fn notify&lt;T: Summary&gt;(item1: &amp;T, item2: &amp;T) {
+</code></pre>
+<p>The generic type <code>T</code> specified as the type of the <code>item1</code> and <code>item2</code>
+parameters constrains the function such that the concrete type of the value
+passed as an argument for <code>item1</code> and <code>item2</code> must be the same.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="specifying-multiple-trait-bounds-with-the--syntax"></a></p>
+<h4>Multiple Trait Bounds with the <code>+</code> Syntax</h4>
+<p>We can also specify more than one trait bound. Say we wanted <code>notify</code> to use
+display formatting as well as <code>summarize</code> on <code>item</code>: We specify in the <code>notify</code>
+definition that <code>item</code> must implement both <code>Display</code> and <code>Summary</code>. We can do
+so using the <code>+</code> syntax:</p>
+<p>```rust,ignore
+pub fn notify(item: &amp;(impl Summary + Display)) {</p>
+<pre><code>
+The `+` syntax is also valid with trait bounds on generic types:
+
+```rust,ignore
+pub fn notify&lt;T: Summary + Display&gt;(item: &amp;T) {
+</code></pre>
+<p>With the two trait bounds specified, the body of <code>notify</code> can call <code>summarize</code>
+and use <code>{}</code> to format <code>item</code>.</p>
+<h4>Clearer Trait Bounds with <code>where</code> Clauses</h4>
+<p>Using too many trait bounds has its downsides. Each generic has its own trait
+bounds, so functions with multiple generic type parameters can contain lots of
+trait bound information between the function’s name and its parameter list,
+making the function signature hard to read. For this reason, Rust has alternate
+syntax for specifying trait bounds inside a <code>where</code> clause after the function
+signature. So, instead of writing this:</p>
+<p>```rust,ignore
+fn some_function<T: Display + Clone, U: Clone + Debug>(t: &amp;T, u: &amp;U) -&gt; i32 {</p>
+<pre><code>
+we can use a `where` clause, like this:
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-07-where-clause/src/lib.rs:here}}
+</code></pre>
+<p>This function’s signature is less cluttered: The function name, parameter list,
+and return type are close together, similar to a function without lots of trait
+bounds.</p>
+</body>
+</html>

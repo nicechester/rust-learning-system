@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>The `Option<T>` `match` Pattern</title>
+</head>
+<body>
+<h1>The `Option<T>` `match` Pattern</h1>
+<p>In the previous section, we wanted to get the inner <code>T</code> value out of the <code>Some</code>
+case when using <code>Option&lt;T&gt;</code>; we can also handle <code>Option&lt;T&gt;</code> using <code>match</code>, as
+we did with the <code>Coin</code> enum! Instead of comparing coins, we’ll compare the
+variants of <code>Option&lt;T&gt;</code>, but the way the <code>match</code> expression works remains the
+same.</p>
+<p>Let’s say we want to write a function that takes an <code>Option&lt;i32&gt;</code> and, if
+there’s a value inside, adds 1 to that value. If there isn’t a value inside,
+the function should return the <code>None</code> value and not attempt to perform any
+operations.</p>
+<p>This function is very easy to write, thanks to <code>match</code>, and will look like
+Listing 6-5.</p>
+<p><Listing number="6-5" caption="A function that uses a <code>match</code> expression on an <code>Option&lt;i32&gt;</code>"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/listing-06-05/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Let’s examine the first execution of <code>plus_one</code> in more detail. When we call
+<code>plus_one(five)</code>, the variable <code>x</code> in the body of <code>plus_one</code> will have the
+value <code>Some(5)</code>. We then compare that against each match arm:</p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/listing-06-05/src/main.rs:first_arm}}</p>
+<pre><code>
+The `Some(5)` value doesn’t match the pattern `None`, so we continue to the
+next arm:
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/listing-06-05/src/main.rs:second_arm}}
+</code></pre>
+<p>Does <code>Some(5)</code> match <code>Some(i)</code>? It does! We have the same variant. The <code>i</code>
+binds to the value contained in <code>Some</code>, so <code>i</code> takes the value <code>5</code>. The code in
+the match arm is then executed, so we add 1 to the value of <code>i</code> and create a
+new <code>Some</code> value with our total <code>6</code> inside.</p>
+<p>Now let’s consider the second call of <code>plus_one</code> in Listing 6-5, where <code>x</code> is
+<code>None</code>. We enter the <code>match</code> and compare to the first arm:</p>
+<p><code>rust,ignore
+{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/listing-06-05/src/main.rs:first_arm}}</code></p>
+<p>It matches! There’s no value to add to, so the program stops and returns the
+<code>None</code> value on the right side of <code>=&gt;</code>. Because the first arm matched, no other
+arms are compared.</p>
+<p>Combining <code>match</code> and enums is useful in many situations. You’ll see this
+pattern a lot in Rust code: <code>match</code> against an enum, bind a variable to the
+data inside, and then execute code based on it. It’s a bit tricky at first, but
+once you get used to it, you’ll wish you had it in all languages. It’s
+consistently a user favorite.</p>
+</body>
+</html>

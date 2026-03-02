@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>The `Iterator` Trait and the `next` Method</title>
+</head>
+<body>
+<h1>The `Iterator` Trait and the `next` Method</h1>
+<p>All iterators implement a trait named <code>Iterator</code> that is defined in the
+standard library. The definition of the trait looks like this:</p>
+<pre><code class="language-rust">pub trait Iterator {
+    type Item;
+
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;;
+
+    // methods with default implementations elided
+}
+</code></pre>
+<p>Notice that this definition uses some new syntax: <code>type Item</code> and <code>Self::Item</code>,
+which are defining an associated type with this trait. We’ll talk about
+associated types in depth in Chapter 20. For now, all you need to know is that
+this code says implementing the <code>Iterator</code> trait requires that you also define
+an <code>Item</code> type, and this <code>Item</code> type is used in the return type of the <code>next</code>
+method. In other words, the <code>Item</code> type will be the type returned from the
+iterator.</p>
+<p>The <code>Iterator</code> trait only requires implementors to define one method: the
+<code>next</code> method, which returns one item of the iterator at a time, wrapped in
+<code>Some</code>, and, when iteration is over, returns <code>None</code>.</p>
+<p>We can call the <code>next</code> method on iterators directly; Listing 13-12 demonstrates
+what values are returned from repeated calls to <code>next</code> on the iterator created
+from the vector.</p>
+<p><Listing number="13-12" file-name="src/lib.rs" caption="Calling the <code>next</code> method on an iterator"></p>
+<p><code>rust,noplayground
+{{#rustdoc_include ../listings/ch13-functional-features/listing-13-12/src/lib.rs:here}}</code></p>
+<p></Listing></p>
+<p>Note that we needed to make <code>v1_iter</code> mutable: Calling the <code>next</code> method on an
+iterator changes internal state that the iterator uses to keep track of where
+it is in the sequence. In other words, this code <em>consumes</em>, or uses up, the
+iterator. Each call to <code>next</code> eats up an item from the iterator. We didn’t need
+to make <code>v1_iter</code> mutable when we used a <code>for</code> loop, because the loop took
+ownership of <code>v1_iter</code> and made it mutable behind the scenes.</p>
+<p>Also note that the values we get from the calls to <code>next</code> are immutable
+references to the values in the vector. The <code>iter</code> method produces an iterator
+over immutable references. If we want to create an iterator that takes
+ownership of <code>v1</code> and returns owned values, we can call <code>into_iter</code> instead of
+<code>iter</code>. Similarly, if we want to iterate over mutable references, we can call
+<code>iter_mut</code> instead of <code>iter</code>.</p>
+</body>
+</html>

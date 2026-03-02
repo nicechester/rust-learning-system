@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Installing `rustup` on Linux or macOS</title>
+</head>
+<body>
+<h1>Installing `rustup` on Linux or macOS</h1>
+<p>If you’re using Linux or macOS, open a terminal and enter the following command:</p>
+<pre><code class="language-console">$ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
+</code></pre>
+<p>The command downloads a script and starts the installation of the <code>rustup</code>
+tool, which installs the latest stable version of Rust. You might be prompted
+for your password. If the install is successful, the following line will appear:</p>
+<pre><code class="language-text">Rust is installed now. Great!
+</code></pre>
+<p>You will also need a <em>linker</em>, which is a program that Rust uses to join its
+compiled outputs into one file. It is likely you already have one. If you get
+linker errors, you should install a C compiler, which will typically include a
+linker. A C compiler is also useful because some common Rust packages depend on
+C code and will need a C compiler.</p>
+<p>On macOS, you can get a C compiler by running:</p>
+<pre><code class="language-console">$ xcode-select --install
+</code></pre>
+<p>Linux users should generally install GCC or Clang, according to their
+distribution’s documentation. For example, if you use Ubuntu, you can install
+the <code>build-essential</code> package.</p>
+</body>
+</html>

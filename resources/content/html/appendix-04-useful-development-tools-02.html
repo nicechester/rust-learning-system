@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Fix Your Code with `rustfix`</title>
+</head>
+<body>
+<h1>Fix Your Code with `rustfix`</h1>
+<p>The <code>rustfix</code> tool is included with Rust installations and can automatically
+fix compiler warnings that have a clear way to correct the problem that’s
+likely what you want. You’ve probably seen compiler warnings before. For
+example, consider this code:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust">fn main() {
+    let mut x = 42;
+    println!(&quot;{x}&quot;);
+}
+</code></pre>
+<p>Here, we’re defining the variable <code>x</code> as mutable, but we never actually mutate
+it. Rust warns us about that:</p>
+<pre><code class="language-console">$ cargo build
+   Compiling myprogram v0.1.0 (file:///projects/myprogram)
+warning: variable does not need to be mutable
+ --&gt; src/main.rs:2:9
+  |
+2 |     let mut x = 0;
+  |         ----^
+  |         |
+  |         help: remove this `mut`
+  |
+  = note: `#[warn(unused_mut)]` on by default
+</code></pre>
+<p>The warning suggests that we remove the <code>mut</code> keyword. We can automatically
+apply that suggestion using the <code>rustfix</code> tool by running the command <code>cargo
+fix</code>:</p>
+<pre><code class="language-console">$ cargo fix
+    Checking myprogram v0.1.0 (file:///projects/myprogram)
+      Fixing src/main.rs (1 fix)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.59s
+</code></pre>
+<p>When we look at <em>src/main.rs</em> again, we’ll see that <code>cargo fix</code> has changed the
+code:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust">fn main() {
+    let x = 42;
+    println!(&quot;{x}&quot;);
+}
+</code></pre>
+<p>The variable <code>x</code> is now immutable, and the warning no longer appears.</p>
+<p>You can also use the <code>cargo fix</code> command to transition your code between
+different Rust editions. Editions are covered in [Appendix E][editions]<!--
+ignore -->.</p>
+</body>
+</html>

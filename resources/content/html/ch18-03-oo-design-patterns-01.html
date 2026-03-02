@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Attempting Traditional Object-Oriented Style</title>
+</head>
+<body>
+<h1>Attempting Traditional Object-Oriented Style</h1>
+<p>There are infinite ways to structure code to solve the same problem, each with
+different trade-offs. This section’s implementation is more of a traditional
+object-oriented style, which is possible to write in Rust, but doesn’t take
+advantage of some of Rust’s strengths. Later, we’ll demonstrate a different
+solution that still uses the object-oriented design pattern but is structured
+in a way that might look less familiar to programmers with object-oriented
+experience. We’ll compare the two solutions to experience the trade-offs of
+designing Rust code differently than code in other languages.</p>
+<p>Listing 18-11 shows this workflow in code form: This is an example usage of the
+API we’ll implement in a library crate named <code>blog</code>. This won’t compile yet
+because we haven’t implemented the <code>blog</code> crate.</p>
+<p><Listing number="18-11" file-name="src/main.rs" caption="Code that demonstrates the desired behavior we want our <code>blog</code> crate to have"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch18-oop/listing-18-11/src/main.rs:all}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+We want to allow the user to create a new draft blog post with `Post::new`. We
+want to allow text to be added to the blog post. If we try to get the post’s
+content immediately, before approval, we shouldn’t get any text because the
+post is still a draft. We’ve added `assert_eq!` in the code for demonstration
+purposes. An excellent unit test for this would be to assert that a draft blog
+post returns an empty string from the `content` method, but we’re not going to
+write tests for this example.
+
+Next, we want to enable a request for a review of the post, and we want
+`content` to return an empty string while waiting for the review. When the post
+receives approval, it should get published, meaning the text of the post will
+be returned when `content` is called.
+
+Notice that the only type we’re interacting with from the crate is the `Post`
+type. This type will use the state pattern and will hold a value that will be
+one of three state objects representing the various states a post can be
+in—draft, review, or published. Changing from one state to another will be
+managed internally within the `Post` type. The states change in response to the
+methods called by our library’s users on the `Post` instance, but they don’t
+have to manage the state changes directly. Also, users can’t make a mistake
+with the states, such as publishing a post before it’s reviewed.
+
+&lt;!-- Old headings. Do not remove or links may break. --&gt;
+
+&lt;a id=&quot;defining-post-and-creating-a-new-instance-in-the-draft-state&quot;&gt;&lt;/a&gt;
+
+#### Defining `Post` and Creating a New Instance
+
+Let’s get started on the implementation of the library! We know we need a
+public `Post` struct that holds some content, so we’ll start with the
+definition of the struct and an associated public `new` function to create an
+instance of `Post`, as shown in Listing 18-12. We’ll also make a private
+`State` trait that will define the behavior that all state objects for a `Post`
+must have.
+
+Then, `Post` will hold a trait object of `Box&lt;dyn State&gt;` inside an `Option&lt;T&gt;`
+in a private field named `state` to hold the state object. You’ll see why the
+`Option&lt;T&gt;` is necessary in a bit.
+
+&lt;Listing number=&quot;18-12&quot; file-name=&quot;src/lib.rs&quot; caption=&quot;Definition of a `Post` struct and a `new` function that creates a new `Post` instance, a `State` trait, and a `Draft` struct&quot;&gt;
+
+```rust,noplayground
+{{#rustdoc_include ../listings/ch18-oop/listing-18-12/src/lib.rs}}
+</code></pre>
+<p></Listing></p>
+<p>The <code>State</code> trait defines the behavior shared by different post states. The
+state objects are <code>Draft</code>, <code>PendingReview</code>, and <code>Published</code>, and they will all
+implement the <code>State</code> trait. For now, the trait doesn’t have any methods, and
+we’ll start by defining just the <code>Draft</code> state because that is the state we
+want a post to start in.</p>
+<p>When we create a new <code>Post</code>, we set its <code>state</code> field to a <code>Some</code> value that
+holds a <code>Box</code>. This <code>Box</code> points to a new instance of the <code>Draft</code> struct. This
+ensures that whenever we create a new instance of <code>Post</code>, it will start out as
+a draft. Because the <code>state</code> field of <code>Post</code> is private, there is no way to
+create a <code>Post</code> in any other state! In the <code>Post::new</code> function, we set the
+<code>content</code> field to a new, empty <code>String</code>.</p>
+<h4>Storing the Text of the Post Content</h4>
+<p>We saw in Listing 18-11 that we want to be able to call a method named
+<code>add_text</code> and pass it a <code>&amp;str</code> that is then added as the text content of the
+blog post. We implement this as a method, rather than exposing the <code>content</code>
+field as <code>pub</code>, so that later we can implement a method that will control how
+the <code>content</code> field’s data is read. The <code>add_text</code> method is pretty
+straightforward, so let’s add the implementation in Listing 18-13 to the <code>impl
+Post</code> block.</p>
+<p><Listing number="18-13" file-name="src/lib.rs" caption="Implementing the <code>add_text</code> method to add text to a post’s <code>content</code>"></p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch18-oop/listing-18-13/src/lib.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+The `add_text` method takes a mutable reference to `self` because we’re
+changing the `Post` instance that we’re calling `add_text` on. We then call
+`push_str` on the `String` in `content` and pass the `text` argument to add to
+the saved `content`. This behavior doesn’t depend on the state the post is in,
+so it’s not part of the state pattern. The `add_text` method doesn’t interact
+with the `state` field at all, but it is part of the behavior we want to
+support.
+
+&lt;!-- Old headings. Do not remove or links may break. --&gt;
+
+&lt;a id=&quot;ensuring-the-content-of-a-draft-post-is-empty&quot;&gt;&lt;/a&gt;
+
+#### Ensuring That the Content of a Draft Post Is Empty
+
+Even after we’ve called `add_text` and added some content to our post, we still
+want the `content` method to return an empty string slice because the post is
+still in the draft state, as shown by the first `assert_eq!` in Listing 18-11.
+For now, let’s implement the `content` method with the simplest thing that will
+fulfill this requirement: always returning an empty string slice. We’ll change
+this later once we implement the ability to change a post’s state so that it
+can be published. So far, posts can only be in the draft state, so the post
+content should always be empty. Listing 18-14 shows this placeholder
+implementation.
+
+&lt;Listing number=&quot;18-14&quot; file-name=&quot;src/lib.rs&quot; caption=&quot;Adding a placeholder implementation for the `content` method on `Post` that always returns an empty string slice&quot;&gt;
+
+```rust,noplayground
+{{#rustdoc_include ../listings/ch18-oop/listing-18-14/src/lib.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>With this added <code>content</code> method, everything in Listing 18-11 through the first
+<code>assert_eq!</code> works as intended.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="requesting-a-review-of-the-post-changes-its-state"></a>
+<a id="requesting-a-review-changes-the-posts-state"></a></p>
+<h4>Requesting a Review, Which Changes the Post’s State</h4>
+<p>Next, we need to add functionality to request a review of a post, which should
+change its state from <code>Draft</code> to <code>PendingReview</code>. Listing 18-15 shows this code.</p>
+<p><Listing number="18-15" file-name="src/lib.rs" caption="Implementing <code>request_review</code> methods on <code>Post</code> and the <code>State</code> trait"></p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch18-oop/listing-18-15/src/lib.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+We give `Post` a public method named `request_review` that will take a mutable
+reference to `self`. Then, we call an internal `request_review` method on the
+current state of `Post`, and this second `request_review` method consumes the
+current state and returns a new state.
+
+We add the `request_review` method to the `State` trait; all types that
+implement the trait will now need to implement the `request_review` method.
+Note that rather than having `self`, `&amp;self`, or `&amp;mut self` as the first
+parameter of the method, we have `self: Box&lt;Self&gt;`. This syntax means the
+method is only valid when called on a `Box` holding the type. This syntax takes
+ownership of `Box&lt;Self&gt;`, invalidating the old state so that the state value of
+the `Post` can transform into a new state.
+
+To consume the old state, the `request_review` method needs to take ownership
+of the state value. This is where the `Option` in the `state` field of `Post`
+comes in: We call the `take` method to take the `Some` value out of the `state`
+field and leave a `None` in its place because Rust doesn’t let us have
+unpopulated fields in structs. This lets us move the `state` value out of
+`Post` rather than borrowing it. Then, we’ll set the post’s `state` value to
+the result of this operation.
+
+We need to set `state` to `None` temporarily rather than setting it directly
+with code like `self.state = self.state.request_review();` to get ownership of
+the `state` value. This ensures that `Post` can’t use the old `state` value
+after we’ve transformed it into a new state.
+
+The `request_review` method on `Draft` returns a new, boxed instance of a new
+`PendingReview` struct, which represents the state when a post is waiting for a
+review. The `PendingReview` struct also implements the `request_review` method
+but doesn’t do any transformations. Rather, it returns itself because when we
+request a review on a post already in the `PendingReview` state, it should stay
+in the `PendingReview` state.
+
+Now we can start seeing the advantages of the state pattern: The
+`request_review` method on `Post` is the same no matter its `state` value. Each
+state is responsible for its own rules.
+
+We’ll leave the `content` method on `Post` as is, returning an empty string
+slice. We can now have a `Post` in the `PendingReview` state as well as in the
+`Draft` state, but we want the same behavior in the `PendingReview` state.
+Listing 18-11 now works up to the second `assert_eq!` call!
+
+&lt;!-- Old headings. Do not remove or links may break. --&gt;
+
+&lt;a id=&quot;adding-the-approve-method-that-changes-the-behavior-of-content&quot;&gt;&lt;/a&gt;
+&lt;a id=&quot;adding-approve-to-change-the-behavior-of-content&quot;&gt;&lt;/a&gt;
+
+#### Adding `approve` to Change `content`'s Behavior
+
+The `approve` method will be similar to the `request_review` method: It will
+set `state` to the value that the current state says it should have when that
+state is approved, as shown in Listing 18-16.
+
+&lt;Listing number=&quot;18-16&quot; file-name=&quot;src/lib.rs&quot; caption=&quot;Implementing the `approve` method on `Post` and the `State` trait&quot;&gt;
+
+```rust,noplayground
+{{#rustdoc_include ../listings/ch18-oop/listing-18-16/src/lib.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>We add the <code>approve</code> method to the <code>State</code> trait and add a new struct that
+implements <code>State</code>, the <code>Published</code> state.</p>
+<p>Similar to the way <code>request_review</code> on <code>PendingReview</code> works, if we call the
+<code>approve</code> method on a <code>Draft</code>, it will have no effect because <code>approve</code> will
+return <code>self</code>. When we call <code>approve</code> on <code>PendingReview</code>, it returns a new,
+boxed instance of the <code>Published</code> struct. The <code>Published</code> struct implements the
+<code>State</code> trait, and for both the <code>request_review</code> method and the <code>approve</code>
+method, it returns itself because the post should stay in the <code>Published</code> state
+in those cases.</p>
+<p>Now we need to update the <code>content</code> method on <code>Post</code>. We want the value
+returned from <code>content</code> to depend on the current state of the <code>Post</code>, so we’re
+going to have the <code>Post</code> delegate to a <code>content</code> method defined on its <code>state</code>,
+as shown in Listing 18-17.</p>
+<p><Listing number="18-17" file-name="src/lib.rs" caption="Updating the <code>content</code> method on <code>Post</code> to delegate to a <code>content</code> method on <code>State</code>"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch18-oop/listing-18-17/src/lib.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+Because the goal is to keep all of these rules inside the structs that
+implement `State`, we call a `content` method on the value in `state` and pass
+the post instance (that is, `self`) as an argument. Then, we return the value
+that’s returned from using the `content` method on the `state` value.
+
+We call the `as_ref` method on the `Option` because we want a reference to the
+value inside the `Option` rather than ownership of the value. Because `state` is
+an `Option&lt;Box&lt;dyn State&gt;&gt;`, when we call `as_ref`, an `Option&lt;&amp;Box&lt;dyn
+State&gt;&gt;` is returned. If we didn’t call `as_ref`, we would get an error because
+we can’t move `state` out of the borrowed `&amp;self` of the function parameter.
+
+We then call the `unwrap` method, which we know will never panic because we
+know the methods on `Post` ensure that `state` will always contain a `Some`
+value when those methods are done. This is one of the cases we talked about in
+the [“When You Have More Information Than the
+Compiler”][more-info-than-rustc]&lt;!-- ignore --&gt; section of Chapter 9 when we
+know that a `None` value is never possible, even though the compiler isn’t able
+to understand that.
+
+At this point, when we call `content` on the `&amp;Box&lt;dyn State&gt;`, deref coercion
+will take effect on the `&amp;` and the `Box` so that the `content` method will
+ultimately be called on the type that implements the `State` trait. That means
+we need to add `content` to the `State` trait definition, and that is where
+we’ll put the logic for what content to return depending on which state we
+have, as shown in Listing 18-18.
+
+&lt;Listing number=&quot;18-18&quot; file-name=&quot;src/lib.rs&quot; caption=&quot;Adding the `content` method to the `State` trait&quot;&gt;
+
+```rust,noplayground
+{{#rustdoc_include ../listings/ch18-oop/listing-18-18/src/lib.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>We add a default implementation for the <code>content</code> method that returns an empty
+string slice. That means we don’t need to implement <code>content</code> on the <code>Draft</code>
+and <code>PendingReview</code> structs. The <code>Published</code> struct will override the <code>content</code>
+method and return the value in <code>post.content</code>. While convenient, having the
+<code>content</code> method on <code>State</code> determine the content of the <code>Post</code> is blurring
+the lines between the responsibility of <code>State</code> and the responsibility of
+<code>Post</code>.</p>
+<p>Note that we need lifetime annotations on this method, as we discussed in
+Chapter 10. We’re taking a reference to a <code>post</code> as an argument and returning a
+reference to part of that <code>post</code>, so the lifetime of the returned reference is
+related to the lifetime of the <code>post</code> argument.</p>
+<p>And we’re done—all of Listing 18-11 now works! We’ve implemented the state
+pattern with the rules of the blog post workflow. The logic related to the
+rules lives in the state objects rather than being scattered throughout <code>Post</code>.</p>
+<blockquote>
+<h3>Why Not An Enum?</h3>
+<p>You may have been wondering why we didn’t use an enum with the different
+possible post states as variants. That’s certainly a possible solution; try it
+and compare the end results to see which you prefer! One disadvantage of using
+an enum is that every place that checks the value of the enum will need a
+<code>match</code> expression or similar to handle every possible variant. This could get
+more repetitive than this trait object solution.</p>
+</blockquote>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="trade-offs-of-the-state-pattern"></a></p>
+<h4>Evaluating the State Pattern</h4>
+<p>We’ve shown that Rust is capable of implementing the object-oriented state
+pattern to encapsulate the different kinds of behavior a post should have in
+each state. The methods on <code>Post</code> know nothing about the various behaviors.
+Because of the way we organized the code, we have to look in only one place to
+know the different ways a published post can behave: the implementation of the
+<code>State</code> trait on the <code>Published</code> struct.</p>
+<p>If we were to create an alternative implementation that didn’t use the state
+pattern, we might instead use <code>match</code> expressions in the methods on <code>Post</code> or
+even in the <code>main</code> code that checks the state of the post and changes behavior
+in those places. That would mean we would have to look in several places to
+understand all the implications of a post being in the published state.</p>
+<p>With the state pattern, the <code>Post</code> methods and the places we use <code>Post</code> don’t
+need <code>match</code> expressions, and to add a new state, we would only need to add a
+new struct and implement the trait methods on that one struct in one location.</p>
+<p>The implementation using the state pattern is easy to extend to add more
+functionality. To see the simplicity of maintaining code that uses the state
+pattern, try a few of these suggestions:</p>
+<ul>
+<li>Add a <code>reject</code> method that changes the post’s state from <code>PendingReview</code> back
+  to <code>Draft</code>.</li>
+<li>Require two calls to <code>approve</code> before the state can be changed to <code>Published</code>.</li>
+<li>Allow users to add text content only when a post is in the <code>Draft</code> state.
+  Hint: have the state object responsible for what might change about the
+  content but not responsible for modifying the <code>Post</code>.</li>
+</ul>
+<p>One downside of the state pattern is that, because the states implement the
+transitions between states, some of the states are coupled to each other. If we
+add another state between <code>PendingReview</code> and <code>Published</code>, such as <code>Scheduled</code>,
+we would have to change the code in <code>PendingReview</code> to transition to
+<code>Scheduled</code> instead. It would be less work if <code>PendingReview</code> didn’t need to
+change with the addition of a new state, but that would mean switching to
+another design pattern.</p>
+<p>Another downside is that we’ve duplicated some logic. To eliminate some of the
+duplication, we might try to make default implementations for the
+<code>request_review</code> and <code>approve</code> methods on the <code>State</code> trait that return <code>self</code>.
+However, this wouldn’t work: When using <code>State</code> as a trait object, the trait
+doesn’t know what the concrete <code>self</code> will be exactly, so the return type isn’t
+known at compile time. (This is one of the dyn compatibility rules mentioned
+earlier.)</p>
+<p>Other duplication includes the similar implementations of the <code>request_review</code>
+and <code>approve</code> methods on <code>Post</code>. Both methods use <code>Option::take</code> with the
+<code>state</code> field of <code>Post</code>, and if <code>state</code> is <code>Some</code>, they delegate to the wrapped
+value’s implementation of the same method and set the new value of the <code>state</code>
+field to the result. If we had a lot of methods on <code>Post</code> that followed this
+pattern, we might consider defining a macro to eliminate the repetition (see
+the [“Macros”][macros]<!-- ignore --> section in Chapter 20).</p>
+<p>By implementing the state pattern exactly as it’s defined for object-oriented
+languages, we’re not taking as full advantage of Rust’s strengths as we could.
+Let’s look at some changes we can make to the <code>blog</code> crate that can make
+invalid states and transitions into compile-time errors.</p>
+</body>
+</html>

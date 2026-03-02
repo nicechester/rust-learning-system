@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Refactoring with Tuples</title>
+</head>
+<body>
+<h1>Refactoring with Tuples</h1>
+<p>Listing 5-9 shows another version of our program that uses tuples.</p>
+<p><Listing number="5-9" file-name="src/main.rs" caption="Specifying the width and height of the rectangle with a tuple"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-09/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>In one way, this program is better. Tuples let us add a bit of structure, and
+we’re now passing just one argument. But in another way, this version is less
+clear: Tuples don’t name their elements, so we have to index into the parts of
+the tuple, making our calculation less obvious.</p>
+<p>Mixing up the width and height wouldn’t matter for the area calculation, but if
+we want to draw the rectangle on the screen, it would matter! We would have to
+keep in mind that <code>width</code> is the tuple index <code>0</code> and <code>height</code> is the tuple
+index <code>1</code>. This would be even harder for someone else to figure out and keep in
+mind if they were to use our code. Because we haven’t conveyed the meaning of
+our data in our code, it’s now easier to introduce errors.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="refactoring-with-structs-adding-more-meaning"></a></p>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>`match` Arms</title>
+</head>
+<body>
+<h1>`match` Arms</h1>
+<p>As discussed in Chapter 6, we use patterns in the arms of <code>match</code> expressions.
+Formally, <code>match</code> expressions are defined as the keyword <code>match</code>, a value to
+match on, and one or more match arms that consist of a pattern and an
+expression to run if the value matches that arm’s pattern, like this:</p>
+<!--
+  Manually formatted rather than using Markdown intentionally: Markdown does not
+  support italicizing code in the body of a block like this!
+-->
+
+<pre><code>match <em>VALUE</em> {
+    <em>PATTERN</em> => <em>EXPRESSION</em>,
+    <em>PATTERN</em> => <em>EXPRESSION</em>,
+    <em>PATTERN</em> => <em>EXPRESSION</em>,
+}</code></pre>
+
+<p>For example, here’s the <code>match</code> expression from Listing 6-5 that matches on an
+<code>Option&lt;i32&gt;</code> value in the variable <code>x</code>:</p>
+<p><code>rust,ignore
+match x {
+    None =&gt; None,
+    Some(i) =&gt; Some(i + 1),
+}</code></p>
+<p>The patterns in this <code>match</code> expression are the <code>None</code> and <code>Some(i)</code> to the
+left of each arrow.</p>
+<p>One requirement for <code>match</code> expressions is that they need to be exhaustive in
+the sense that all possibilities for the value in the <code>match</code> expression must
+be accounted for. One way to ensure that you’ve covered every possibility is to
+have a catch-all pattern for the last arm: For example, a variable name
+matching any value can never fail and thus covers every remaining case.</p>
+<p>The particular pattern <code>_</code> will match anything, but it never binds to a
+variable, so it’s often used in the last match arm. The <code>_</code> pattern can be
+useful when you want to ignore any value not specified, for example. We’ll
+cover the <code>_</code> pattern in more detail in [“Ignoring Values in a
+Pattern”][ignoring-values-in-a-pattern]<!-- ignore --> later in this chapter.</p>
+</body>
+</html>

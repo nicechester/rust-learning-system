@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>`PartialOrd` and `Ord` for Ordering Comparisons</title>
+</head>
+<body>
+<h1>`PartialOrd` and `Ord` for Ordering Comparisons</h1>
+<p>The <code>PartialOrd</code> trait allows you to compare instances of a type for sorting
+purposes. A type that implements <code>PartialOrd</code> can be used with the <code>&lt;</code>, <code>&gt;</code>,
+<code>&lt;=</code>, and <code>&gt;=</code> operators. You can only apply the <code>PartialOrd</code> trait to types
+that also implement <code>PartialEq</code>.</p>
+<p>Deriving <code>PartialOrd</code> implements the <code>partial_cmp</code> method, which returns an
+<code>Option&lt;Ordering&gt;</code> that will be <code>None</code> when the values given don’t produce an
+ordering. An example of a value that doesn’t produce an ordering, even though
+most values of that type can be compared, is the <code>NaN</code> floating point value.
+Calling <code>partial_cmp</code> with any floating-point number and the <code>NaN</code>
+floating-point value will return <code>None</code>.</p>
+<p>When derived on structs, <code>PartialOrd</code> compares two instances by comparing the
+value in each field in the order in which the fields appear in the struct
+definition. When derived on enums, variants of the enum declared earlier in the
+enum definition are considered less than the variants listed later.</p>
+<p>The <code>PartialOrd</code> trait is required, for example, for the <code>gen_range</code> method
+from the <code>rand</code> crate that generates a random value in the range specified by a
+range expression.</p>
+<p>The <code>Ord</code> trait allows you to know that for any two values of the annotated
+type, a valid ordering will exist. The <code>Ord</code> trait implements the <code>cmp</code> method,
+which returns an <code>Ordering</code> rather than an <code>Option&lt;Ordering&gt;</code> because a valid
+ordering will always be possible. You can only apply the <code>Ord</code> trait to types
+that also implement <code>PartialOrd</code> and <code>Eq</code> (and <code>Eq</code> requires <code>PartialEq</code>). When
+derived on structs and enums, <code>cmp</code> behaves the same way as the derived
+implementation for <code>partial_cmp</code> does with <code>PartialOrd</code>.</p>
+<p>An example of when <code>Ord</code> is required is when storing values in a <code>BTreeSet&lt;T&gt;</code>,
+a data structure that stores data based on the sort order of the values.</p>
+</body>
+</html>

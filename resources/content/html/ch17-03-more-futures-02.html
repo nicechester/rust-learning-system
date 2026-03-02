@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Building Our Own Async Abstractions</title>
+</head>
+<body>
+<h1>Building Our Own Async Abstractions</h1>
+<p>We can also compose futures together to create new patterns. For example, we can
+build a <code>timeout</code> function with async building blocks we already have. When
+we’re done, the result will be another building block we could use to create
+still more async abstractions.</p>
+<p>Listing 17-18 shows how we would expect this <code>timeout</code> to work with a slow
+future.</p>
+<p><Listing number="17-18" caption="Using our imagined <code>timeout</code> to run a slow operation with a time limit" file-name="src/main.rs"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch17-async-await/listing-17-18/src/main.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+Let’s implement this! To begin, let’s think about the API for `timeout`:
+
+- It needs to be an async function itself so we can await it.
+- Its first parameter should be a future to run. We can make it generic to allow
+  it to work with any future.
+- Its second parameter will be the maximum time to wait. If we use a `Duration`,
+  that will make it easy to pass along to `trpl::sleep`.
+- It should return a `Result`. If the future completes successfully, the
+  `Result` will be `Ok` with the value produced by the future. If the timeout
+  elapses first, the `Result` will be `Err` with the duration that the timeout
+  waited for.
+
+Listing 17-19 shows this declaration.
+
+&lt;!-- This is not tested because it intentionally does not compile. --&gt;
+
+&lt;Listing number=&quot;17-19&quot; caption=&quot;Defining the signature of `timeout`&quot; file-name=&quot;src/main.rs&quot;&gt;
+
+```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch17-async-await/listing-17-19/src/main.rs:declaration}}
+</code></pre>
+<p></Listing></p>
+<p>That satisfies our goals for the types. Now let’s think about the <em>behavior</em> we
+need: we want to race the future passed in against the duration. We can use
+<code>trpl::sleep</code> to make a timer future from the duration, and use <code>trpl::select</code>
+to run that timer with the future the caller passes in.</p>
+<p>In Listing 17-20, we implement <code>timeout</code> by matching on the result of awaiting
+<code>trpl::select</code>.</p>
+<p><Listing number="17-20" caption="Defining <code>timeout</code> with <code>select</code> and <code>sleep</code>" file-name="src/main.rs"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch17-async-await/listing-17-20/src/main.rs:implementation}}
+</code></pre>
+<p></Listing></p>
+<p>The implementation of <code>trpl::select</code> is not fair: it always polls arguments in
+the order in which they are passed (other <code>select</code> implementations will
+randomly choose which argument to poll first). Thus, we pass <code>future_to_try</code> to
+<code>select</code> first so it gets a chance to complete even if <code>max_time</code> is a very
+short duration. If <code>future_to_try</code> finishes first, <code>select</code> will return <code>Left</code>
+with the output from <code>future_to_try</code>. If <code>timer</code> finishes first, <code>select</code> will
+return <code>Right</code> with the timer’s output of <code>()</code>.</p>
+<p>If the <code>future_to_try</code> succeeds and we get a <code>Left(output)</code>, we return
+<code>Ok(output)</code>. If the sleep timer elapses instead and we get a <code>Right(())</code>, we
+ignore the <code>()</code> with <code>_</code> and return <code>Err(max_time)</code> instead.</p>
+<p>With that, we have a working <code>timeout</code> built out of two other async helpers. If
+we run our code, it will print the failure mode after the timeout:</p>
+<pre><code class="language-text">Failed after 2 seconds
+</code></pre>
+<p>Because futures compose with other futures, you can build really powerful tools
+using smaller async building blocks. For example, you can use this same
+approach to combine timeouts with retries, and in turn use those with
+operations such as network calls (such as those in Listing 17-5).</p>
+<p>In practice, you’ll usually work directly with <code>async</code> and <code>await</code>, and
+secondarily with functions such as <code>select</code> and macros such as the <code>join!</code>
+macro to control how the outermost futures are executed.</p>
+<p>We’ve now seen a number of ways to work with multiple futures at the same time.
+Up next, we’ll look at how we can work with multiple futures in a sequence over
+time with <em>streams</em>.</p>
+</body>
+</html>

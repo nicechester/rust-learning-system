@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Racing Two URLs Against Each Other Concurrently</title>
+</head>
+<body>
+<h1>Racing Two URLs Against Each Other Concurrently</h1>
+<p>In Listing 17-5, we call <code>page_title</code> with two different URLs passed in from the
+command line and race them by selecting whichever future finishes first.</p>
+<p><Listing number="17-5" caption="Calling <code>page_title</code> for two URLs to see which returns first" file-name="src/main.rs"></p>
+<!-- should_panic,noplayground because mdbook does not pass args -->
+
+<p>```rust,should_panic,noplayground
+{{#rustdoc_include ../listings/ch17-async-await/listing-17-05/src/main.rs:all}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+We begin by calling `page_title` for each of the user-supplied URLs. We save
+the resulting futures as `title_fut_1` and `title_fut_2`. Remember, these don’t
+do anything yet, because futures are lazy and we haven’t yet awaited them. Then
+we pass the futures to `trpl::select`, which returns a value to indicate which
+of the futures passed to it finishes first.
+
+&gt; Note: Under the hood, `trpl::select` is built on a more general `select`
+&gt; function defined in the `futures` crate. The `futures` crate’s `select`
+&gt; function can do a lot of things that the `trpl::select` function can’t, but
+&gt; it also has some additional complexity that we can skip over for now.
+
+Either future can legitimately “win,” so it doesn’t make sense to return a
+`Result`. Instead, `trpl::select` returns a type we haven’t seen before,
+`trpl::Either`. The `Either` type is somewhat similar to a `Result` in that it
+has two cases. Unlike `Result`, though, there is no notion of success or
+failure baked into `Either`. Instead, it uses `Left` and `Right` to indicate
+“one or the other”:
+
+```rust
+enum Either&lt;A, B&gt; {
+    Left(A),
+    Right(B),
+}
+</code></pre>
+<p>The <code>select</code> function returns <code>Left</code> with that future’s output if the first
+argument wins, and <code>Right</code> with the second future argument’s output if <em>that</em>
+one wins. This matches the order the arguments appear in when calling the
+function: the first argument is to the left of the second argument.</p>
+<p>We also update <code>page_title</code> to return the same URL passed in. That way, if the
+page that returns first does not have a <code>&lt;title&gt;</code> we can resolve, we can still
+print a meaningful message. With that information available, we wrap up by
+updating our <code>println!</code> output to indicate both which URL finished first and
+what, if any, the <code>&lt;title&gt;</code> is for the web page at that URL.</p>
+<p>You have built a small working web scraper now! Pick a couple URLs and run the
+command line tool. You may discover that some sites are consistently faster
+than others, while in other cases the faster site varies from run to run. More
+importantly, you’ve learned the basics of working with futures, so now we can
+dig deeper into what we can do with async.</p>
+<!-- TODO: map source link version to version of Rust? -->
+</body>
+</html>

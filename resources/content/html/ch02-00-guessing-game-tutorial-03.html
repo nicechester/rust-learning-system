@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Handling Potential Failure with `Result`</title>
+</head>
+<body>
+<h1>Handling Potential Failure with `Result`</h1>
+<p>We’re still working on this line of code. We’re now discussing a third line of
+text, but note that it’s still part of a single logical line of code. The next
+part is this method:</p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:expect}}</p>
+<pre><code>
+We could have written this code as:
+
+```rust,ignore
+io::stdin().read_line(&amp;mut guess).expect(&quot;Failed to read line&quot;);
+</code></pre>
+<p>However, one long line is difficult to read, so it’s best to divide it. It’s
+often wise to introduce a newline and other whitespace to help break up long
+lines when you call a method with the <code>.method_name()</code> syntax. Now let’s
+discuss what this line does.</p>
+<p>As mentioned earlier, <code>read_line</code> puts whatever the user enters into the string
+we pass to it, but it also returns a <code>Result</code> value. [<code>Result</code>][result]<!--
+ignore --> is an [<em>enumeration</em>][enums]<!-- ignore -->, often called an <em>enum</em>,
+which is a type that can be in one of multiple possible states. We call each
+possible state a <em>variant</em>.</p>
+<p>[Chapter 6][enums]<!-- ignore --> will cover enums in more detail. The purpose
+of these <code>Result</code> types is to encode error-handling information.</p>
+<p><code>Result</code>’s variants are <code>Ok</code> and <code>Err</code>. The <code>Ok</code> variant indicates the
+operation was successful, and it contains the successfully generated value.
+The <code>Err</code> variant means the operation failed, and it contains information
+about how or why the operation failed.</p>
+<p>Values of the <code>Result</code> type, like values of any type, have methods defined on
+them. An instance of <code>Result</code> has an [<code>expect</code> method][expect]<!-- ignore -->
+that you can call. If this instance of <code>Result</code> is an <code>Err</code> value, <code>expect</code>
+will cause the program to crash and display the message that you passed as an
+argument to <code>expect</code>. If the <code>read_line</code> method returns an <code>Err</code>, it would
+likely be the result of an error coming from the underlying operating system.
+If this instance of <code>Result</code> is an <code>Ok</code> value, <code>expect</code> will take the return
+value that <code>Ok</code> is holding and return just that value to you so that you can
+use it. In this case, that value is the number of bytes in the user’s input.</p>
+<p>If you don’t call <code>expect</code>, the program will compile, but you’ll get a warning:</p>
+<pre><code class="language-console">{{#include ../listings/ch02-guessing-game-tutorial/no-listing-02-without-expect/output.txt}}
+</code></pre>
+<p>Rust warns that you haven’t used the <code>Result</code> value returned from <code>read_line</code>,
+indicating that the program hasn’t handled a possible error.</p>
+<p>The right way to suppress the warning is to actually write error-handling code,
+but in our case we just want to crash this program when a problem occurs, so we
+can use <code>expect</code>. You’ll learn about recovering from errors in [Chapter
+9][recover]<!-- ignore -->.</p>
+</body>
+</html>

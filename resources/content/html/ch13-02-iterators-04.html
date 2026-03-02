@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Closures That Capture Their Environment</title>
+</head>
+<body>
+<h1>Closures That Capture Their Environment</h1>
+<p>Many iterator adapters take closures as arguments, and commonly the closures
+we’ll specify as arguments to iterator adapters will be closures that capture
+their environment.</p>
+<p>For this example, we’ll use the <code>filter</code> method that takes a closure. The
+closure gets an item from the iterator and returns a <code>bool</code>. If the closure
+returns <code>true</code>, the value will be included in the iteration produced by
+<code>filter</code>. If the closure returns <code>false</code>, the value won’t be included.</p>
+<p>In Listing 13-16, we use <code>filter</code> with a closure that captures the <code>shoe_size</code>
+variable from its environment to iterate over a collection of <code>Shoe</code> struct
+instances. It will return only shoes that are the specified size.</p>
+<p><Listing number="13-16" file-name="src/lib.rs" caption="Using the <code>filter</code> method with a closure that captures <code>shoe_size</code>"></p>
+<p><code>rust,noplayground
+{{#rustdoc_include ../listings/ch13-functional-features/listing-13-16/src/lib.rs}}</code></p>
+<p></Listing></p>
+<p>The <code>shoes_in_size</code> function takes ownership of a vector of shoes and a shoe
+size as parameters. It returns a vector containing only shoes of the specified
+size.</p>
+<p>In the body of <code>shoes_in_size</code>, we call <code>into_iter</code> to create an iterator that
+takes ownership of the vector. Then, we call <code>filter</code> to adapt that iterator
+into a new iterator that only contains elements for which the closure returns
+<code>true</code>.</p>
+<p>The closure captures the <code>shoe_size</code> parameter from the environment and
+compares the value with each shoe’s size, keeping only shoes of the size
+specified. Finally, calling <code>collect</code> gathers the values returned by the
+adapted iterator into a vector that’s returned by the function.</p>
+<p>The test shows that when we call <code>shoes_in_size</code>, we get back only shoes that
+have the same size as the value we specified.</p>
+</body>
+</html>

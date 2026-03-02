@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Implementing a Trait on a Type</title>
+</head>
+<body>
+<h1>Implementing a Trait on a Type</h1>
+<p>Now that we’ve defined the desired signatures of the <code>Summary</code> trait’s methods,
+we can implement it on the types in our media aggregator. Listing 10-13 shows
+an implementation of the <code>Summary</code> trait on the <code>NewsArticle</code> struct that uses
+the headline, the author, and the location to create the return value of
+<code>summarize</code>. For the <code>SocialPost</code> struct, we define <code>summarize</code> as the username
+followed by the entire text of the post, assuming that the post content is
+already limited to 280 characters.</p>
+<p><Listing number="10-13" file-name="src/lib.rs" caption="Implementing the <code>Summary</code> trait on the <code>NewsArticle</code> and <code>SocialPost</code> types"></p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-13/src/lib.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+Implementing a trait on a type is similar to implementing regular methods. The
+difference is that after `impl`, we put the trait name we want to implement,
+then use the `for` keyword, and then specify the name of the type we want to
+implement the trait for. Within the `impl` block, we put the method signatures
+that the trait definition has defined. Instead of adding a semicolon after each
+signature, we use curly brackets and fill in the method body with the specific
+behavior that we want the methods of the trait to have for the particular type.
+
+Now that the library has implemented the `Summary` trait on `NewsArticle` and
+`SocialPost`, users of the crate can call the trait methods on instances of
+`NewsArticle` and `SocialPost` in the same way we call regular methods. The only
+difference is that the user must bring the trait into scope as well as the
+types. Here’s an example of how a binary crate could use our `aggregator`
+library crate:
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/no-listing-01-calling-trait-method/src/main.rs}}
+</code></pre>
+<p>This code prints <code>1 new post: horse_ebooks: of course, as you probably already
+know, people</code>.</p>
+<p>Other crates that depend on the <code>aggregator</code> crate can also bring the <code>Summary</code>
+trait into scope to implement <code>Summary</code> on their own types. One restriction to
+note is that we can implement a trait on a type only if either the trait or the
+type, or both, are local to our crate. For example, we can implement standard
+library traits like <code>Display</code> on a custom type like <code>SocialPost</code> as part of our
+<code>aggregator</code> crate functionality because the type <code>SocialPost</code> is local to our
+<code>aggregator</code> crate. We can also implement <code>Summary</code> on <code>Vec&lt;T&gt;</code> in our
+<code>aggregator</code> crate because the trait <code>Summary</code> is local to our <code>aggregator</code>
+crate.</p>
+<p>But we can’t implement external traits on external types. For example, we can’t
+implement the <code>Display</code> trait on <code>Vec&lt;T&gt;</code> within our <code>aggregator</code> crate,
+because <code>Display</code> and <code>Vec&lt;T&gt;</code> are both defined in the standard library and
+aren’t local to our <code>aggregator</code> crate. This restriction is part of a property
+called <em>coherence</em>, and more specifically the <em>orphan rule</em>, so named because
+the parent type is not present. This rule ensures that other people’s code
+can’t break your code and vice versa. Without the rule, two crates could
+implement the same trait for the same type, and Rust wouldn’t know which
+implementation to use.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="default-implementations"></a></p>
+</body>
+</html>

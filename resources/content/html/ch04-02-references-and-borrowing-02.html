@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Dangling References</title>
+</head>
+<body>
+<h1>Dangling References</h1>
+<p>In languages with pointers, it’s easy to erroneously create a <em>dangling
+pointer</em>—a pointer that references a location in memory that may have been
+given to someone else—by freeing some memory while preserving a pointer to that
+memory. In Rust, by contrast, the compiler guarantees that references will
+never be dangling references: If you have a reference to some data, the
+compiler will ensure that the data will not go out of scope before the
+reference to the data does.</p>
+<p>Let’s try to create a dangling reference to see how Rust prevents them with a
+compile-time error:</p>
+<p><Listing file-name="src/main.rs"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch04-understanding-ownership/no-listing-14-dangling-reference/src/main.rs}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+Here’s the error:
+
+```console
+{{#include ../listings/ch04-understanding-ownership/no-listing-14-dangling-reference/output.txt}}
+</code></pre>
+<p>This error message refers to a feature we haven’t covered yet: lifetimes. We’ll
+discuss lifetimes in detail in Chapter 10. But, if you disregard the parts
+about lifetimes, the message does contain the key to why this code is a problem:</p>
+<pre><code class="language-text">this function's return type contains a borrowed value, but there is no value
+for it to be borrowed from
+</code></pre>
+<p>Let’s take a closer look at exactly what’s happening at each stage of our
+<code>dangle</code> code:</p>
+<p><Listing file-name="src/main.rs"></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch04-understanding-ownership/no-listing-15-dangling-reference-annotated/src/main.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+Because `s` is created inside `dangle`, when the code of `dangle` is finished,
+`s` will be deallocated. But we tried to return a reference to it. That means
+this reference would be pointing to an invalid `String`. That’s no good! Rust
+won’t let us do this.
+
+The solution here is to return the `String` directly:
+
+```rust
+{{#rustdoc_include ../listings/ch04-understanding-ownership/no-listing-16-no-dangle/src/main.rs:here}}
+</code></pre>
+<p>This works without any problems. Ownership is moved out, and nothing is
+deallocated.</p>
+</body>
+</html>

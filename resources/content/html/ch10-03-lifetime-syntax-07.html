@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>In Struct Definitions</title>
+</head>
+<body>
+<h1>In Struct Definitions</h1>
+<p>So far, the structs we’ve defined all hold owned types. We can define structs
+to hold references, but in that case, we would need to add a lifetime
+annotation on every reference in the struct’s definition. Listing 10-24 has a
+struct named <code>ImportantExcerpt</code> that holds a string slice.</p>
+<p><Listing number="10-24" file-name="src/main.rs" caption="A struct that holds a reference, requiring a lifetime annotation"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch10-generic-types-traits-and-lifetimes/listing-10-24/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>This struct has the single field <code>part</code> that holds a string slice, which is a
+reference. As with generic data types, we declare the name of the generic
+lifetime parameter inside angle brackets after the name of the struct so that
+we can use the lifetime parameter in the body of the struct definition. This
+annotation means an instance of <code>ImportantExcerpt</code> can’t outlive the reference
+it holds in its <code>part</code> field.</p>
+<p>The <code>main</code> function here creates an instance of the <code>ImportantExcerpt</code> struct
+that holds a reference to the first sentence of the <code>String</code> owned by the
+variable <code>novel</code>. The data in <code>novel</code> exists before the <code>ImportantExcerpt</code>
+instance is created. In addition, <code>novel</code> doesn’t go out of scope until after
+the <code>ImportantExcerpt</code> goes out of scope, so the reference in the
+<code>ImportantExcerpt</code> instance is valid.</p>
+</body>
+</html>

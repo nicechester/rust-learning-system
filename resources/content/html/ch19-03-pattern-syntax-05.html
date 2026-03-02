@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Destructuring to Break Apart Values</title>
+</head>
+<body>
+<h1>Destructuring to Break Apart Values</h1>
+<p>We can also use patterns to destructure structs, enums, and tuples to use
+different parts of these values. Let’s walk through each value.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="destructuring-structs"></a></p>
+<h4>Structs</h4>
+<p>Listing 19-12 shows a <code>Point</code> struct with two fields, <code>x</code> and <code>y</code>, that we can
+break apart using a pattern with a <code>let</code> statement.</p>
+<p><Listing number="19-12" file-name="src/main.rs" caption="Destructuring a struct’s fields into separate variables"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-12/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>This code creates the variables <code>a</code> and <code>b</code> that match the values of the <code>x</code>
+and <code>y</code> fields of the <code>p</code> struct. This example shows that the names of the
+variables in the pattern don’t have to match the field names of the struct.
+However, it’s common to match the variable names to the field names to make it
+easier to remember which variables came from which fields. Because of this
+common usage, and because writing <code>let Point { x: x, y: y } = p;</code> contains a
+lot of duplication, Rust has a shorthand for patterns that match struct fields:
+You only need to list the name of the struct field, and the variables created
+from the pattern will have the same names. Listing 19-13 behaves in the same
+way as the code in Listing 19-12, but the variables created in the <code>let</code>
+pattern are <code>x</code> and <code>y</code> instead of <code>a</code> and <code>b</code>.</p>
+<p><Listing number="19-13" file-name="src/main.rs" caption="Destructuring struct fields using struct field shorthand"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-13/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>This code creates the variables <code>x</code> and <code>y</code> that match the <code>x</code> and <code>y</code> fields
+of the <code>p</code> variable. The outcome is that the variables <code>x</code> and <code>y</code> contain the
+values from the <code>p</code> struct.</p>
+<p>We can also destructure with literal values as part of the struct pattern
+rather than creating variables for all the fields. Doing so allows us to test
+some of the fields for particular values while creating variables to
+destructure the other fields.</p>
+<p>In Listing 19-14, we have a <code>match</code> expression that separates <code>Point</code> values
+into three cases: points that lie directly on the <code>x</code> axis (which is true when
+<code>y = 0</code>), on the <code>y</code> axis (<code>x = 0</code>), or on neither axis.</p>
+<p><Listing number="19-14" file-name="src/main.rs" caption="Destructuring and matching literal values in one pattern"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-14/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>The first arm will match any point that lies on the <code>x</code> axis by specifying that
+the <code>y</code> field matches if its value matches the literal <code>0</code>. The pattern still
+creates an <code>x</code> variable that we can use in the code for this arm.</p>
+<p>Similarly, the second arm matches any point on the <code>y</code> axis by specifying that
+the <code>x</code> field matches if its value is <code>0</code> and creates a variable <code>y</code> for the
+value of the <code>y</code> field. The third arm doesn’t specify any literals, so it
+matches any other <code>Point</code> and creates variables for both the <code>x</code> and <code>y</code> fields.</p>
+<p>In this example, the value <code>p</code> matches the second arm by virtue of <code>x</code>
+containing a <code>0</code>, so this code will print <code>On the y axis at 7</code>.</p>
+<p>Remember that a <code>match</code> expression stops checking arms once it has found the
+first matching pattern, so even though <code>Point { x: 0, y: 0 }</code> is on the <code>x</code> axis
+and the <code>y</code> axis, this code would only print <code>On the x axis at 0</code>.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="destructuring-enums"></a></p>
+<h4>Enums</h4>
+<p>We’ve destructured enums in this book (for example, Listing 6-5 in Chapter 6),
+but we haven’t yet explicitly discussed that the pattern to destructure an enum
+corresponds to the way the data stored within the enum is defined. As an
+example, in Listing 19-15, we use the <code>Message</code> enum from Listing 6-2 and write
+a <code>match</code> with patterns that will destructure each inner value.</p>
+<p><Listing number="19-15" file-name="src/main.rs" caption="Destructuring enum variants that hold different kinds of values"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-15/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>This code will print <code>Change color to red 0, green 160, and blue 255</code>. Try
+changing the value of <code>msg</code> to see the code from the other arms run.</p>
+<p>For enum variants without any data, like <code>Message::Quit</code>, we can’t destructure
+the value any further. We can only match on the literal <code>Message::Quit</code> value,
+and no variables are in that pattern.</p>
+<p>For struct-like enum variants, such as <code>Message::Move</code>, we can use a pattern
+similar to the pattern we specify to match structs. After the variant name, we
+place curly brackets and then list the fields with variables so that we break
+apart the pieces to use in the code for this arm. Here we use the shorthand
+form as we did in Listing 19-13.</p>
+<p>For tuple-like enum variants, like <code>Message::Write</code> that holds a tuple with one
+element and <code>Message::ChangeColor</code> that holds a tuple with three elements, the
+pattern is similar to the pattern we specify to match tuples. The number of
+variables in the pattern must match the number of elements in the variant we’re
+matching.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="destructuring-nested-structs-and-enums"></a></p>
+<h4>Nested Structs and Enums</h4>
+<p>So far, our examples have all been matching structs or enums one level deep,
+but matching can work on nested items too! For example, we can refactor the
+code in Listing 19-15 to support RGB and HSV colors in the <code>ChangeColor</code>
+message, as shown in Listing 19-16.</p>
+<p><Listing number="19-16" caption="Matching on nested enums"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-16/src/main.rs}}
+</code></pre>
+<p></Listing></p>
+<p>The pattern of the first arm in the <code>match</code> expression matches a
+<code>Message::ChangeColor</code> enum variant that contains a <code>Color::Rgb</code> variant; then,
+the pattern binds to the three inner <code>i32</code> values. The pattern of the second
+arm also matches a <code>Message::ChangeColor</code> enum variant, but the inner enum
+matches <code>Color::Hsv</code> instead. We can specify these complex conditions in one
+<code>match</code> expression, even though two enums are involved.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="destructuring-structs-and-tuples"></a></p>
+<h4>Structs and Tuples</h4>
+<p>We can mix, match, and nest destructuring patterns in even more complex ways.
+The following example shows a complicated destructure where we nest structs and
+tuples inside a tuple and destructure all the primitive values out:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch19-patterns-and-matching/no-listing-05-destructuring-structs-and-tuples/src/main.rs:here}}
+</code></pre>
+<p>This code lets us break complex types into their component parts so that we can
+use the values we’re interested in separately.</p>
+<p>Destructuring with patterns is a convenient way to use pieces of values, such
+as the value from each field in a struct, separately from each other.</p>
+</body>
+</html>

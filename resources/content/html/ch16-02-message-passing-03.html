@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Creating Multiple Producers</title>
+</head>
+<body>
+<h1>Creating Multiple Producers</h1>
+<p>Earlier we mentioned that <code>mpsc</code> was an acronym for <em>multiple producer, single
+consumer</em>. Let’s put <code>mpsc</code> to use and expand the code in Listing 16-10 to
+create multiple threads that all send values to the same receiver. We can do so
+by cloning the transmitter, as shown in Listing 16-11.</p>
+<p><Listing number="16-11" file-name="src/main.rs" caption="Sending multiple messages from multiple producers"></p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch16-fearless-concurrency/listing-16-11/src/main.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+This time, before we create the first spawned thread, we call `clone` on the
+transmitter. This will give us a new transmitter we can pass to the first
+spawned thread. We pass the original transmitter to a second spawned thread.
+This gives us two threads, each sending different messages to the one receiver.
+
+When you run the code, your output should look something like this:
+
+&lt;!-- Not extracting output because changes to this output aren't significant;
+the changes are likely to be due to the threads running differently rather than
+changes in the compiler --&gt;
+
+```text
+Got: hi
+Got: more
+Got: from
+Got: messages
+Got: for
+Got: the
+Got: thread
+Got: you
+</code></pre>
+<p>You might see the values in another order, depending on your system. This is
+what makes concurrency interesting as well as difficult. If you experiment with
+<code>thread::sleep</code>, giving it various values in the different threads, each run
+will be more nondeterministic and create different output each time.</p>
+<p>Now that we’ve looked at how channels work, let’s look at a different method of
+concurrency.</p>
+</body>
+</html>

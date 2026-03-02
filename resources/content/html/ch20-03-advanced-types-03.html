@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>The Never Type That Never Returns</title>
+</head>
+<body>
+<h1>The Never Type That Never Returns</h1>
+<p>Rust has a special type named <code>!</code> that’s known in type theory lingo as the
+<em>empty type</em> because it has no values. We prefer to call it the <em>never type</em>
+because it stands in the place of the return type when a function will never
+return. Here is an example:</p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-07-never-type/src/lib.rs:here}}</p>
+<pre><code>
+This code is read as “the function `bar` returns never.” Functions that return
+never are called _diverging functions_. We can’t create values of the type `!`,
+so `bar` can never possibly return.
+
+But what use is a type you can never create values for? Recall the code from
+Listing 2-5, part of the number-guessing game; we’ve reproduced a bit of it
+here in Listing 20-27.
+
+&lt;Listing number=&quot;20-27&quot; caption=&quot;A `match` with an arm that ends in `continue`&quot;&gt;
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-05/src/main.rs:ch19}}
+</code></pre>
+<p></Listing></p>
+<p>At the time, we skipped over some details in this code. In [“The <code>match</code>
+Control Flow Construct”][the-match-control-flow-construct]<!-- ignore -->
+section in Chapter 6, we discussed that <code>match</code> arms must all return the same
+type. So, for example, the following code doesn’t work:</p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-08-match-arms-different-types/src/main.rs:here}}</p>
+<pre><code>
+The type of `guess` in this code would have to be an integer _and_ a string,
+and Rust requires that `guess` have only one type. So, what does `continue`
+return? How were we allowed to return a `u32` from one arm and have another arm
+that ends with `continue` in Listing 20-27?
+
+As you might have guessed, `continue` has a `!` value. That is, when Rust
+computes the type of `guess`, it looks at both match arms, the former with a
+value of `u32` and the latter with a `!` value. Because `!` can never have a
+value, Rust decides that the type of `guess` is `u32`.
+
+The formal way of describing this behavior is that expressions of type `!` can
+be coerced into any other type. We’re allowed to end this `match` arm with
+`continue` because `continue` doesn’t return a value; instead, it moves control
+back to the top of the loop, so in the `Err` case, we never assign a value to
+`guess`.
+
+The never type is useful with the `panic!` macro as well. Recall the `unwrap`
+function that we call on `Option&lt;T&gt;` values to produce a value or panic with
+this definition:
+
+```rust,ignore
+{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-09-unwrap-definition/src/lib.rs:here}}
+</code></pre>
+<p>In this code, the same thing happens as in the <code>match</code> in Listing 20-27: Rust
+sees that <code>val</code> has the type <code>T</code> and <code>panic!</code> has the type <code>!</code>, so the result
+of the overall <code>match</code> expression is <code>T</code>. This code works because <code>panic!</code>
+doesn’t produce a value; it ends the program. In the <code>None</code> case, we won’t be
+returning a value from <code>unwrap</code>, so this code is valid.</p>
+<p>One final expression that has the type <code>!</code> is a loop:</p>
+<p><code>rust,ignore
+{{#rustdoc_include ../listings/ch20-advanced-features/no-listing-10-loop-returns-never/src/main.rs:here}}</code></p>
+<p>Here, the loop never ends, so <code>!</code> is the value of the expression. However, this
+wouldn’t be true if we included a <code>break</code>, because the loop would terminate
+when it got to the <code>break</code>.</p>
+</body>
+</html>

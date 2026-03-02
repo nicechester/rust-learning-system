@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Enum Values</title>
+</head>
+<body>
+<h1>Enum Values</h1>
+<p>We can create instances of each of the two variants of <code>IpAddrKind</code> like this:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-01-defining-enums/src/main.rs:instance}}
+</code></pre>
+<p>Note that the variants of the enum are namespaced under its identifier, and we
+use a double colon to separate the two. This is useful because now both values
+<code>IpAddrKind::V4</code> and <code>IpAddrKind::V6</code> are of the same type: <code>IpAddrKind</code>. We
+can then, for instance, define a function that takes any <code>IpAddrKind</code>:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-01-defining-enums/src/main.rs:fn}}
+</code></pre>
+<p>And we can call this function with either variant:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-01-defining-enums/src/main.rs:fn_call}}
+</code></pre>
+<p>Using enums has even more advantages. Thinking more about our IP address type,
+at the moment we don’t have a way to store the actual IP address <em>data</em>; we
+only know what <em>kind</em> it is. Given that you just learned about structs in
+Chapter 5, you might be tempted to tackle this problem with structs as shown in
+Listing 6-1.</p>
+<p><Listing number="6-1" caption="Storing the data and <code>IpAddrKind</code> variant of an IP address using a <code>struct</code>"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/listing-06-01/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>Here, we’ve defined a struct <code>IpAddr</code> that has two fields: a <code>kind</code> field that
+is of type <code>IpAddrKind</code> (the enum we defined previously) and an <code>address</code> field
+of type <code>String</code>. We have two instances of this struct. The first is <code>home</code>,
+and it has the value <code>IpAddrKind::V4</code> as its <code>kind</code> with associated address
+data of <code>127.0.0.1</code>. The second instance is <code>loopback</code>. It has the other
+variant of <code>IpAddrKind</code> as its <code>kind</code> value, <code>V6</code>, and has address <code>::1</code>
+associated with it. We’ve used a struct to bundle the <code>kind</code> and <code>address</code>
+values together, so now the variant is associated with the value.</p>
+<p>However, representing the same concept using just an enum is more concise:
+Rather than an enum inside a struct, we can put data directly into each enum
+variant. This new definition of the <code>IpAddr</code> enum says that both <code>V4</code> and <code>V6</code>
+variants will have associated <code>String</code> values:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-02-enum-with-data/src/main.rs:here}}
+</code></pre>
+<p>We attach data to each variant of the enum directly, so there is no need for an
+extra struct. Here, it’s also easier to see another detail of how enums work:
+The name of each enum variant that we define also becomes a function that
+constructs an instance of the enum. That is, <code>IpAddr::V4()</code> is a function call
+that takes a <code>String</code> argument and returns an instance of the <code>IpAddr</code> type. We
+automatically get this constructor function defined as a result of defining the
+enum.</p>
+<p>There’s another advantage to using an enum rather than a struct: Each variant
+can have different types and amounts of associated data. Version four IP
+addresses will always have four numeric components that will have values
+between 0 and 255. If we wanted to store <code>V4</code> addresses as four <code>u8</code> values but
+still express <code>V6</code> addresses as one <code>String</code> value, we wouldn’t be able to with
+a struct. Enums handle this case with ease:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-03-variants-with-different-data/src/main.rs:here}}
+</code></pre>
+<p>We’ve shown several different ways to define data structures to store version
+four and version six IP addresses. However, as it turns out, wanting to store
+IP addresses and encode which kind they are is so common that [the standard
+library has a definition we can use!][IpAddr]<!-- ignore --> Let’s look at how
+the standard library defines <code>IpAddr</code>. It has the exact enum and variants that
+we’ve defined and used, but it embeds the address data inside the variants in
+the form of two different structs, which are defined differently for each
+variant:</p>
+<pre><code class="language-rust">struct Ipv4Addr {
+    // --snip--
+}
+
+struct Ipv6Addr {
+    // --snip--
+}
+
+enum IpAddr {
+    V4(Ipv4Addr),
+    V6(Ipv6Addr),
+}
+</code></pre>
+<p>This code illustrates that you can put any kind of data inside an enum variant:
+strings, numeric types, or structs, for example. You can even include another
+enum! Also, standard library types are often not much more complicated than
+what you might come up with.</p>
+<p>Note that even though the standard library contains a definition for <code>IpAddr</code>,
+we can still create and use our own definition without conflict because we
+haven’t brought the standard library’s definition into our scope. We’ll talk
+more about bringing types into scope in Chapter 7.</p>
+<p>Let’s look at another example of an enum in Listing 6-2: This one has a wide
+variety of types embedded in its variants.</p>
+<p><Listing number="6-2" caption="A <code>Message</code> enum whose variants each store different amounts and types of values"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/listing-06-02/src/main.rs:here}}
+</code></pre>
+<p></Listing></p>
+<p>This enum has four variants with different types:</p>
+<ul>
+<li><code>Quit</code>: Has no data associated with it at all</li>
+<li><code>Move</code>: Has named fields, like a struct does</li>
+<li><code>Write</code>: Includes a single <code>String</code></li>
+<li><code>ChangeColor</code>: Includes three <code>i32</code> values</li>
+</ul>
+<p>Defining an enum with variants such as the ones in Listing 6-2 is similar to
+defining different kinds of struct definitions, except the enum doesn’t use the
+<code>struct</code> keyword and all the variants are grouped together under the <code>Message</code>
+type. The following structs could hold the same data that the preceding enum
+variants hold:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-04-structs-similar-to-message-enum/src/main.rs:here}}
+</code></pre>
+<p>But if we used the different structs, each of which has its own type, we
+couldn’t as easily define a function to take any of these kinds of messages as
+we could with the <code>Message</code> enum defined in Listing 6-2, which is a single type.</p>
+<p>There is one more similarity between enums and structs: Just as we’re able to
+define methods on structs using <code>impl</code>, we’re also able to define methods on
+enums. Here’s a method named <code>call</code> that we could define on our <code>Message</code> enum:</p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch06-enums-and-pattern-matching/no-listing-05-methods-on-enums/src/main.rs:here}}
+</code></pre>
+<p>The body of the method would use <code>self</code> to get the value that we called the
+method on. In this example, we’ve created a variable <code>m</code> that has the value
+<code>Message::Write(String::from("hello"))</code>, and that is what <code>self</code> will be in the
+body of the <code>call</code> method when <code>m.call()</code> runs.</p>
+<p>Let’s look at another enum in the standard library that is very common and
+useful: <code>Option</code>.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="the-option-enum-and-its-advantages-over-null-values"></a></p>
+</body>
+</html>

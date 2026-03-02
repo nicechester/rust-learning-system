@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Ignoring Tests Unless Specifically Requested</title>
+</head>
+<body>
+<h1>Ignoring Tests Unless Specifically Requested</h1>
+<p>Sometimes a few specific tests can be very time-consuming to execute, so you
+might want to exclude them during most runs of <code>cargo test</code>. Rather than
+listing as arguments all tests you do want to run, you can instead annotate the
+time-consuming tests using the <code>ignore</code> attribute to exclude them, as shown
+here:</p>
+<p><span class="filename">Filename: src/lib.rs</span></p>
+<p>```rust,noplayground
+{{#rustdoc_include ../listings/ch11-writing-automated-tests/no-listing-11-ignore-a-test/src/lib.rs:here}}</p>
+<pre><code>
+After `#[test]`, we add the `#[ignore]` line to the test we want to exclude.
+Now when we run our tests, `it_works` runs, but `expensive_test` doesn’t:
+
+```console
+{{#include ../listings/ch11-writing-automated-tests/no-listing-11-ignore-a-test/output.txt}}
+</code></pre>
+<p>The <code>expensive_test</code> function is listed as <code>ignored</code>. If we want to run only
+the ignored tests, we can use <code>cargo test -- --ignored</code>:</p>
+<pre><code class="language-console">{{#include ../listings/ch11-writing-automated-tests/output-only-04-running-ignored/output.txt}}
+</code></pre>
+<p>By controlling which tests run, you can make sure your <code>cargo test</code> results
+will be returned quickly. When you’re at a point where it makes sense to check
+the results of the <code>ignored</code> tests and you have time to wait for the results,
+you can run <code>cargo test -- --ignored</code> instead. If you want to run all tests
+whether they’re ignored or not, you can run <code>cargo test -- --include-ignored</code>.</p>
+</body>
+</html>

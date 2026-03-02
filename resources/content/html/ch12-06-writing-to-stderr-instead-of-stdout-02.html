@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Printing Errors to Standard Error</title>
+</head>
+<body>
+<h1>Printing Errors to Standard Error</h1>
+<p>We’ll use the code in Listing 12-24 to change how error messages are printed.
+Because of the refactoring we did earlier in this chapter, all the code that
+prints error messages is in one function, <code>main</code>. The standard library provides
+the <code>eprintln!</code> macro that prints to the standard error stream, so let’s change
+the two places we were calling <code>println!</code> to print errors to use <code>eprintln!</code>
+instead.</p>
+<p><Listing number="12-24" file-name="src/main.rs" caption="Writing error messages to standard error instead of standard output using <code>eprintln!</code>"></p>
+<p>```rust,ignore
+{{#rustdoc_include ../listings/ch12-an-io-project/listing-12-24/src/main.rs:here}}</p>
+<pre><code>
+&lt;/Listing&gt;
+
+Let’s now run the program again in the same way, without any arguments and
+redirecting standard output with `&gt;`:
+
+```console
+$ cargo run &gt; output.txt
+Problem parsing arguments: not enough arguments
+</code></pre>
+<p>Now we see the error onscreen and <em>output.txt</em> contains nothing, which is the
+behavior we expect of command line programs.</p>
+<p>Let’s run the program again with arguments that don’t cause an error but still
+redirect standard output to a file, like so:</p>
+<pre><code class="language-console">$ cargo run -- to poem.txt &gt; output.txt
+</code></pre>
+<p>We won’t see any output to the terminal, and <em>output.txt</em> will contain our
+results:</p>
+<p><span class="filename">Filename: output.txt</span></p>
+<pre><code class="language-text">Are you nobody, too?
+How dreary to be somebody!
+</code></pre>
+<p>This demonstrates that we’re now using standard output for successful output
+and standard error for error output as appropriate.</p>
+<h2>Summary</h2>
+<p>This chapter recapped some of the major concepts you’ve learned so far and
+covered how to perform common I/O operations in Rust. By using command line
+arguments, files, environment variables, and the <code>eprintln!</code> macro for printing
+errors, you’re now prepared to write command line applications. Combined with
+the concepts in previous chapters, your code will be well organized, store data
+effectively in the appropriate data structures, handle errors nicely, and be
+well tested.</p>
+<p>Next, we’ll explore some Rust features that were influenced by functional
+languages: closures and iterators.</p>
+</body>
+</html>

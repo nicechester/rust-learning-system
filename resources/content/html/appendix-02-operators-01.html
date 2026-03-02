@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Operators</title>
+</head>
+<body>
+<h1>Operators</h1>
+<p>Table B-1 contains the operators in Rust, an example of how the operator would
+appear in context, a short explanation, and whether that operator is
+overloadable. If an operator is overloadable, the relevant trait to use to
+overload that operator is listed.</p>
+<p><span class="caption">Table B-1: Operators</span></p>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Example</th>
+<th>Explanation</th>
+<th>Overloadable?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>!</code></td>
+<td><code>ident!(...)</code>, <code>ident!{...}</code>, <code>ident![...]</code></td>
+<td>Macro expansion</td>
+<td></td>
+</tr>
+<tr>
+<td><code>!</code></td>
+<td><code>!expr</code></td>
+<td>Bitwise or logical complement</td>
+<td><code>Not</code></td>
+</tr>
+<tr>
+<td><code>!=</code></td>
+<td><code>expr != expr</code></td>
+<td>Nonequality comparison</td>
+<td><code>PartialEq</code></td>
+</tr>
+<tr>
+<td><code>%</code></td>
+<td><code>expr % expr</code></td>
+<td>Arithmetic remainder</td>
+<td><code>Rem</code></td>
+</tr>
+<tr>
+<td><code>%=</code></td>
+<td><code>var %= expr</code></td>
+<td>Arithmetic remainder and assignment</td>
+<td><code>RemAssign</code></td>
+</tr>
+<tr>
+<td><code>&amp;</code></td>
+<td><code>&amp;expr</code>, <code>&amp;mut expr</code></td>
+<td>Borrow</td>
+<td></td>
+</tr>
+<tr>
+<td><code>&amp;</code></td>
+<td><code>&amp;type</code>, <code>&amp;mut type</code>, <code>&amp;'a type</code>, <code>&amp;'a mut type</code></td>
+<td>Borrowed pointer type</td>
+<td></td>
+</tr>
+<tr>
+<td><code>&amp;</code></td>
+<td><code>expr &amp; expr</code></td>
+<td>Bitwise AND</td>
+<td><code>BitAnd</code></td>
+</tr>
+<tr>
+<td><code>&amp;=</code></td>
+<td><code>var &amp;= expr</code></td>
+<td>Bitwise AND and assignment</td>
+<td><code>BitAndAssign</code></td>
+</tr>
+<tr>
+<td><code>&amp;&amp;</code></td>
+<td><code>expr &amp;&amp; expr</code></td>
+<td>Short-circuiting logical AND</td>
+<td></td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td><code>expr * expr</code></td>
+<td>Arithmetic multiplication</td>
+<td><code>Mul</code></td>
+</tr>
+<tr>
+<td><code>*=</code></td>
+<td><code>var *= expr</code></td>
+<td>Arithmetic multiplication and assignment</td>
+<td><code>MulAssign</code></td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td><code>*expr</code></td>
+<td>Dereference</td>
+<td><code>Deref</code></td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td><code>*const type</code>, <code>*mut type</code></td>
+<td>Raw pointer</td>
+<td></td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td><code>trait + trait</code>, <code>'a + trait</code></td>
+<td>Compound type constraint</td>
+<td></td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td><code>expr + expr</code></td>
+<td>Arithmetic addition</td>
+<td><code>Add</code></td>
+</tr>
+<tr>
+<td><code>+=</code></td>
+<td><code>var += expr</code></td>
+<td>Arithmetic addition and assignment</td>
+<td><code>AddAssign</code></td>
+</tr>
+<tr>
+<td><code>,</code></td>
+<td><code>expr, expr</code></td>
+<td>Argument and element separator</td>
+<td></td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td><code>- expr</code></td>
+<td>Arithmetic negation</td>
+<td><code>Neg</code></td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td><code>expr - expr</code></td>
+<td>Arithmetic subtraction</td>
+<td><code>Sub</code></td>
+</tr>
+<tr>
+<td><code>-=</code></td>
+<td><code>var -= expr</code></td>
+<td>Arithmetic subtraction and assignment</td>
+<td><code>SubAssign</code></td>
+</tr>
+<tr>
+<td><code>-&gt;</code></td>
+<td><code>fn(...) -&gt; type</code>, <code>&vert;...&vert; -&gt; type</code></td>
+<td>Function and closure return type</td>
+<td></td>
+</tr>
+<tr>
+<td><code>.</code></td>
+<td><code>expr.ident</code></td>
+<td>Field access</td>
+<td></td>
+</tr>
+<tr>
+<td><code>.</code></td>
+<td><code>expr.ident(expr, ...)</code></td>
+<td>Method call</td>
+<td></td>
+</tr>
+<tr>
+<td><code>.</code></td>
+<td><code>expr.0</code>, <code>expr.1</code>, and so on</td>
+<td>Tuple indexing</td>
+<td></td>
+</tr>
+<tr>
+<td><code>..</code></td>
+<td><code>..</code>, <code>expr..</code>, <code>..expr</code>, <code>expr..expr</code></td>
+<td>Right-exclusive range literal</td>
+<td><code>PartialOrd</code></td>
+</tr>
+<tr>
+<td><code>..=</code></td>
+<td><code>..=expr</code>, <code>expr..=expr</code></td>
+<td>Right-inclusive range literal</td>
+<td><code>PartialOrd</code></td>
+</tr>
+<tr>
+<td><code>..</code></td>
+<td><code>..expr</code></td>
+<td>Struct literal update syntax</td>
+<td></td>
+</tr>
+<tr>
+<td><code>..</code></td>
+<td><code>variant(x, ..)</code>, <code>struct_type { x, .. }</code></td>
+<td>“And the rest” pattern binding</td>
+<td></td>
+</tr>
+<tr>
+<td><code>...</code></td>
+<td><code>expr...expr</code></td>
+<td>(Deprecated, use <code>..=</code> instead) In a pattern: inclusive range pattern</td>
+<td></td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td><code>expr / expr</code></td>
+<td>Arithmetic division</td>
+<td><code>Div</code></td>
+</tr>
+<tr>
+<td><code>/=</code></td>
+<td><code>var /= expr</code></td>
+<td>Arithmetic division and assignment</td>
+<td><code>DivAssign</code></td>
+</tr>
+<tr>
+<td><code>:</code></td>
+<td><code>pat: type</code>, <code>ident: type</code></td>
+<td>Constraints</td>
+<td></td>
+</tr>
+<tr>
+<td><code>:</code></td>
+<td><code>ident: expr</code></td>
+<td>Struct field initializer</td>
+<td></td>
+</tr>
+<tr>
+<td><code>:</code></td>
+<td><code>'a: loop {...}</code></td>
+<td>Loop label</td>
+<td></td>
+</tr>
+<tr>
+<td><code>;</code></td>
+<td><code>expr;</code></td>
+<td>Statement and item terminator</td>
+<td></td>
+</tr>
+<tr>
+<td><code>;</code></td>
+<td><code>[...; len]</code></td>
+<td>Part of fixed-size array syntax</td>
+<td></td>
+</tr>
+<tr>
+<td><code>&lt;&lt;</code></td>
+<td><code>expr &lt;&lt; expr</code></td>
+<td>Left-shift</td>
+<td><code>Shl</code></td>
+</tr>
+<tr>
+<td><code>&lt;&lt;=</code></td>
+<td><code>var &lt;&lt;= expr</code></td>
+<td>Left-shift and assignment</td>
+<td><code>ShlAssign</code></td>
+</tr>
+<tr>
+<td><code>&lt;</code></td>
+<td><code>expr &lt; expr</code></td>
+<td>Less than comparison</td>
+<td><code>PartialOrd</code></td>
+</tr>
+<tr>
+<td><code>&lt;=</code></td>
+<td><code>expr &lt;= expr</code></td>
+<td>Less than or equal to comparison</td>
+<td><code>PartialOrd</code></td>
+</tr>
+<tr>
+<td><code>=</code></td>
+<td><code>var = expr</code>, <code>ident = type</code></td>
+<td>Assignment/equivalence</td>
+<td></td>
+</tr>
+<tr>
+<td><code>==</code></td>
+<td><code>expr == expr</code></td>
+<td>Equality comparison</td>
+<td><code>PartialEq</code></td>
+</tr>
+<tr>
+<td><code>=&gt;</code></td>
+<td><code>pat =&gt; expr</code></td>
+<td>Part of match arm syntax</td>
+<td></td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td><code>expr &gt; expr</code></td>
+<td>Greater than comparison</td>
+<td><code>PartialOrd</code></td>
+</tr>
+<tr>
+<td><code>&gt;=</code></td>
+<td><code>expr &gt;= expr</code></td>
+<td>Greater than or equal to comparison</td>
+<td><code>PartialOrd</code></td>
+</tr>
+<tr>
+<td><code>&gt;&gt;</code></td>
+<td><code>expr &gt;&gt; expr</code></td>
+<td>Right-shift</td>
+<td><code>Shr</code></td>
+</tr>
+<tr>
+<td><code>&gt;&gt;=</code></td>
+<td><code>var &gt;&gt;= expr</code></td>
+<td>Right-shift and assignment</td>
+<td><code>ShrAssign</code></td>
+</tr>
+<tr>
+<td><code>@</code></td>
+<td><code>ident @ pat</code></td>
+<td>Pattern binding</td>
+<td></td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td><code>expr ^ expr</code></td>
+<td>Bitwise exclusive OR</td>
+<td><code>BitXor</code></td>
+</tr>
+<tr>
+<td><code>^=</code></td>
+<td><code>var ^= expr</code></td>
+<td>Bitwise exclusive OR and assignment</td>
+<td><code>BitXorAssign</code></td>
+</tr>
+<tr>
+<td><code>&vert;</code></td>
+<td><code>pat &vert; pat</code></td>
+<td>Pattern alternatives</td>
+<td></td>
+</tr>
+<tr>
+<td><code>&vert;</code></td>
+<td><code>expr &vert; expr</code></td>
+<td>Bitwise OR</td>
+<td><code>BitOr</code></td>
+</tr>
+<tr>
+<td><code>&vert;=</code></td>
+<td><code>var &vert;= expr</code></td>
+<td>Bitwise OR and assignment</td>
+<td><code>BitOrAssign</code></td>
+</tr>
+<tr>
+<td><code>&vert;&vert;</code></td>
+<td><code>expr &vert;&vert; expr</code></td>
+<td>Short-circuiting logical OR</td>
+<td></td>
+</tr>
+<tr>
+<td><code>?</code></td>
+<td><code>expr?</code></td>
+<td>Error propagation</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

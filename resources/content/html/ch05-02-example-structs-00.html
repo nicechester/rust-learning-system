@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Introduction</title>
+</head>
+<body>
+<h1>Introduction</h1>
+<h2>An Example Program Using Structs</h2>
+<p>To understand when we might want to use structs, let’s write a program that
+calculates the area of a rectangle. We’ll start by using single variables and
+then refactor the program until we’re using structs instead.</p>
+<p>Let’s make a new binary project with Cargo called <em>rectangles</em> that will take
+the width and height of a rectangle specified in pixels and calculate the area
+of the rectangle. Listing 5-8 shows a short program with one way of doing
+exactly that in our project’s <em>src/main.rs</em>.</p>
+<p><Listing number="5-8" file-name="src/main.rs" caption="Calculating the area of a rectangle specified by separate width and height variables"></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-08/src/main.rs:all}}
+</code></pre>
+<p></Listing></p>
+<p>Now, run this program using <code>cargo run</code>:</p>
+<pre><code class="language-console">{{#include ../listings/ch05-using-structs-to-structure-related-data/listing-05-08/output.txt}}
+</code></pre>
+<p>This code succeeds in figuring out the area of the rectangle by calling the
+<code>area</code> function with each dimension, but we can do more to make this code clear
+and readable.</p>
+<p>The issue with this code is evident in the signature of <code>area</code>:</p>
+<p><code>rust,ignore
+{{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-08/src/main.rs:here}}</code></p>
+<p>The <code>area</code> function is supposed to calculate the area of one rectangle, but the
+function we wrote has two parameters, and it’s not clear anywhere in our
+program that the parameters are related. It would be more readable and more
+manageable to group width and height together. We’ve already discussed one way
+we might do that in [“The Tuple Type”][the-tuple-type]<!-- ignore --> section
+of Chapter 3: by using tuples.</p>
+</body>
+</html>

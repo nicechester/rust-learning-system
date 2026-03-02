@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Procedural Macros for Generating Code from Attributes</title>
+</head>
+<body>
+<h1>Procedural Macros for Generating Code from Attributes</h1>
+<p>The second form of macros is the procedural macro, which acts more like a
+function (and is a type of procedure). <em>Procedural macros</em> accept some code as
+an input, operate on that code, and produce some code as an output rather than
+matching against patterns and replacing the code with other code as declarative
+macros do. The three kinds of procedural macros are custom <code>derive</code>,
+attribute-like, and function-like, and all work in a similar fashion.</p>
+<p>When creating procedural macros, the definitions must reside in their own crate
+with a special crate type. This is for complex technical reasons that we hope
+to eliminate in the future. In Listing 20-36, we show how to define a
+procedural macro, where <code>some_attribute</code> is a placeholder for using a specific
+macro variety.</p>
+<p><Listing number="20-36" file-name="src/lib.rs" caption="An example of defining a procedural macro"></p>
+<p>```rust,ignore
+use proc_macro::TokenStream;</p>
+<h1>[some_attribute]</h1>
+<p>pub fn some_name(input: TokenStream) -&gt; TokenStream {
+}
+```</p>
+<p></Listing></p>
+<p>The function that defines a procedural macro takes a <code>TokenStream</code> as an input
+and produces a <code>TokenStream</code> as an output. The <code>TokenStream</code> type is defined by
+the <code>proc_macro</code> crate that is included with Rust and represents a sequence of
+tokens. This is the core of the macro: The source code that the macro is
+operating on makes up the input <code>TokenStream</code>, and the code the macro produces
+is the output <code>TokenStream</code>. The function also has an attribute attached to it
+that specifies which kind of procedural macro we’re creating. We can have
+multiple kinds of procedural macros in the same crate.</p>
+<p>Let’s look at the different kinds of procedural macros. We’ll start with a
+custom <code>derive</code> macro and then explain the small dissimilarities that make the
+other forms different.</p>
+<!-- Old headings. Do not remove or links may break. -->
+
+<p><a id="how-to-write-a-custom-derive-macro"></a></p>
+</body>
+</html>

@@ -1,0 +1,4806 @@
+{
+  "version": "1.0",
+  "generated": "2026-02-17T17:38:21.352004",
+  "modules": [
+    {
+      "id": "ch01-00-getting-started",
+      "title": "Getting Started",
+      "lessons": [
+        {
+          "id": "ch01-01-installation",
+          "title": "Installation",
+          "micro_lessons": [
+            {
+              "id": "ch01-01-installation-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 24,
+              "word_count": 212,
+              "lesson_id": "ch01-01-installation",
+              "lesson_title": "Installation",
+              "content_file": "html/ch01-01-installation-00.html"
+            },
+            {
+              "id": "ch01-01-installation-01",
+              "title": "Installing `rustup` on Linux or macOS",
+              "start_line": 25,
+              "end_line": 56,
+              "word_count": 176,
+              "lesson_id": "ch01-01-installation",
+              "lesson_title": "Installation",
+              "content_file": "html/ch01-01-installation-01.html"
+            },
+            {
+              "id": "ch01-01-installation-02",
+              "title": "Installing `rustup` on Windows",
+              "start_line": 57,
+              "end_line": 69,
+              "word_count": 75,
+              "lesson_id": "ch01-01-installation",
+              "lesson_title": "Installation",
+              "content_file": "html/ch01-01-installation-02.html"
+            },
+            {
+              "id": "ch01-01-installation-03",
+              "title": "Troubleshooting",
+              "start_line": 70,
+              "end_line": 111,
+              "word_count": 143,
+              "lesson_id": "ch01-01-installation",
+              "lesson_title": "Installation",
+              "content_file": "html/ch01-01-installation-03.html"
+            },
+            {
+              "id": "ch01-01-installation-04",
+              "title": "Updating and Uninstalling",
+              "start_line": 112,
+              "end_line": 130,
+              "word_count": 59,
+              "lesson_id": "ch01-01-installation",
+              "lesson_title": "Installation",
+              "content_file": "html/ch01-01-installation-04.html"
+            },
+            {
+              "id": "ch01-01-installation-05",
+              "title": "Reading the Local Documentation",
+              "start_line": 131,
+              "end_line": 143,
+              "word_count": 77,
+              "lesson_id": "ch01-01-installation",
+              "lesson_title": "Installation",
+              "content_file": "html/ch01-01-installation-05.html"
+            },
+            {
+              "id": "ch01-01-installation-06",
+              "title": "Using Text Editors and IDEs",
+              "start_line": 144,
+              "end_line": 151,
+              "word_count": 59,
+              "lesson_id": "ch01-01-installation",
+              "lesson_title": "Installation",
+              "content_file": "html/ch01-01-installation-06.html"
+            },
+            {
+              "id": "ch01-01-installation-07",
+              "title": "Working Offline with This Book",
+              "start_line": 152,
+              "end_line": 177,
+              "word_count": 153,
+              "lesson_id": "ch01-01-installation",
+              "lesson_title": "Installation",
+              "content_file": "html/ch01-01-installation-07.html"
+            }
+          ]
+        },
+        {
+          "id": "ch01-02-hello-world",
+          "title": "Hello, World!",
+          "micro_lessons": [
+            {
+              "id": "ch01-02-hello-world-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 16,
+              "word_count": 144,
+              "lesson_id": "ch01-02-hello-world",
+              "lesson_title": "Hello, World!",
+              "content_file": "html/ch01-02-hello-world-00.html"
+            },
+            {
+              "id": "ch01-02-hello-world-01",
+              "title": "Project Directory Setup",
+              "start_line": 17,
+              "end_line": 47,
+              "word_count": 126,
+              "lesson_id": "ch01-02-hello-world",
+              "lesson_title": "Hello, World!",
+              "content_file": "html/ch01-02-hello-world-01.html"
+            },
+            {
+              "id": "ch01-02-hello-world-02",
+              "title": "Rust Program Basics",
+              "start_line": 48,
+              "end_line": 96,
+              "word_count": 201,
+              "lesson_id": "ch01-02-hello-world",
+              "lesson_title": "Hello, World!",
+              "content_file": "html/ch01-02-hello-world-02.html"
+            },
+            {
+              "id": "ch01-02-hello-world-03",
+              "title": "The Anatomy of a Rust Program",
+              "start_line": 97,
+              "end_line": 149,
+              "word_count": 368,
+              "lesson_id": "ch01-02-hello-world",
+              "lesson_title": "Hello, World!",
+              "content_file": "html/ch01-02-hello-world-03.html"
+            },
+            {
+              "id": "ch01-02-hello-world-04",
+              "title": "Compilation and Execution",
+              "start_line": 150,
+              "end_line": 214,
+              "word_count": 377,
+              "lesson_id": "ch01-02-hello-world",
+              "lesson_title": "Hello, World!",
+              "content_file": "html/ch01-02-hello-world-04.html"
+            }
+          ]
+        },
+        {
+          "id": "ch01-03-hello-cargo",
+          "title": "Hello, Cargo!",
+          "micro_lessons": [
+            {
+              "id": "ch01-03-hello-cargo-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 28,
+              "word_count": 217,
+              "lesson_id": "ch01-03-hello-cargo",
+              "lesson_title": "Hello, Cargo!",
+              "content_file": "html/ch01-03-hello-cargo-00.html"
+            },
+            {
+              "id": "ch01-03-hello-cargo-01",
+              "title": "Creating a Project with Cargo",
+              "start_line": 29,
+              "end_line": 115,
+              "word_count": 554,
+              "lesson_id": "ch01-03-hello-cargo",
+              "lesson_title": "Hello, Cargo!",
+              "content_file": "html/ch01-03-hello-cargo-01.html"
+            },
+            {
+              "id": "ch01-03-hello-cargo-02",
+              "title": "Building and Running a Cargo Project",
+              "start_line": 116,
+              "end_line": 204,
+              "word_count": 572,
+              "lesson_id": "ch01-03-hello-cargo",
+              "lesson_title": "Hello, Cargo!",
+              "content_file": "html/ch01-03-hello-cargo-02.html"
+            },
+            {
+              "id": "ch01-03-hello-cargo-03",
+              "title": "Building for Release",
+              "start_line": 205,
+              "end_line": 220,
+              "word_count": 130,
+              "lesson_id": "ch01-03-hello-cargo",
+              "lesson_title": "Hello, Cargo!",
+              "content_file": "html/ch01-03-hello-cargo-03.html"
+            },
+            {
+              "id": "ch01-03-hello-cargo-04",
+              "title": "Leveraging Cargo\u2019s Conventions",
+              "start_line": 221,
+              "end_line": 261,
+              "word_count": 244,
+              "lesson_id": "ch01-03-hello-cargo",
+              "lesson_title": "Hello, Cargo!",
+              "content_file": "html/ch01-03-hello-cargo-04.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "ch01-00-getting-started-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 8,
+          "word_count": 48,
+          "lesson_id": "ch01-00-getting-started",
+          "lesson_title": "Getting Started",
+          "content_file": "html/ch01-00-getting-started-00.html"
+        }
+      ]
+    },
+    {
+      "id": "ch02-00-guessing-game-tutorial",
+      "title": "Programming a Guessing Game",
+      "lessons": [],
+      "intro_lessons": [
+        {
+          "id": "ch02-00-guessing-game-tutorial-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 120,
+          "word_count": 617,
+          "lesson_id": "ch02-00-guessing-game-tutorial",
+          "lesson_title": "Programming a Guessing Game",
+          "content_file": "html/ch02-00-guessing-game-tutorial-00.html"
+        },
+        {
+          "id": "ch02-00-guessing-game-tutorial-01",
+          "title": "Storing Values with Variables",
+          "start_line": 121,
+          "end_line": 168,
+          "word_count": 342,
+          "lesson_id": "ch02-00-guessing-game-tutorial",
+          "lesson_title": "Programming a Guessing Game",
+          "content_file": "html/ch02-00-guessing-game-tutorial-01.html"
+        },
+        {
+          "id": "ch02-00-guessing-game-tutorial-02",
+          "title": "Receiving User Input",
+          "start_line": 169,
+          "end_line": 208,
+          "word_count": 311,
+          "lesson_id": "ch02-00-guessing-game-tutorial",
+          "lesson_title": "Programming a Guessing Game",
+          "content_file": "html/ch02-00-guessing-game-tutorial-02.html"
+        },
+        {
+          "id": "ch02-00-guessing-game-tutorial-03",
+          "title": "Handling Potential Failure with `Result`",
+          "start_line": 209,
+          "end_line": 267,
+          "word_count": 422,
+          "lesson_id": "ch02-00-guessing-game-tutorial",
+          "lesson_title": "Programming a Guessing Game",
+          "content_file": "html/ch02-00-guessing-game-tutorial-03.html"
+        },
+        {
+          "id": "ch02-00-guessing-game-tutorial-04",
+          "title": "Printing Values with `println!` Placeholders",
+          "start_line": 268,
+          "end_line": 294,
+          "word_count": 163,
+          "lesson_id": "ch02-00-guessing-game-tutorial",
+          "lesson_title": "Programming a Guessing Game",
+          "content_file": "html/ch02-00-guessing-game-tutorial-04.html"
+        },
+        {
+          "id": "ch02-00-guessing-game-tutorial-05",
+          "title": "Testing the First Part",
+          "start_line": 295,
+          "end_line": 330,
+          "word_count": 168,
+          "lesson_id": "ch02-00-guessing-game-tutorial",
+          "lesson_title": "Programming a Guessing Game",
+          "content_file": "html/ch02-00-guessing-game-tutorial-05.html"
+        },
+        {
+          "id": "ch02-00-guessing-game-tutorial-06",
+          "title": "Increasing Functionality with a Crate",
+          "start_line": 331,
+          "end_line": 517,
+          "word_count": 1244,
+          "lesson_id": "ch02-00-guessing-game-tutorial",
+          "lesson_title": "Programming a Guessing Game",
+          "content_file": "html/ch02-00-guessing-game-tutorial-06.html"
+        },
+        {
+          "id": "ch02-00-guessing-game-tutorial-07",
+          "title": "Generating a Random Number",
+          "start_line": 518,
+          "end_line": 821,
+          "word_count": 2013,
+          "lesson_id": "ch02-00-guessing-game-tutorial",
+          "lesson_title": "Programming a Guessing Game",
+          "content_file": "html/ch02-00-guessing-game-tutorial-07.html"
+        },
+        {
+          "id": "ch02-00-guessing-game-tutorial-08",
+          "title": "Quitting After a Correct Guess",
+          "start_line": 822,
+          "end_line": 835,
+          "word_count": 60,
+          "lesson_id": "ch02-00-guessing-game-tutorial",
+          "lesson_title": "Programming a Guessing Game",
+          "content_file": "html/ch02-00-guessing-game-tutorial-08.html"
+        },
+        {
+          "id": "ch02-00-guessing-game-tutorial-09",
+          "title": "Handling Invalid Input",
+          "start_line": 836,
+          "end_line": 951,
+          "word_count": 605,
+          "lesson_id": "ch02-00-guessing-game-tutorial",
+          "lesson_title": "Programming a Guessing Game",
+          "content_file": "html/ch02-00-guessing-game-tutorial-09.html"
+        }
+      ]
+    },
+    {
+      "id": "ch03-00-common-programming-concepts",
+      "title": "Common Programming Concepts",
+      "lessons": [
+        {
+          "id": "ch03-01-variables-and-mutability",
+          "title": "Variables and Mutability",
+          "micro_lessons": [
+            {
+              "id": "ch03-01-variables-and-mutability-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 75,
+              "word_count": 528,
+              "lesson_id": "ch03-01-variables-and-mutability",
+              "lesson_title": "Variables and Mutability",
+              "exercises": [
+                "01_variables/variables1.rs",
+                "01_variables/variables2.rs"
+              ],
+              "content_file": "html/ch03-01-variables-and-mutability-00.html"
+            },
+            {
+              "id": "ch03-01-variables-and-mutability-01",
+              "title": "Declaring Constants",
+              "start_line": 76,
+              "end_line": 122,
+              "word_count": 401,
+              "lesson_id": "ch03-01-variables-and-mutability",
+              "lesson_title": "Variables and Mutability",
+              "exercises": [
+                "01_variables/variables3.rs",
+                "01_variables/variables4.rs"
+              ],
+              "content_file": "html/ch03-01-variables-and-mutability-01.html"
+            },
+            {
+              "id": "ch03-01-variables-and-mutability-02",
+              "title": "Shadowing",
+              "start_line": 123,
+              "end_line": 192,
+              "word_count": 441,
+              "lesson_id": "ch03-01-variables-and-mutability",
+              "lesson_title": "Variables and Mutability",
+              "exercises": [
+                "01_variables/variables5.rs",
+                "01_variables/variables6.rs"
+              ],
+              "content_file": "html/ch03-01-variables-and-mutability-02.html"
+            }
+          ]
+        },
+        {
+          "id": "ch03-02-data-types",
+          "title": "Data Types",
+          "micro_lessons": [
+            {
+              "id": "ch03-02-data-types-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 27,
+              "word_count": 189,
+              "lesson_id": "ch03-02-data-types",
+              "lesson_title": "Data Types",
+              "exercises": [
+                "04_primitive_types/primitive_types1.rs"
+              ],
+              "content_file": "html/ch03-02-data-types-00.html"
+            },
+            {
+              "id": "ch03-02-data-types-01",
+              "title": "Scalar Types",
+              "start_line": 28,
+              "end_line": 199,
+              "word_count": 1258,
+              "lesson_id": "ch03-02-data-types",
+              "lesson_title": "Data Types",
+              "exercises": [
+                "04_primitive_types/primitive_types2.rs"
+              ],
+              "content_file": "html/ch03-02-data-types-01.html"
+            },
+            {
+              "id": "ch03-02-data-types-02",
+              "title": "Compound Types",
+              "start_line": 200,
+              "end_line": 385,
+              "word_count": 1144,
+              "lesson_id": "ch03-02-data-types",
+              "lesson_title": "Data Types",
+              "exercises": [
+                "04_primitive_types/primitive_types3.rs"
+              ],
+              "content_file": "html/ch03-02-data-types-02.html"
+            }
+          ]
+        },
+        {
+          "id": "ch03-03-how-functions-work",
+          "title": "Functions",
+          "micro_lessons": [
+            {
+              "id": "ch03-03-how-functions-work-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 39,
+              "word_count": 254,
+              "lesson_id": "ch03-03-how-functions-work",
+              "lesson_title": "Functions",
+              "exercises": [
+                "02_functions/functions1.rs"
+              ],
+              "content_file": "html/ch03-03-how-functions-work-00.html"
+            },
+            {
+              "id": "ch03-03-how-functions-work-01",
+              "title": "Parameters",
+              "start_line": 40,
+              "end_line": 99,
+              "word_count": 323,
+              "lesson_id": "ch03-03-how-functions-work",
+              "lesson_title": "Functions",
+              "exercises": [
+                "02_functions/functions2.rs"
+              ],
+              "content_file": "html/ch03-03-how-functions-work-01.html"
+            },
+            {
+              "id": "ch03-03-how-functions-work-02",
+              "title": "Statements and Expressions",
+              "start_line": 100,
+              "end_line": 182,
+              "word_count": 495,
+              "lesson_id": "ch03-03-how-functions-work",
+              "lesson_title": "Functions",
+              "exercises": [
+                "02_functions/functions3.rs"
+              ],
+              "content_file": "html/ch03-03-how-functions-work-02.html"
+            },
+            {
+              "id": "ch03-03-how-functions-work-03",
+              "title": "Functions with Return Values",
+              "start_line": 183,
+              "end_line": 253,
+              "word_count": 399,
+              "lesson_id": "ch03-03-how-functions-work",
+              "lesson_title": "Functions",
+              "exercises": [
+                "02_functions/functions4.rs",
+                "02_functions/functions5.rs"
+              ],
+              "content_file": "html/ch03-03-how-functions-work-03.html"
+            }
+          ]
+        },
+        {
+          "id": "ch03-04-comments",
+          "title": "Comments",
+          "micro_lessons": [
+            {
+              "id": "ch03-04-comments-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 45,
+              "word_count": 199,
+              "lesson_id": "ch03-04-comments",
+              "lesson_title": "Comments",
+              "content_file": "html/ch03-04-comments-00.html"
+            }
+          ]
+        },
+        {
+          "id": "ch03-05-control-flow",
+          "title": "Control Flow",
+          "micro_lessons": [
+            {
+              "id": "ch03-05-control-flow-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 7,
+              "word_count": 57,
+              "lesson_id": "ch03-05-control-flow",
+              "lesson_title": "Control Flow",
+              "exercises": [
+                "03_if/if1.rs"
+              ],
+              "content_file": "html/ch03-05-control-flow-00.html"
+            },
+            {
+              "id": "ch03-05-control-flow-01",
+              "title": "`if` Expressions",
+              "start_line": 8,
+              "end_line": 168,
+              "word_count": 916,
+              "lesson_id": "ch03-05-control-flow",
+              "lesson_title": "Control Flow",
+              "exercises": [
+                "03_if/if2.rs"
+              ],
+              "content_file": "html/ch03-05-control-flow-01.html"
+            },
+            {
+              "id": "ch03-05-control-flow-02",
+              "title": "Repetition with Loops",
+              "start_line": 169,
+              "end_line": 397,
+              "word_count": 1488,
+              "lesson_id": "ch03-05-control-flow",
+              "lesson_title": "Control Flow",
+              "exercises": [
+                "03_if/if3.rs"
+              ],
+              "content_file": "html/ch03-05-control-flow-02.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "ch03-00-common-programming-concepts-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 23,
+          "word_count": 199,
+          "lesson_id": "ch03-00-common-programming-concepts",
+          "lesson_title": "Common Programming Concepts",
+          "content_file": "html/ch03-00-common-programming-concepts-00.html"
+        }
+      ]
+    },
+    {
+      "id": "ch04-00-understanding-ownership",
+      "title": "Understanding Ownership",
+      "lessons": [
+        {
+          "id": "ch04-01-what-is-ownership",
+          "title": "What is Ownership?",
+          "micro_lessons": [
+            {
+              "id": "ch04-01-what-is-ownership-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 85,
+              "word_count": 972,
+              "lesson_id": "ch04-01-what-is-ownership",
+              "lesson_title": "What is Ownership?",
+              "exercises": [
+                "06_move_semantics/move_semantics1.rs"
+              ],
+              "content_file": "html/ch04-01-what-is-ownership-00.html"
+            },
+            {
+              "id": "ch04-01-what-is-ownership-01",
+              "title": "Ownership Rules",
+              "start_line": 86,
+              "end_line": 94,
+              "word_count": 54,
+              "lesson_id": "ch04-01-what-is-ownership",
+              "lesson_title": "What is Ownership?",
+              "exercises": [
+                "06_move_semantics/move_semantics2.rs"
+              ],
+              "content_file": "html/ch04-01-what-is-ownership-01.html"
+            },
+            {
+              "id": "ch04-01-what-is-ownership-02",
+              "title": "Variable Scope",
+              "start_line": 95,
+              "end_line": 132,
+              "word_count": 231,
+              "lesson_id": "ch04-01-what-is-ownership",
+              "lesson_title": "What is Ownership?",
+              "exercises": [
+                "06_move_semantics/move_semantics3.rs"
+              ],
+              "content_file": "html/ch04-01-what-is-ownership-02.html"
+            },
+            {
+              "id": "ch04-01-what-is-ownership-03",
+              "title": "The `String` Type",
+              "start_line": 133,
+              "end_line": 178,
+              "word_count": 382,
+              "lesson_id": "ch04-01-what-is-ownership",
+              "lesson_title": "What is Ownership?",
+              "exercises": [
+                "06_move_semantics/move_semantics4.rs"
+              ],
+              "content_file": "html/ch04-01-what-is-ownership-03.html"
+            },
+            {
+              "id": "ch04-01-what-is-ownership-04",
+              "title": "Memory and Allocation",
+              "start_line": 179,
+              "end_line": 456,
+              "word_count": 2148,
+              "lesson_id": "ch04-01-what-is-ownership",
+              "lesson_title": "What is Ownership?",
+              "exercises": [
+                "06_move_semantics/move_semantics5.rs"
+              ],
+              "content_file": "html/ch04-01-what-is-ownership-04.html"
+            },
+            {
+              "id": "ch04-01-what-is-ownership-05",
+              "title": "Ownership and Functions",
+              "start_line": 457,
+              "end_line": 476,
+              "word_count": 116,
+              "lesson_id": "ch04-01-what-is-ownership",
+              "lesson_title": "What is Ownership?",
+              "content_file": "html/ch04-01-what-is-ownership-05.html"
+            },
+            {
+              "id": "ch04-01-what-is-ownership-06",
+              "title": "Return Values and Scope",
+              "start_line": 477,
+              "end_line": 522,
+              "word_count": 234,
+              "lesson_id": "ch04-01-what-is-ownership",
+              "lesson_title": "What is Ownership?",
+              "content_file": "html/ch04-01-what-is-ownership-06.html"
+            }
+          ]
+        },
+        {
+          "id": "ch04-02-references-and-borrowing",
+          "title": "References and Borrowing",
+          "micro_lessons": [
+            {
+              "id": "ch04-02-references-and-borrowing-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 87,
+              "word_count": 546,
+              "lesson_id": "ch04-02-references-and-borrowing",
+              "lesson_title": "References and Borrowing",
+              "content_file": "html/ch04-02-references-and-borrowing-00.html"
+            },
+            {
+              "id": "ch04-02-references-and-borrowing-01",
+              "title": "Mutable References",
+              "start_line": 88,
+              "end_line": 192,
+              "word_count": 617,
+              "lesson_id": "ch04-02-references-and-borrowing",
+              "lesson_title": "References and Borrowing",
+              "content_file": "html/ch04-02-references-and-borrowing-01.html"
+            },
+            {
+              "id": "ch04-02-references-and-borrowing-02",
+              "title": "Dangling References",
+              "start_line": 193,
+              "end_line": 253,
+              "word_count": 267,
+              "lesson_id": "ch04-02-references-and-borrowing",
+              "lesson_title": "References and Borrowing",
+              "content_file": "html/ch04-02-references-and-borrowing-02.html"
+            },
+            {
+              "id": "ch04-02-references-and-borrowing-03",
+              "title": "The Rules of References",
+              "start_line": 254,
+              "end_line": 263,
+              "word_count": 41,
+              "lesson_id": "ch04-02-references-and-borrowing",
+              "lesson_title": "References and Borrowing",
+              "content_file": "html/ch04-02-references-and-borrowing-03.html"
+            }
+          ]
+        },
+        {
+          "id": "ch04-03-slices",
+          "title": "The Slice Type",
+          "micro_lessons": [
+            {
+              "id": "ch04-03-slices-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 109,
+              "word_count": 781,
+              "lesson_id": "ch04-03-slices",
+              "lesson_title": "The Slice Type",
+              "exercises": [
+                "04_primitive_types/primitive_types4.rs"
+              ],
+              "content_file": "html/ch04-03-slices-00.html"
+            },
+            {
+              "id": "ch04-03-slices-01",
+              "title": "String Slices",
+              "start_line": 110,
+              "end_line": 292,
+              "word_count": 1013,
+              "lesson_id": "ch04-03-slices",
+              "lesson_title": "The Slice Type",
+              "exercises": [
+                "04_primitive_types/primitive_types5.rs"
+              ],
+              "content_file": "html/ch04-03-slices-01.html"
+            },
+            {
+              "id": "ch04-03-slices-02",
+              "title": "Other Slices",
+              "start_line": 293,
+              "end_line": 334,
+              "word_count": 244,
+              "lesson_id": "ch04-03-slices",
+              "lesson_title": "The Slice Type",
+              "exercises": [
+                "04_primitive_types/primitive_types6.rs"
+              ],
+              "content_file": "html/ch04-03-slices-02.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "ch04-00-understanding-ownership-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 7,
+          "word_count": 63,
+          "lesson_id": "ch04-00-understanding-ownership",
+          "lesson_title": "Understanding Ownership",
+          "content_file": "html/ch04-00-understanding-ownership-00.html"
+        }
+      ]
+    },
+    {
+      "id": "ch05-00-structs",
+      "title": "Using Structs to Structure Related Data",
+      "lessons": [
+        {
+          "id": "ch05-01-defining-structs",
+          "title": "Defining and Instantiating Structs",
+          "micro_lessons": [
+            {
+              "id": "ch05-01-defining-structs-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 80,
+              "word_count": 546,
+              "lesson_id": "ch05-01-defining-structs",
+              "lesson_title": "Defining and Instantiating Structs",
+              "exercises": [
+                "07_structs/structs1.rs"
+              ],
+              "content_file": "html/ch05-01-defining-structs-00.html"
+            },
+            {
+              "id": "ch05-01-defining-structs-01",
+              "title": "Using the Field Init Shorthand",
+              "start_line": 81,
+              "end_line": 105,
+              "word_count": 147,
+              "lesson_id": "ch05-01-defining-structs",
+              "lesson_title": "Defining and Instantiating Structs",
+              "exercises": [
+                "07_structs/structs2.rs"
+              ],
+              "content_file": "html/ch05-01-defining-structs-01.html"
+            },
+            {
+              "id": "ch05-01-defining-structs-02",
+              "title": "Creating Instances with Struct Update Syntax",
+              "start_line": 106,
+              "end_line": 159,
+              "word_count": 405,
+              "lesson_id": "ch05-01-defining-structs",
+              "lesson_title": "Defining and Instantiating Structs",
+              "exercises": [
+                "07_structs/structs3.rs"
+              ],
+              "content_file": "html/ch05-01-defining-structs-02.html"
+            },
+            {
+              "id": "ch05-01-defining-structs-03",
+              "title": "Creating Different Types with Tuple Structs",
+              "start_line": 160,
+              "end_line": 196,
+              "word_count": 275,
+              "lesson_id": "ch05-01-defining-structs",
+              "lesson_title": "Defining and Instantiating Structs",
+              "content_file": "html/ch05-01-defining-structs-03.html"
+            },
+            {
+              "id": "ch05-01-defining-structs-04",
+              "title": "Defining Unit-Like Structs",
+              "start_line": 197,
+              "end_line": 313,
+              "word_count": 639,
+              "lesson_id": "ch05-01-defining-structs",
+              "lesson_title": "Defining and Instantiating Structs",
+              "content_file": "html/ch05-01-defining-structs-04.html"
+            }
+          ]
+        },
+        {
+          "id": "ch05-02-example-structs",
+          "title": "An Example Program Using Structs",
+          "micro_lessons": [
+            {
+              "id": "ch05-02-example-structs-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 41,
+              "word_count": 237,
+              "lesson_id": "ch05-02-example-structs",
+              "lesson_title": "An Example Program Using Structs",
+              "content_file": "html/ch05-02-example-structs-00.html"
+            },
+            {
+              "id": "ch05-02-example-structs-01",
+              "title": "Refactoring with Tuples",
+              "start_line": 42,
+              "end_line": 69,
+              "word_count": 182,
+              "lesson_id": "ch05-02-example-structs",
+              "lesson_title": "An Example Program Using Structs",
+              "content_file": "html/ch05-02-example-structs-01.html"
+            },
+            {
+              "id": "ch05-02-example-structs-02",
+              "title": "Refactoring with Structs",
+              "start_line": 70,
+              "end_line": 108,
+              "word_count": 277,
+              "lesson_id": "ch05-02-example-structs",
+              "lesson_title": "An Example Program Using Structs",
+              "content_file": "html/ch05-02-example-structs-02.html"
+            },
+            {
+              "id": "ch05-02-example-structs-03",
+              "title": "Adding Functionality with Derived Traits",
+              "start_line": 109,
+              "end_line": 252,
+              "word_count": 922,
+              "lesson_id": "ch05-02-example-structs",
+              "lesson_title": "An Example Program Using Structs",
+              "content_file": "html/ch05-02-example-structs-03.html"
+            }
+          ]
+        },
+        {
+          "id": "ch05-03-method-syntax",
+          "title": "Methods",
+          "micro_lessons": [
+            {
+              "id": "ch05-03-method-syntax-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 14,
+              "word_count": 105,
+              "lesson_id": "ch05-03-method-syntax",
+              "lesson_title": "Methods",
+              "content_file": "html/ch05-03-method-syntax-00.html"
+            },
+            {
+              "id": "ch05-03-method-syntax-01",
+              "title": "Method Syntax",
+              "start_line": 15,
+              "end_line": 139,
+              "word_count": 1000,
+              "lesson_id": "ch05-03-method-syntax",
+              "lesson_title": "Methods",
+              "content_file": "html/ch05-03-method-syntax-01.html"
+            },
+            {
+              "id": "ch05-03-method-syntax-02",
+              "title": "Methods with More Parameters",
+              "start_line": 140,
+              "end_line": 192,
+              "word_count": 345,
+              "lesson_id": "ch05-03-method-syntax",
+              "lesson_title": "Methods",
+              "content_file": "html/ch05-03-method-syntax-02.html"
+            },
+            {
+              "id": "ch05-03-method-syntax-03",
+              "title": "Associated Functions",
+              "start_line": 193,
+              "end_line": 225,
+              "word_count": 235,
+              "lesson_id": "ch05-03-method-syntax",
+              "lesson_title": "Methods",
+              "content_file": "html/ch05-03-method-syntax-03.html"
+            },
+            {
+              "id": "ch05-03-method-syntax-04",
+              "title": "Multiple `impl` Blocks",
+              "start_line": 226,
+              "end_line": 260,
+              "word_count": 185,
+              "lesson_id": "ch05-03-method-syntax",
+              "lesson_title": "Methods",
+              "content_file": "html/ch05-03-method-syntax-04.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "ch05-00-structs-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 14,
+          "word_count": 134,
+          "lesson_id": "ch05-00-structs",
+          "lesson_title": "Using Structs to Structure Related Data",
+          "content_file": "html/ch05-00-structs-00.html"
+        }
+      ]
+    },
+    {
+      "id": "ch06-00-enums",
+      "title": "Enums and Pattern Matching",
+      "lessons": [
+        {
+          "id": "ch06-01-defining-an-enum",
+          "title": "Defining an Enum",
+          "micro_lessons": [
+            {
+              "id": "ch06-01-defining-an-enum-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 31,
+              "word_count": 284,
+              "lesson_id": "ch06-01-defining-an-enum",
+              "lesson_title": "Defining an Enum",
+              "exercises": [
+                "08_enums/enums1.rs"
+              ],
+              "content_file": "html/ch06-01-defining-an-enum-00.html"
+            },
+            {
+              "id": "ch06-01-defining-an-enum-01",
+              "title": "Enum Values",
+              "start_line": 32,
+              "end_line": 191,
+              "word_count": 990,
+              "lesson_id": "ch06-01-defining-an-enum",
+              "lesson_title": "Defining an Enum",
+              "exercises": [
+                "08_enums/enums2.rs"
+              ],
+              "content_file": "html/ch06-01-defining-an-enum-01.html"
+            },
+            {
+              "id": "ch06-01-defining-an-enum-02",
+              "title": "The `Option` Enum",
+              "start_line": 192,
+              "end_line": 330,
+              "word_count": 1191,
+              "lesson_id": "ch06-01-defining-an-enum",
+              "lesson_title": "Defining an Enum",
+              "exercises": [
+                "08_enums/enums3.rs"
+              ],
+              "content_file": "html/ch06-01-defining-an-enum-02.html"
+            }
+          ]
+        },
+        {
+          "id": "ch06-02-match",
+          "title": "The `match` Control Flow Construct",
+          "micro_lessons": [
+            {
+              "id": "ch06-02-match-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 66,
+              "word_count": 567,
+              "lesson_id": "ch06-02-match",
+              "lesson_title": "The `match` Control Flow Construct",
+              "content_file": "html/ch06-02-match-00.html"
+            },
+            {
+              "id": "ch06-02-match-01",
+              "title": "Patterns That Bind to Values",
+              "start_line": 67,
+              "end_line": 112,
+              "word_count": 313,
+              "lesson_id": "ch06-02-match",
+              "lesson_title": "The `match` Control Flow Construct",
+              "content_file": "html/ch06-02-match-01.html"
+            },
+            {
+              "id": "ch06-02-match-02",
+              "title": "The `Option<T>` `match` Pattern",
+              "start_line": 113,
+              "end_line": 174,
+              "word_count": 367,
+              "lesson_id": "ch06-02-match",
+              "lesson_title": "The `match` Control Flow Construct",
+              "content_file": "html/ch06-02-match-02.html"
+            },
+            {
+              "id": "ch06-02-match-03",
+              "title": "Matches Are Exhaustive",
+              "start_line": 175,
+              "end_line": 199,
+              "word_count": 148,
+              "lesson_id": "ch06-02-match",
+              "lesson_title": "The `match` Control Flow Construct",
+              "content_file": "html/ch06-02-match-03.html"
+            },
+            {
+              "id": "ch06-02-match-04",
+              "title": "Catch-All Patterns and the `_` Placeholder",
+              "start_line": 200,
+              "end_line": 265,
+              "word_count": 526,
+              "lesson_id": "ch06-02-match",
+              "lesson_title": "The `match` Control Flow Construct",
+              "content_file": "html/ch06-02-match-04.html"
+            }
+          ]
+        },
+        {
+          "id": "ch06-03-if-let",
+          "title": "Concise Control Flow with `if let` and `let...else`",
+          "micro_lessons": [
+            {
+              "id": "ch06-03-if-let-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 147,
+              "word_count": 1033,
+              "lesson_id": "ch06-03-if-let",
+              "lesson_title": "Concise Control Flow with `if let` and `let...else`",
+              "content_file": "html/ch06-03-if-let-00.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "ch06-00-enums-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 11,
+          "word_count": 112,
+          "lesson_id": "ch06-00-enums",
+          "lesson_title": "Enums and Pattern Matching",
+          "content_file": "html/ch06-00-enums-00.html"
+        }
+      ]
+    },
+    {
+      "id": "ch07-00-managing-growing-projects-with-packages-crates-and-modules",
+      "title": "Packages, Crates, and Modules",
+      "lessons": [
+        {
+          "id": "ch07-01-packages-and-crates",
+          "title": "Packages and Crates",
+          "micro_lessons": [
+            {
+              "id": "ch07-01-packages-and-crates-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 72,
+              "word_count": 606,
+              "lesson_id": "ch07-01-packages-and-crates",
+              "lesson_title": "Packages and Crates",
+              "exercises": [
+                "10_modules/modules1.rs"
+              ],
+              "content_file": "html/ch07-01-packages-and-crates-00.html"
+            }
+          ]
+        },
+        {
+          "id": "ch07-02-defining-modules-to-control-scope-and-privacy",
+          "title": "Control Scope and Privacy with Modules",
+          "micro_lessons": [
+            {
+              "id": "ch07-02-defining-modules-to-control-scope-and-privacy-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 10,
+              "word_count": 71,
+              "lesson_id": "ch07-02-defining-modules-to-control-scope-and-privacy",
+              "lesson_title": "Control Scope and Privacy with Modules",
+              "exercises": [
+                "10_modules/modules2.rs"
+              ],
+              "content_file": "html/ch07-02-defining-modules-to-control-scope-and-privacy-00.html"
+            },
+            {
+              "id": "ch07-02-defining-modules-to-control-scope-and-privacy-01",
+              "title": "Modules Cheat Sheet",
+              "start_line": 11,
+              "end_line": 96,
+              "word_count": 497,
+              "lesson_id": "ch07-02-defining-modules-to-control-scope-and-privacy",
+              "lesson_title": "Control Scope and Privacy with Modules",
+              "exercises": [
+                "10_modules/modules3.rs"
+              ],
+              "content_file": "html/ch07-02-defining-modules-to-control-scope-and-privacy-01.html"
+            },
+            {
+              "id": "ch07-02-defining-modules-to-control-scope-and-privacy-02",
+              "title": "Grouping Related Code in Modules",
+              "start_line": 97,
+              "end_line": 180,
+              "word_count": 596,
+              "lesson_id": "ch07-02-defining-modules-to-control-scope-and-privacy",
+              "lesson_title": "Control Scope and Privacy with Modules",
+              "content_file": "html/ch07-02-defining-modules-to-control-scope-and-privacy-02.html"
+            }
+          ]
+        },
+        {
+          "id": "ch07-03-paths-for-referring-to-an-item-in-the-module-tree",
+          "title": "Paths for Referring to an Item in the Module Tree",
+          "micro_lessons": [
+            {
+              "id": "ch07-03-paths-for-referring-to-an-item-in-the-module-tree-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 98,
+              "word_count": 827,
+              "lesson_id": "ch07-03-paths-for-referring-to-an-item-in-the-module-tree",
+              "lesson_title": "Paths for Referring to an Item in the Module Tree",
+              "content_file": "html/ch07-03-paths-for-referring-to-an-item-in-the-module-tree-00.html"
+            },
+            {
+              "id": "ch07-03-paths-for-referring-to-an-item-in-the-module-tree-01",
+              "title": "Exposing Paths with the `pub` Keyword",
+              "start_line": 99,
+              "end_line": 198,
+              "word_count": 775,
+              "lesson_id": "ch07-03-paths-for-referring-to-an-item-in-the-module-tree",
+              "lesson_title": "Paths for Referring to an Item in the Module Tree",
+              "content_file": "html/ch07-03-paths-for-referring-to-an-item-in-the-module-tree-01.html"
+            },
+            {
+              "id": "ch07-03-paths-for-referring-to-an-item-in-the-module-tree-02",
+              "title": "Starting Relative Paths with `super`",
+              "start_line": 199,
+              "end_line": 231,
+              "word_count": 260,
+              "lesson_id": "ch07-03-paths-for-referring-to-an-item-in-the-module-tree",
+              "lesson_title": "Paths for Referring to an Item in the Module Tree",
+              "content_file": "html/ch07-03-paths-for-referring-to-an-item-in-the-module-tree-02.html"
+            },
+            {
+              "id": "ch07-03-paths-for-referring-to-an-item-in-the-module-tree-03",
+              "title": "Making Structs and Enums Public",
+              "start_line": 232,
+              "end_line": 293,
+              "word_count": 433,
+              "lesson_id": "ch07-03-paths-for-referring-to-an-item-in-the-module-tree",
+              "lesson_title": "Paths for Referring to an Item in the Module Tree",
+              "content_file": "html/ch07-03-paths-for-referring-to-an-item-in-the-module-tree-03.html"
+            }
+          ]
+        },
+        {
+          "id": "ch07-04-bringing-paths-into-scope-with-the-use-keyword",
+          "title": "Bringing Paths Into Scope with the `use` Keyword",
+          "micro_lessons": [
+            {
+              "id": "ch07-04-bringing-paths-into-scope-with-the-use-keyword-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 52,
+              "word_count": 314,
+              "lesson_id": "ch07-04-bringing-paths-into-scope-with-the-use-keyword",
+              "lesson_title": "Bringing Paths Into Scope with the `use` Keyword",
+              "content_file": "html/ch07-04-bringing-paths-into-scope-with-the-use-keyword-00.html"
+            },
+            {
+              "id": "ch07-04-bringing-paths-into-scope-with-the-use-keyword-01",
+              "title": "Creating Idiomatic `use` Paths",
+              "start_line": 53,
+              "end_line": 109,
+              "word_count": 346,
+              "lesson_id": "ch07-04-bringing-paths-into-scope-with-the-use-keyword",
+              "lesson_title": "Bringing Paths Into Scope with the `use` Keyword",
+              "content_file": "html/ch07-04-bringing-paths-into-scope-with-the-use-keyword-01.html"
+            },
+            {
+              "id": "ch07-04-bringing-paths-into-scope-with-the-use-keyword-02",
+              "title": "Providing New Names with the `as` Keyword",
+              "start_line": 110,
+              "end_line": 129,
+              "word_count": 123,
+              "lesson_id": "ch07-04-bringing-paths-into-scope-with-the-use-keyword",
+              "lesson_title": "Bringing Paths Into Scope with the `use` Keyword",
+              "content_file": "html/ch07-04-bringing-paths-into-scope-with-the-use-keyword-02.html"
+            },
+            {
+              "id": "ch07-04-bringing-paths-into-scope-with-the-use-keyword-03",
+              "title": "Re-exporting Names with `pub use`",
+              "start_line": 130,
+              "end_line": 167,
+              "word_count": 288,
+              "lesson_id": "ch07-04-bringing-paths-into-scope-with-the-use-keyword",
+              "lesson_title": "Bringing Paths Into Scope with the `use` Keyword",
+              "content_file": "html/ch07-04-bringing-paths-into-scope-with-the-use-keyword-03.html"
+            },
+            {
+              "id": "ch07-04-bringing-paths-into-scope-with-the-use-keyword-04",
+              "title": "Using External Packages",
+              "start_line": 168,
+              "end_line": 223,
+              "word_count": 290,
+              "lesson_id": "ch07-04-bringing-paths-into-scope-with-the-use-keyword",
+              "lesson_title": "Bringing Paths Into Scope with the `use` Keyword",
+              "content_file": "html/ch07-04-bringing-paths-into-scope-with-the-use-keyword-04.html"
+            },
+            {
+              "id": "ch07-04-bringing-paths-into-scope-with-the-use-keyword-05",
+              "title": "Using Nested Paths to Clean Up `use` Lists",
+              "start_line": 224,
+              "end_line": 286,
+              "word_count": 301,
+              "lesson_id": "ch07-04-bringing-paths-into-scope-with-the-use-keyword",
+              "lesson_title": "Bringing Paths Into Scope with the `use` Keyword",
+              "content_file": "html/ch07-04-bringing-paths-into-scope-with-the-use-keyword-05.html"
+            },
+            {
+              "id": "ch07-04-bringing-paths-into-scope-with-the-use-keyword-06",
+              "title": "Importing Items with the Glob Operator",
+              "start_line": 287,
+              "end_line": 314,
+              "word_count": 180,
+              "lesson_id": "ch07-04-bringing-paths-into-scope-with-the-use-keyword",
+              "lesson_title": "Bringing Paths Into Scope with the `use` Keyword",
+              "content_file": "html/ch07-04-bringing-paths-into-scope-with-the-use-keyword-06.html"
+            }
+          ]
+        },
+        {
+          "id": "ch07-05-separating-modules-into-different-files",
+          "title": "Separating Modules into Different Files",
+          "micro_lessons": [
+            {
+              "id": "ch07-05-separating-modules-into-different-files-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 129,
+              "word_count": 893,
+              "lesson_id": "ch07-05-separating-modules-into-different-files",
+              "lesson_title": "Separating Modules into Different Files",
+              "content_file": "html/ch07-05-separating-modules-into-different-files-00.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "ch07-00-managing-growing-projects-with-packages-crates-and-modules-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 52,
+          "word_count": 476,
+          "lesson_id": "ch07-00-managing-growing-projects-with-packages-crates-and-modules",
+          "lesson_title": "Packages, Crates, and Modules",
+          "content_file": "html/ch07-00-managing-growing-projects-with-packages-crates-and-modules-00.html"
+        }
+      ]
+    },
+    {
+      "id": "ch08-00-common-collections",
+      "title": "Common Collections",
+      "lessons": [
+        {
+          "id": "ch08-01-vectors",
+          "title": "Storing Lists of Values with Vectors",
+          "micro_lessons": [
+            {
+              "id": "ch08-01-vectors-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 7,
+              "word_count": 83,
+              "lesson_id": "ch08-01-vectors",
+              "lesson_title": "Storing Lists of Values with Vectors",
+              "exercises": [
+                "05_vecs/vecs1.rs"
+              ],
+              "content_file": "html/ch08-01-vectors-00.html"
+            },
+            {
+              "id": "ch08-01-vectors-01",
+              "title": "Creating a New Vector",
+              "start_line": 8,
+              "end_line": 49,
+              "word_count": 268,
+              "lesson_id": "ch08-01-vectors",
+              "lesson_title": "Storing Lists of Values with Vectors",
+              "exercises": [
+                "05_vecs/vecs2.rs"
+              ],
+              "content_file": "html/ch08-01-vectors-01.html"
+            },
+            {
+              "id": "ch08-01-vectors-02",
+              "title": "Updating a Vector",
+              "start_line": 50,
+              "end_line": 67,
+              "word_count": 91,
+              "lesson_id": "ch08-01-vectors",
+              "lesson_title": "Storing Lists of Values with Vectors",
+              "content_file": "html/ch08-01-vectors-02.html"
+            },
+            {
+              "id": "ch08-01-vectors-03",
+              "title": "Reading Elements of Vectors",
+              "start_line": 68,
+              "end_line": 156,
+              "word_count": 667,
+              "lesson_id": "ch08-01-vectors",
+              "lesson_title": "Storing Lists of Values with Vectors",
+              "content_file": "html/ch08-01-vectors-03.html"
+            },
+            {
+              "id": "ch08-01-vectors-04",
+              "title": "Iterating Over the Values in a Vector",
+              "start_line": 157,
+              "end_line": 195,
+              "word_count": 248,
+              "lesson_id": "ch08-01-vectors",
+              "lesson_title": "Storing Lists of Values with Vectors",
+              "content_file": "html/ch08-01-vectors-04.html"
+            },
+            {
+              "id": "ch08-01-vectors-05",
+              "title": "Using an Enum to Store Multiple Types",
+              "start_line": 196,
+              "end_line": 235,
+              "word_count": 357,
+              "lesson_id": "ch08-01-vectors",
+              "lesson_title": "Storing Lists of Values with Vectors",
+              "content_file": "html/ch08-01-vectors-05.html"
+            },
+            {
+              "id": "ch08-01-vectors-06",
+              "title": "Dropping a Vector Drops Its Elements",
+              "start_line": 236,
+              "end_line": 260,
+              "word_count": 94,
+              "lesson_id": "ch08-01-vectors",
+              "lesson_title": "Storing Lists of Values with Vectors",
+              "content_file": "html/ch08-01-vectors-06.html"
+            }
+          ]
+        },
+        {
+          "id": "ch08-02-strings",
+          "title": "Storing UTF-8 Encoded Text with Strings",
+          "micro_lessons": [
+            {
+              "id": "ch08-02-strings-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 21,
+              "word_count": 173,
+              "lesson_id": "ch08-02-strings",
+              "lesson_title": "Storing UTF-8 Encoded Text with Strings",
+              "exercises": [
+                "09_strings/strings1.rs"
+              ],
+              "content_file": "html/ch08-02-strings-00.html"
+            },
+            {
+              "id": "ch08-02-strings-01",
+              "title": "Defining Strings",
+              "start_line": 22,
+              "end_line": 38,
+              "word_count": 147,
+              "lesson_id": "ch08-02-strings",
+              "lesson_title": "Storing UTF-8 Encoded Text with Strings",
+              "exercises": [
+                "09_strings/strings2.rs"
+              ],
+              "content_file": "html/ch08-02-strings-01.html"
+            },
+            {
+              "id": "ch08-02-strings-02",
+              "title": "Creating a New String",
+              "start_line": 39,
+              "end_line": 101,
+              "word_count": 306,
+              "lesson_id": "ch08-02-strings",
+              "lesson_title": "Storing UTF-8 Encoded Text with Strings",
+              "exercises": [
+                "09_strings/strings3.rs"
+              ],
+              "content_file": "html/ch08-02-strings-02.html"
+            },
+            {
+              "id": "ch08-02-strings-03",
+              "title": "Updating a String",
+              "start_line": 102,
+              "end_line": 231,
+              "word_count": 797,
+              "lesson_id": "ch08-02-strings",
+              "lesson_title": "Storing UTF-8 Encoded Text with Strings",
+              "exercises": [
+                "09_strings/strings4.rs"
+              ],
+              "content_file": "html/ch08-02-strings-03.html"
+            },
+            {
+              "id": "ch08-02-strings-04",
+              "title": "Indexing into Strings",
+              "start_line": 232,
+              "end_line": 343,
+              "word_count": 705,
+              "lesson_id": "ch08-02-strings",
+              "lesson_title": "Storing UTF-8 Encoded Text with Strings",
+              "content_file": "html/ch08-02-strings-04.html"
+            },
+            {
+              "id": "ch08-02-strings-05",
+              "title": "Slicing Strings",
+              "start_line": 344,
+              "end_line": 378,
+              "word_count": 190,
+              "lesson_id": "ch08-02-strings",
+              "lesson_title": "Storing UTF-8 Encoded Text with Strings",
+              "content_file": "html/ch08-02-strings-05.html"
+            },
+            {
+              "id": "ch08-02-strings-06",
+              "title": "Iterating Over Strings",
+              "start_line": 379,
+              "end_line": 428,
+              "word_count": 182,
+              "lesson_id": "ch08-02-strings",
+              "lesson_title": "Storing UTF-8 Encoded Text with Strings",
+              "content_file": "html/ch08-02-strings-06.html"
+            },
+            {
+              "id": "ch08-02-strings-07",
+              "title": "Handling the Complexities of Strings",
+              "start_line": 429,
+              "end_line": 447,
+              "word_count": 151,
+              "lesson_id": "ch08-02-strings",
+              "lesson_title": "Storing UTF-8 Encoded Text with Strings",
+              "content_file": "html/ch08-02-strings-07.html"
+            }
+          ]
+        },
+        {
+          "id": "ch08-03-hash-maps",
+          "title": "Storing Keys with Associated Values in Hash Maps",
+          "micro_lessons": [
+            {
+              "id": "ch08-03-hash-maps-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 18,
+              "word_count": 195,
+              "lesson_id": "ch08-03-hash-maps",
+              "lesson_title": "Storing Keys with Associated Values in Hash Maps",
+              "exercises": [
+                "11_hashmaps/hashmaps1.rs"
+              ],
+              "content_file": "html/ch08-03-hash-maps-00.html"
+            },
+            {
+              "id": "ch08-03-hash-maps-01",
+              "title": "Creating a New Hash Map",
+              "start_line": 19,
+              "end_line": 44,
+              "word_count": 178,
+              "lesson_id": "ch08-03-hash-maps",
+              "lesson_title": "Storing Keys with Associated Values in Hash Maps",
+              "exercises": [
+                "11_hashmaps/hashmaps2.rs"
+              ],
+              "content_file": "html/ch08-03-hash-maps-01.html"
+            },
+            {
+              "id": "ch08-03-hash-maps-02",
+              "title": "Accessing Values in a Hash Map",
+              "start_line": 45,
+              "end_line": 82,
+              "word_count": 170,
+              "lesson_id": "ch08-03-hash-maps",
+              "lesson_title": "Storing Keys with Associated Values in Hash Maps",
+              "exercises": [
+                "11_hashmaps/hashmaps3.rs"
+              ],
+              "content_file": "html/ch08-03-hash-maps-02.html"
+            },
+            {
+              "id": "ch08-03-hash-maps-03",
+              "title": "Managing Ownership in Hash Maps",
+              "start_line": 83,
+              "end_line": 105,
+              "word_count": 143,
+              "lesson_id": "ch08-03-hash-maps",
+              "lesson_title": "Storing Keys with Associated Values in Hash Maps",
+              "content_file": "html/ch08-03-hash-maps-03.html"
+            },
+            {
+              "id": "ch08-03-hash-maps-04",
+              "title": "Updating a Hash Map",
+              "start_line": 106,
+              "end_line": 206,
+              "word_count": 785,
+              "lesson_id": "ch08-03-hash-maps",
+              "lesson_title": "Storing Keys with Associated Values in Hash Maps",
+              "content_file": "html/ch08-03-hash-maps-04.html"
+            },
+            {
+              "id": "ch08-03-hash-maps-05",
+              "title": "Hashing Functions",
+              "start_line": 207,
+              "end_line": 252,
+              "word_count": 368,
+              "lesson_id": "ch08-03-hash-maps",
+              "lesson_title": "Storing Keys with Associated Values in Hash Maps",
+              "content_file": "html/ch08-03-hash-maps-05.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "ch08-00-common-collections-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 25,
+          "word_count": 217,
+          "lesson_id": "ch08-00-common-collections",
+          "lesson_title": "Common Collections",
+          "content_file": "html/ch08-00-common-collections-00.html"
+        }
+      ]
+    },
+    {
+      "id": "ch09-00-error-handling",
+      "title": "Error Handling",
+      "lessons": [
+        {
+          "id": "ch09-01-unrecoverable-errors-with-panic",
+          "title": "Unrecoverable Errors with `panic!`",
+          "micro_lessons": [
+            {
+              "id": "ch09-01-unrecoverable-errors-with-panic-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 170,
+              "word_count": 1241,
+              "lesson_id": "ch09-01-unrecoverable-errors-with-panic",
+              "lesson_title": "Unrecoverable Errors with `panic!`",
+              "exercises": [
+                "13_error_handling/errors1.rs"
+              ],
+              "content_file": "html/ch09-01-unrecoverable-errors-with-panic-00.html"
+            }
+          ]
+        },
+        {
+          "id": "ch09-02-recoverable-errors-with-result",
+          "title": "Recoverable Errors with `Result`",
+          "micro_lessons": [
+            {
+              "id": "ch09-02-recoverable-errors-with-result-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 88,
+              "word_count": 625,
+              "lesson_id": "ch09-02-recoverable-errors-with-result",
+              "lesson_title": "Recoverable Errors with `Result`",
+              "exercises": [
+                "13_error_handling/errors2.rs"
+              ],
+              "content_file": "html/ch09-02-recoverable-errors-with-result-00.html"
+            },
+            {
+              "id": "ch09-02-recoverable-errors-with-result-01",
+              "title": "Matching on Different Errors",
+              "start_line": 89,
+              "end_line": 231,
+              "word_count": 886,
+              "lesson_id": "ch09-02-recoverable-errors-with-result",
+              "lesson_title": "Recoverable Errors with `Result`",
+              "exercises": [
+                "13_error_handling/errors3.rs"
+              ],
+              "content_file": "html/ch09-02-recoverable-errors-with-result-01.html"
+            },
+            {
+              "id": "ch09-02-recoverable-errors-with-result-02",
+              "title": "Propagating Errors",
+              "start_line": 232,
+              "end_line": 546,
+              "word_count": 2584,
+              "lesson_id": "ch09-02-recoverable-errors-with-result",
+              "lesson_title": "Recoverable Errors with `Result`",
+              "exercises": [
+                "13_error_handling/errors4.rs"
+              ],
+              "content_file": "html/ch09-02-recoverable-errors-with-result-02.html"
+            }
+          ]
+        },
+        {
+          "id": "ch09-03-to-panic-or-not-to-panic",
+          "title": "To `panic!` or Not to `panic!`",
+          "micro_lessons": [
+            {
+              "id": "ch09-03-to-panic-or-not-to-panic-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 18,
+              "word_count": 201,
+              "lesson_id": "ch09-03-to-panic-or-not-to-panic",
+              "lesson_title": "To `panic!` or Not to `panic!`",
+              "exercises": [
+                "13_error_handling/errors5.rs"
+              ],
+              "content_file": "html/ch09-03-to-panic-or-not-to-panic-00.html"
+            },
+            {
+              "id": "ch09-03-to-panic-or-not-to-panic-01",
+              "title": "Examples, Prototype Code, and Tests",
+              "start_line": 19,
+              "end_line": 40,
+              "word_count": 160,
+              "lesson_id": "ch09-03-to-panic-or-not-to-panic",
+              "lesson_title": "To `panic!` or Not to `panic!`",
+              "exercises": [
+                "13_error_handling/errors6.rs"
+              ],
+              "content_file": "html/ch09-03-to-panic-or-not-to-panic-01.html"
+            },
+            {
+              "id": "ch09-03-to-panic-or-not-to-panic-02",
+              "title": "When You Have More Information Than the Compiler",
+              "start_line": 41,
+              "end_line": 69,
+              "word_count": 264,
+              "lesson_id": "ch09-03-to-panic-or-not-to-panic",
+              "lesson_title": "To `panic!` or Not to `panic!`",
+              "content_file": "html/ch09-03-to-panic-or-not-to-panic-02.html"
+            },
+            {
+              "id": "ch09-03-to-panic-or-not-to-panic-03",
+              "title": "Guidelines for Error Handling",
+              "start_line": 70,
+              "end_line": 133,
+              "word_count": 664,
+              "lesson_id": "ch09-03-to-panic-or-not-to-panic",
+              "lesson_title": "To `panic!` or Not to `panic!`",
+              "content_file": "html/ch09-03-to-panic-or-not-to-panic-03.html"
+            },
+            {
+              "id": "ch09-03-to-panic-or-not-to-panic-04",
+              "title": "Custom Types for Validation",
+              "start_line": 134,
+              "end_line": 236,
+              "word_count": 903,
+              "lesson_id": "ch09-03-to-panic-or-not-to-panic",
+              "lesson_title": "To `panic!` or Not to `panic!`",
+              "content_file": "html/ch09-03-to-panic-or-not-to-panic-04.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "ch09-00-error-handling-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 24,
+          "word_count": 220,
+          "lesson_id": "ch09-00-error-handling",
+          "lesson_title": "Error Handling",
+          "content_file": "html/ch09-00-error-handling-00.html"
+        }
+      ]
+    },
+    {
+      "id": "ch10-00-generics",
+      "title": "Generic Types, Traits, and Lifetimes",
+      "lessons": [
+        {
+          "id": "ch10-01-syntax",
+          "title": "Generic Data Types",
+          "micro_lessons": [
+            {
+              "id": "ch10-01-syntax-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 6,
+              "word_count": 50,
+              "lesson_id": "ch10-01-syntax",
+              "lesson_title": "Generic Data Types",
+              "exercises": [
+                "12_options/options1.rs",
+                "14_generics/generics1.rs"
+              ],
+              "content_file": "html/ch10-01-syntax-00.html"
+            },
+            {
+              "id": "ch10-01-syntax-01",
+              "title": "In Function Definitions",
+              "start_line": 7,
+              "end_line": 83,
+              "word_count": 567,
+              "lesson_id": "ch10-01-syntax",
+              "lesson_title": "Generic Data Types",
+              "exercises": [
+                "12_options/options2.rs",
+                "14_generics/generics2.rs"
+              ],
+              "content_file": "html/ch10-01-syntax-01.html"
+            },
+            {
+              "id": "ch10-01-syntax-02",
+              "title": "In Struct Definitions",
+              "start_line": 84,
+              "end_line": 144,
+              "word_count": 398,
+              "lesson_id": "ch10-01-syntax",
+              "lesson_title": "Generic Data Types",
+              "exercises": [
+                "12_options/options3.rs"
+              ],
+              "content_file": "html/ch10-01-syntax-02.html"
+            },
+            {
+              "id": "ch10-01-syntax-03",
+              "title": "In Enum Definitions",
+              "start_line": 145,
+              "end_line": 187,
+              "word_count": 297,
+              "lesson_id": "ch10-01-syntax",
+              "lesson_title": "Generic Data Types",
+              "content_file": "html/ch10-01-syntax-03.html"
+            },
+            {
+              "id": "ch10-01-syntax-04",
+              "title": "In Method Definitions",
+              "start_line": 188,
+              "end_line": 263,
+              "word_count": 599,
+              "lesson_id": "ch10-01-syntax",
+              "lesson_title": "Generic Data Types",
+              "content_file": "html/ch10-01-syntax-04.html"
+            },
+            {
+              "id": "ch10-01-syntax-05",
+              "title": "Performance of Code Using Generics",
+              "start_line": 264,
+              "end_line": 323,
+              "word_count": 321,
+              "lesson_id": "ch10-01-syntax",
+              "lesson_title": "Generic Data Types",
+              "content_file": "html/ch10-01-syntax-05.html"
+            }
+          ]
+        },
+        {
+          "id": "ch10-02-traits",
+          "title": "Defining Shared Behavior with Traits",
+          "micro_lessons": [
+            {
+              "id": "ch10-02-traits-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 13,
+              "word_count": 84,
+              "lesson_id": "ch10-02-traits",
+              "lesson_title": "Defining Shared Behavior with Traits",
+              "exercises": [
+                "15_traits/traits1.rs"
+              ],
+              "content_file": "html/ch10-02-traits-00.html"
+            },
+            {
+              "id": "ch10-02-traits-01",
+              "title": "Defining a Trait",
+              "start_line": 14,
+              "end_line": 57,
+              "word_count": 351,
+              "lesson_id": "ch10-02-traits",
+              "lesson_title": "Defining Shared Behavior with Traits",
+              "exercises": [
+                "15_traits/traits2.rs"
+              ],
+              "content_file": "html/ch10-02-traits-01.html"
+            },
+            {
+              "id": "ch10-02-traits-02",
+              "title": "Implementing a Trait on a Type",
+              "start_line": 58,
+              "end_line": 121,
+              "word_count": 504,
+              "lesson_id": "ch10-02-traits",
+              "lesson_title": "Defining Shared Behavior with Traits",
+              "exercises": [
+                "15_traits/traits3.rs"
+              ],
+              "content_file": "html/ch10-02-traits-02.html"
+            },
+            {
+              "id": "ch10-02-traits-03",
+              "title": "Using Default Implementations",
+              "start_line": 122,
+              "end_line": 199,
+              "word_count": 426,
+              "lesson_id": "ch10-02-traits",
+              "lesson_title": "Defining Shared Behavior with Traits",
+              "exercises": [
+                "15_traits/traits4.rs"
+              ],
+              "content_file": "html/ch10-02-traits-03.html"
+            },
+            {
+              "id": "ch10-02-traits-04",
+              "title": "Using Traits as Parameters",
+              "start_line": 200,
+              "end_line": 308,
+              "word_count": 657,
+              "lesson_id": "ch10-02-traits",
+              "lesson_title": "Defining Shared Behavior with Traits",
+              "exercises": [
+                "15_traits/traits5.rs"
+              ],
+              "content_file": "html/ch10-02-traits-04.html"
+            },
+            {
+              "id": "ch10-02-traits-05",
+              "title": "Returning Types That Implement Traits",
+              "start_line": 309,
+              "end_line": 344,
+              "word_count": 238,
+              "lesson_id": "ch10-02-traits",
+              "lesson_title": "Defining Shared Behavior with Traits",
+              "content_file": "html/ch10-02-traits-05.html"
+            },
+            {
+              "id": "ch10-02-traits-06",
+              "title": "Using Trait Bounds to Conditionally Implement Methods",
+              "start_line": 345,
+              "end_line": 404,
+              "word_count": 409,
+              "lesson_id": "ch10-02-traits",
+              "lesson_title": "Defining Shared Behavior with Traits",
+              "content_file": "html/ch10-02-traits-06.html"
+            }
+          ]
+        },
+        {
+          "id": "ch10-03-lifetime-syntax",
+          "title": "Validating References with Lifetimes",
+          "micro_lessons": [
+            {
+              "id": "ch10-03-lifetime-syntax-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 25,
+              "word_count": 212,
+              "lesson_id": "ch10-03-lifetime-syntax",
+              "lesson_title": "Validating References with Lifetimes",
+              "exercises": [
+                "16_lifetimes/lifetimes1.rs"
+              ],
+              "content_file": "html/ch10-03-lifetime-syntax-00.html"
+            },
+            {
+              "id": "ch10-03-lifetime-syntax-01",
+              "title": "Dangling References",
+              "start_line": 26,
+              "end_line": 66,
+              "word_count": 331,
+              "lesson_id": "ch10-03-lifetime-syntax",
+              "lesson_title": "Validating References with Lifetimes",
+              "exercises": [
+                "16_lifetimes/lifetimes2.rs"
+              ],
+              "content_file": "html/ch10-03-lifetime-syntax-01.html"
+            },
+            {
+              "id": "ch10-03-lifetime-syntax-02",
+              "title": "The Borrow Checker",
+              "start_line": 67,
+              "end_line": 106,
+              "word_count": 249,
+              "lesson_id": "ch10-03-lifetime-syntax",
+              "lesson_title": "Validating References with Lifetimes",
+              "exercises": [
+                "16_lifetimes/lifetimes3.rs"
+              ],
+              "content_file": "html/ch10-03-lifetime-syntax-02.html"
+            },
+            {
+              "id": "ch10-03-lifetime-syntax-03",
+              "title": "Generic Lifetimes in Functions",
+              "start_line": 107,
+              "end_line": 162,
+              "word_count": 363,
+              "lesson_id": "ch10-03-lifetime-syntax",
+              "lesson_title": "Validating References with Lifetimes",
+              "content_file": "html/ch10-03-lifetime-syntax-03.html"
+            },
+            {
+              "id": "ch10-03-lifetime-syntax-04",
+              "title": "Lifetime Annotation Syntax",
+              "start_line": 163,
+              "end_line": 195,
+              "word_count": 240,
+              "lesson_id": "ch10-03-lifetime-syntax",
+              "lesson_title": "Validating References with Lifetimes",
+              "content_file": "html/ch10-03-lifetime-syntax-04.html"
+            },
+            {
+              "id": "ch10-03-lifetime-syntax-05",
+              "title": "In Function Signatures",
+              "start_line": 196,
+              "end_line": 316,
+              "word_count": 954,
+              "lesson_id": "ch10-03-lifetime-syntax",
+              "lesson_title": "Validating References with Lifetimes",
+              "content_file": "html/ch10-03-lifetime-syntax-05.html"
+            },
+            {
+              "id": "ch10-03-lifetime-syntax-06",
+              "title": "Relationships",
+              "start_line": 317,
+              "end_line": 378,
+              "word_count": 374,
+              "lesson_id": "ch10-03-lifetime-syntax",
+              "lesson_title": "Validating References with Lifetimes",
+              "content_file": "html/ch10-03-lifetime-syntax-06.html"
+            },
+            {
+              "id": "ch10-03-lifetime-syntax-07",
+              "title": "In Struct Definitions",
+              "start_line": 379,
+              "end_line": 407,
+              "word_count": 200,
+              "lesson_id": "ch10-03-lifetime-syntax",
+              "lesson_title": "Validating References with Lifetimes",
+              "content_file": "html/ch10-03-lifetime-syntax-07.html"
+            },
+            {
+              "id": "ch10-03-lifetime-syntax-08",
+              "title": "Lifetime Elision",
+              "start_line": 408,
+              "end_line": 537,
+              "word_count": 918,
+              "lesson_id": "ch10-03-lifetime-syntax",
+              "lesson_title": "Validating References with Lifetimes",
+              "content_file": "html/ch10-03-lifetime-syntax-08.html"
+            },
+            {
+              "id": "ch10-03-lifetime-syntax-09",
+              "title": "In Method Definitions",
+              "start_line": 538,
+              "end_line": 576,
+              "word_count": 265,
+              "lesson_id": "ch10-03-lifetime-syntax",
+              "lesson_title": "Validating References with Lifetimes",
+              "content_file": "html/ch10-03-lifetime-syntax-09.html"
+            },
+            {
+              "id": "ch10-03-lifetime-syntax-10",
+              "title": "The Static Lifetime",
+              "start_line": 577,
+              "end_line": 641,
+              "word_count": 490,
+              "lesson_id": "ch10-03-lifetime-syntax",
+              "lesson_title": "Validating References with Lifetimes",
+              "content_file": "html/ch10-03-lifetime-syntax-10.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "ch10-00-generics-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 115,
+          "word_count": 908,
+          "lesson_id": "ch10-00-generics",
+          "lesson_title": "Generic Types, Traits, and Lifetimes",
+          "content_file": "html/ch10-00-generics-00.html"
+        }
+      ]
+    },
+    {
+      "id": "ch11-00-testing",
+      "title": "Writing Automated Tests",
+      "lessons": [
+        {
+          "id": "ch11-01-writing-tests",
+          "title": "How to Write Tests",
+          "micro_lessons": [
+            {
+              "id": "ch11-01-writing-tests-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 17,
+              "word_count": 96,
+              "lesson_id": "ch11-01-writing-tests",
+              "lesson_title": "How to Write Tests",
+              "exercises": [
+                "17_tests/tests1.rs"
+              ],
+              "content_file": "html/ch11-01-writing-tests-00.html"
+            },
+            {
+              "id": "ch11-01-writing-tests-01",
+              "title": "Structuring Test Functions",
+              "start_line": 18,
+              "end_line": 187,
+              "word_count": 1127,
+              "lesson_id": "ch11-01-writing-tests",
+              "lesson_title": "How to Write Tests",
+              "exercises": [
+                "17_tests/tests2.rs"
+              ],
+              "content_file": "html/ch11-01-writing-tests-01.html"
+            },
+            {
+              "id": "ch11-01-writing-tests-02",
+              "title": "Checking Results with `assert!`",
+              "start_line": 188,
+              "end_line": 280,
+              "word_count": 532,
+              "lesson_id": "ch11-01-writing-tests",
+              "lesson_title": "How to Write Tests",
+              "exercises": [
+                "17_tests/tests3.rs"
+              ],
+              "content_file": "html/ch11-01-writing-tests-02.html"
+            },
+            {
+              "id": "ch11-01-writing-tests-03",
+              "title": "Testing Equality with `assert_eq!` and `assert_ne!`",
+              "start_line": 281,
+              "end_line": 364,
+              "word_count": 655,
+              "lesson_id": "ch11-01-writing-tests",
+              "lesson_title": "How to Write Tests",
+              "content_file": "html/ch11-01-writing-tests-03.html"
+            },
+            {
+              "id": "ch11-01-writing-tests-04",
+              "title": "Adding Custom Failure Messages",
+              "start_line": 365,
+              "end_line": 424,
+              "word_count": 339,
+              "lesson_id": "ch11-01-writing-tests",
+              "lesson_title": "How to Write Tests",
+              "content_file": "html/ch11-01-writing-tests-04.html"
+            },
+            {
+              "id": "ch11-01-writing-tests-05",
+              "title": "Checking for Panics with `should_panic`",
+              "start_line": 425,
+              "end_line": 519,
+              "word_count": 598,
+              "lesson_id": "ch11-01-writing-tests",
+              "lesson_title": "How to Write Tests",
+              "content_file": "html/ch11-01-writing-tests-05.html"
+            },
+            {
+              "id": "ch11-01-writing-tests-06",
+              "title": "Using `Result<T, E>` in Tests",
+              "start_line": 520,
+              "end_line": 557,
+              "word_count": 206,
+              "lesson_id": "ch11-01-writing-tests",
+              "lesson_title": "How to Write Tests",
+              "content_file": "html/ch11-01-writing-tests-06.html"
+            }
+          ]
+        },
+        {
+          "id": "ch11-02-running-tests",
+          "title": "Controlling How Tests Are Run",
+          "micro_lessons": [
+            {
+              "id": "ch11-02-running-tests-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 19,
+              "word_count": 179,
+              "lesson_id": "ch11-02-running-tests",
+              "lesson_title": "Controlling How Tests Are Run",
+              "content_file": "html/ch11-02-running-tests-00.html"
+            },
+            {
+              "id": "ch11-02-running-tests-01",
+              "title": "Running Tests in Parallel or Consecutively",
+              "start_line": 20,
+              "end_line": 51,
+              "word_count": 286,
+              "lesson_id": "ch11-02-running-tests",
+              "lesson_title": "Controlling How Tests Are Run",
+              "content_file": "html/ch11-02-running-tests-01.html"
+            },
+            {
+              "id": "ch11-02-running-tests-02",
+              "title": "Showing Function Output",
+              "start_line": 52,
+              "end_line": 95,
+              "word_count": 242,
+              "lesson_id": "ch11-02-running-tests",
+              "lesson_title": "Controlling How Tests Are Run",
+              "content_file": "html/ch11-02-running-tests-02.html"
+            },
+            {
+              "id": "ch11-02-running-tests-03",
+              "title": "Running a Subset of Tests by Name",
+              "start_line": 96,
+              "end_line": 154,
+              "word_count": 328,
+              "lesson_id": "ch11-02-running-tests",
+              "lesson_title": "Controlling How Tests Are Run",
+              "content_file": "html/ch11-02-running-tests-03.html"
+            },
+            {
+              "id": "ch11-02-running-tests-04",
+              "title": "Ignoring Tests Unless Specifically Requested",
+              "start_line": 155,
+              "end_line": 188,
+              "word_count": 186,
+              "lesson_id": "ch11-02-running-tests",
+              "lesson_title": "Controlling How Tests Are Run",
+              "content_file": "html/ch11-02-running-tests-04.html"
+            }
+          ]
+        },
+        {
+          "id": "ch11-03-test-organization",
+          "title": "Test Organization",
+          "micro_lessons": [
+            {
+              "id": "ch11-03-test-organization-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 13,
+              "word_count": 119,
+              "lesson_id": "ch11-03-test-organization",
+              "lesson_title": "Test Organization",
+              "content_file": "html/ch11-03-test-organization-00.html"
+            },
+            {
+              "id": "ch11-03-test-organization-01",
+              "title": "Unit Tests",
+              "start_line": 14,
+              "end_line": 79,
+              "word_count": 473,
+              "lesson_id": "ch11-03-test-organization",
+              "lesson_title": "Test Organization",
+              "content_file": "html/ch11-03-test-organization-01.html"
+            },
+            {
+              "id": "ch11-03-test-organization-02",
+              "title": "Integration Tests",
+              "start_line": 80,
+              "end_line": 266,
+              "word_count": 1267,
+              "lesson_id": "ch11-03-test-organization",
+              "lesson_title": "Test Organization",
+              "content_file": "html/ch11-03-test-organization-02.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "ch11-00-testing-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 34,
+          "word_count": 339,
+          "lesson_id": "ch11-00-testing",
+          "lesson_title": "Writing Automated Tests",
+          "content_file": "html/ch11-00-testing-00.html"
+        }
+      ]
+    },
+    {
+      "id": "ch12-00-an-io-project",
+      "title": "An I/O Project: Building a Command Line Program",
+      "lessons": [
+        {
+          "id": "ch12-01-accepting-command-line-arguments",
+          "title": "Accepting Command Line Arguments",
+          "micro_lessons": [
+            {
+              "id": "ch12-01-accepting-command-line-arguments-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 26,
+              "word_count": 166,
+              "lesson_id": "ch12-01-accepting-command-line-arguments",
+              "lesson_title": "Accepting Command Line Arguments",
+              "content_file": "html/ch12-01-accepting-command-line-arguments-00.html"
+            },
+            {
+              "id": "ch12-01-accepting-command-line-arguments-01",
+              "title": "Reading the Argument Values",
+              "start_line": 27,
+              "end_line": 94,
+              "word_count": 538,
+              "lesson_id": "ch12-01-accepting-command-line-arguments",
+              "lesson_title": "Accepting Command Line Arguments",
+              "content_file": "html/ch12-01-accepting-command-line-arguments-01.html"
+            },
+            {
+              "id": "ch12-01-accepting-command-line-arguments-02",
+              "title": "Saving the Argument Values in Variables",
+              "start_line": 95,
+              "end_line": 133,
+              "word_count": 228,
+              "lesson_id": "ch12-01-accepting-command-line-arguments",
+              "lesson_title": "Accepting Command Line Arguments",
+              "content_file": "html/ch12-01-accepting-command-line-arguments-02.html"
+            }
+          ]
+        },
+        {
+          "id": "ch12-02-reading-a-file",
+          "title": "Reading a File",
+          "micro_lessons": [
+            {
+              "id": "ch12-02-reading-a-file-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 56,
+              "word_count": 353,
+              "lesson_id": "ch12-02-reading-a-file",
+              "lesson_title": "Reading a File",
+              "content_file": "html/ch12-02-reading-a-file-00.html"
+            }
+          ]
+        },
+        {
+          "id": "ch12-03-improving-error-handling-and-modularity",
+          "title": "Refactoring to Improve Modularity and Error Handling",
+          "micro_lessons": [
+            {
+              "id": "ch12-03-improving-error-handling-and-modularity-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 38,
+              "word_count": 365,
+              "lesson_id": "ch12-03-improving-error-handling-and-modularity",
+              "lesson_title": "Refactoring to Improve Modularity and Error Handling",
+              "content_file": "html/ch12-03-improving-error-handling-and-modularity-00.html"
+            },
+            {
+              "id": "ch12-03-improving-error-handling-and-modularity-01",
+              "title": "Separating Concerns in Binary Projects",
+              "start_line": 39,
+              "end_line": 194,
+              "word_count": 1245,
+              "lesson_id": "ch12-03-improving-error-handling-and-modularity",
+              "lesson_title": "Refactoring to Improve Modularity and Error Handling",
+              "content_file": "html/ch12-03-improving-error-handling-and-modularity-01.html"
+            },
+            {
+              "id": "ch12-03-improving-error-handling-and-modularity-02",
+              "title": "Fixing the Error Handling",
+              "start_line": 195,
+              "end_line": 340,
+              "word_count": 1040,
+              "lesson_id": "ch12-03-improving-error-handling-and-modularity",
+              "lesson_title": "Refactoring to Improve Modularity and Error Handling",
+              "content_file": "html/ch12-03-improving-error-handling-and-modularity-02.html"
+            },
+            {
+              "id": "ch12-03-improving-error-handling-and-modularity-03",
+              "title": "Extracting Logic from `main`",
+              "start_line": 341,
+              "end_line": 445,
+              "word_count": 704,
+              "lesson_id": "ch12-03-improving-error-handling-and-modularity",
+              "lesson_title": "Refactoring to Improve Modularity and Error Handling",
+              "content_file": "html/ch12-03-improving-error-handling-and-modularity-03.html"
+            },
+            {
+              "id": "ch12-03-improving-error-handling-and-modularity-04",
+              "title": "Splitting Code into a Library Crate",
+              "start_line": 446,
+              "end_line": 513,
+              "word_count": 446,
+              "lesson_id": "ch12-03-improving-error-handling-and-modularity",
+              "lesson_title": "Refactoring to Improve Modularity and Error Handling",
+              "content_file": "html/ch12-03-improving-error-handling-and-modularity-04.html"
+            }
+          ]
+        },
+        {
+          "id": "ch12-04-testing-the-librarys-functionality",
+          "title": "Adding Functionality with Test Driven Development",
+          "micro_lessons": [
+            {
+              "id": "ch12-04-testing-the-librarys-functionality-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 28,
+              "word_count": 221,
+              "lesson_id": "ch12-04-testing-the-librarys-functionality",
+              "lesson_title": "Adding Functionality with Test Driven Development",
+              "content_file": "html/ch12-04-testing-the-librarys-functionality-00.html"
+            },
+            {
+              "id": "ch12-04-testing-the-librarys-functionality-01",
+              "title": "Writing a Failing Test",
+              "start_line": 29,
+              "end_line": 102,
+              "word_count": 545,
+              "lesson_id": "ch12-04-testing-the-librarys-functionality",
+              "lesson_title": "Adding Functionality with Test Driven Development",
+              "content_file": "html/ch12-04-testing-the-librarys-functionality-01.html"
+            },
+            {
+              "id": "ch12-04-testing-the-librarys-functionality-02",
+              "title": "Writing Code to Pass the Test",
+              "start_line": 103,
+              "end_line": 218,
+              "word_count": 619,
+              "lesson_id": "ch12-04-testing-the-librarys-functionality",
+              "lesson_title": "Adding Functionality with Test Driven Development",
+              "content_file": "html/ch12-04-testing-the-librarys-functionality-02.html"
+            }
+          ]
+        },
+        {
+          "id": "ch12-05-working-with-environment-variables",
+          "title": "Working with Environment Variables",
+          "micro_lessons": [
+            {
+              "id": "ch12-05-working-with-environment-variables-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 11,
+              "word_count": 95,
+              "lesson_id": "ch12-05-working-with-environment-variables",
+              "lesson_title": "Working with Environment Variables",
+              "content_file": "html/ch12-05-working-with-environment-variables-00.html"
+            },
+            {
+              "id": "ch12-05-working-with-environment-variables-01",
+              "title": "Writing a Failing Test for Case-Insensitive Search",
+              "start_line": 12,
+              "end_line": 44,
+              "word_count": 268,
+              "lesson_id": "ch12-05-working-with-environment-variables",
+              "lesson_title": "Working with Environment Variables",
+              "content_file": "html/ch12-05-working-with-environment-variables-01.html"
+            },
+            {
+              "id": "ch12-05-working-with-environment-variables-02",
+              "title": "Implementing the `search_case_insensitive` Function",
+              "start_line": 45,
+              "end_line": 204,
+              "word_count": 996,
+              "lesson_id": "ch12-05-working-with-environment-variables",
+              "lesson_title": "Working with Environment Variables",
+              "content_file": "html/ch12-05-working-with-environment-variables-02.html"
+            }
+          ]
+        },
+        {
+          "id": "ch12-06-writing-to-stderr-instead-of-stdout",
+          "title": "Redirecting Errors to Standard Error",
+          "micro_lessons": [
+            {
+              "id": "ch12-06-writing-to-stderr-instead-of-stdout-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 15,
+              "word_count": 105,
+              "lesson_id": "ch12-06-writing-to-stderr-instead-of-stdout",
+              "lesson_title": "Redirecting Errors to Standard Error",
+              "content_file": "html/ch12-06-writing-to-stderr-instead-of-stdout-00.html"
+            },
+            {
+              "id": "ch12-06-writing-to-stderr-instead-of-stdout-01",
+              "title": "Checking Where Errors Are Written",
+              "start_line": 16,
+              "end_line": 51,
+              "word_count": 263,
+              "lesson_id": "ch12-06-writing-to-stderr-instead-of-stdout",
+              "lesson_title": "Redirecting Errors to Standard Error",
+              "content_file": "html/ch12-06-writing-to-stderr-instead-of-stdout-01.html"
+            },
+            {
+              "id": "ch12-06-writing-to-stderr-instead-of-stdout-02",
+              "title": "Printing Errors to Standard Error",
+              "start_line": 52,
+              "end_line": 112,
+              "word_count": 308,
+              "lesson_id": "ch12-06-writing-to-stderr-instead-of-stdout",
+              "lesson_title": "Redirecting Errors to Standard Error",
+              "content_file": "html/ch12-06-writing-to-stderr-instead-of-stdout-02.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "ch12-00-an-io-project-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 48,
+          "word_count": 366,
+          "lesson_id": "ch12-00-an-io-project",
+          "lesson_title": "An I/O Project: Building a Command Line Program",
+          "content_file": "html/ch12-00-an-io-project-00.html"
+        }
+      ]
+    },
+    {
+      "id": "ch13-00-functional-features",
+      "title": "Functional Language Features: Iterators and Closures",
+      "lessons": [
+        {
+          "id": "ch13-01-closures",
+          "title": "Closures",
+          "micro_lessons": [
+            {
+              "id": "ch13-01-closures-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 20,
+              "word_count": 101,
+              "lesson_id": "ch13-01-closures",
+              "lesson_title": "Closures",
+              "content_file": "html/ch13-01-closures-00.html"
+            },
+            {
+              "id": "ch13-01-closures-01",
+              "title": "Capturing the Environment",
+              "start_line": 21,
+              "end_line": 90,
+              "word_count": 538,
+              "lesson_id": "ch13-01-closures",
+              "lesson_title": "Closures",
+              "content_file": "html/ch13-01-closures-01.html"
+            },
+            {
+              "id": "ch13-01-closures-02",
+              "title": "Inferring and Annotating Closure Types",
+              "start_line": 91,
+              "end_line": 174,
+              "word_count": 675,
+              "lesson_id": "ch13-01-closures",
+              "lesson_title": "Closures",
+              "content_file": "html/ch13-01-closures-02.html"
+            },
+            {
+              "id": "ch13-01-closures-03",
+              "title": "Capturing References or Moving Ownership",
+              "start_line": 175,
+              "end_line": 274,
+              "word_count": 676,
+              "lesson_id": "ch13-01-closures",
+              "lesson_title": "Closures",
+              "content_file": "html/ch13-01-closures-03.html"
+            },
+            {
+              "id": "ch13-01-closures-04",
+              "title": "Moving Captured Values Out of Closures",
+              "start_line": 275,
+              "end_line": 426,
+              "word_count": 1100,
+              "lesson_id": "ch13-01-closures",
+              "lesson_title": "Closures",
+              "content_file": "html/ch13-01-closures-04.html"
+            }
+          ]
+        },
+        {
+          "id": "ch13-02-iterators",
+          "title": "Processing a Series of Items with Iterators",
+          "micro_lessons": [
+            {
+              "id": "ch13-02-iterators-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 50,
+              "word_count": 358,
+              "lesson_id": "ch13-02-iterators",
+              "lesson_title": "Processing a Series of Items with Iterators",
+              "exercises": [
+                "18_iterators/iterators1.rs"
+              ],
+              "content_file": "html/ch13-02-iterators-00.html"
+            },
+            {
+              "id": "ch13-02-iterators-01",
+              "title": "The `Iterator` Trait and the `next` Method",
+              "start_line": 51,
+              "end_line": 103,
+              "word_count": 351,
+              "lesson_id": "ch13-02-iterators",
+              "lesson_title": "Processing a Series of Items with Iterators",
+              "exercises": [
+                "18_iterators/iterators2.rs"
+              ],
+              "content_file": "html/ch13-02-iterators-01.html"
+            },
+            {
+              "id": "ch13-02-iterators-02",
+              "title": "Methods That Consume the Iterator",
+              "start_line": 104,
+              "end_line": 130,
+              "word_count": 178,
+              "lesson_id": "ch13-02-iterators",
+              "lesson_title": "Processing a Series of Items with Iterators",
+              "exercises": [
+                "18_iterators/iterators3.rs"
+              ],
+              "content_file": "html/ch13-02-iterators-02.html"
+            },
+            {
+              "id": "ch13-02-iterators-03",
+              "title": "Methods That Produce Other Iterators",
+              "start_line": 131,
+              "end_line": 189,
+              "word_count": 343,
+              "lesson_id": "ch13-02-iterators",
+              "lesson_title": "Processing a Series of Items with Iterators",
+              "exercises": [
+                "18_iterators/iterators4.rs"
+              ],
+              "content_file": "html/ch13-02-iterators-03.html"
+            },
+            {
+              "id": "ch13-02-iterators-04",
+              "title": "Closures That Capture Their Environment",
+              "start_line": 190,
+              "end_line": 229,
+              "word_count": 262,
+              "lesson_id": "ch13-02-iterators",
+              "lesson_title": "Processing a Series of Items with Iterators",
+              "exercises": [
+                "18_iterators/iterators5.rs"
+              ],
+              "content_file": "html/ch13-02-iterators-04.html"
+            }
+          ]
+        },
+        {
+          "id": "ch13-03-improving-our-io-project",
+          "title": "Improving Our I/O Project",
+          "micro_lessons": [
+            {
+              "id": "ch13-03-improving-our-io-project-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 6,
+              "word_count": 50,
+              "lesson_id": "ch13-03-improving-our-io-project",
+              "lesson_title": "Improving Our I/O Project",
+              "content_file": "html/ch13-03-improving-our-io-project-00.html"
+            },
+            {
+              "id": "ch13-03-improving-our-io-project-01",
+              "title": "Removing a `clone` Using an Iterator",
+              "start_line": 7,
+              "end_line": 125,
+              "word_count": 716,
+              "lesson_id": "ch13-03-improving-our-io-project",
+              "lesson_title": "Improving Our I/O Project",
+              "content_file": "html/ch13-03-improving-our-io-project-01.html"
+            },
+            {
+              "id": "ch13-03-improving-our-io-project-02",
+              "title": "Clarifying Code with Iterator Adapters",
+              "start_line": 126,
+              "end_line": 174,
+              "word_count": 341,
+              "lesson_id": "ch13-03-improving-our-io-project",
+              "lesson_title": "Improving Our I/O Project",
+              "content_file": "html/ch13-03-improving-our-io-project-02.html"
+            },
+            {
+              "id": "ch13-03-improving-our-io-project-03",
+              "title": "Choosing Between Loops and Iterators",
+              "start_line": 175,
+              "end_line": 193,
+              "word_count": 167,
+              "lesson_id": "ch13-03-improving-our-io-project",
+              "lesson_title": "Improving Our I/O Project",
+              "content_file": "html/ch13-03-improving-our-io-project-03.html"
+            }
+          ]
+        },
+        {
+          "id": "ch13-04-performance",
+          "title": "Performance in Loops vs. Iterators",
+          "micro_lessons": [
+            {
+              "id": "ch13-04-performance-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 57,
+              "word_count": 443,
+              "lesson_id": "ch13-04-performance",
+              "lesson_title": "Performance in Loops vs. Iterators",
+              "content_file": "html/ch13-04-performance-00.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "ch13-00-functional-features-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 24,
+          "word_count": 190,
+          "lesson_id": "ch13-00-functional-features",
+          "lesson_title": "Functional Language Features: Iterators and Closures",
+          "content_file": "html/ch13-00-functional-features-00.html"
+        }
+      ]
+    },
+    {
+      "id": "ch14-00-more-about-cargo",
+      "title": "More about Cargo and Crates.io",
+      "lessons": [
+        {
+          "id": "ch14-01-release-profiles",
+          "title": "Customizing Builds with Release Profiles",
+          "micro_lessons": [
+            {
+              "id": "ch14-01-release-profiles-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 75,
+              "word_count": 451,
+              "lesson_id": "ch14-01-release-profiles",
+              "lesson_title": "Customizing Builds with Release Profiles",
+              "content_file": "html/ch14-01-release-profiles-00.html"
+            }
+          ]
+        },
+        {
+          "id": "ch14-02-publishing-to-crates-io",
+          "title": "Publishing a Crate to Crates.io",
+          "micro_lessons": [
+            {
+              "id": "ch14-02-publishing-to-crates-io-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 11,
+              "word_count": 89,
+              "lesson_id": "ch14-02-publishing-to-crates-io",
+              "lesson_title": "Publishing a Crate to Crates.io",
+              "content_file": "html/ch14-02-publishing-to-crates-io-00.html"
+            },
+            {
+              "id": "ch14-02-publishing-to-crates-io-01",
+              "title": "Making Useful Documentation Comments",
+              "start_line": 12,
+              "end_line": 150,
+              "word_count": 947,
+              "lesson_id": "ch14-02-publishing-to-crates-io",
+              "lesson_title": "Publishing a Crate to Crates.io",
+              "content_file": "html/ch14-02-publishing-to-crates-io-01.html"
+            },
+            {
+              "id": "ch14-02-publishing-to-crates-io-02",
+              "title": "Exporting a Convenient Public API",
+              "start_line": 151,
+              "end_line": 267,
+              "word_count": 832,
+              "lesson_id": "ch14-02-publishing-to-crates-io",
+              "lesson_title": "Publishing a Crate to Crates.io",
+              "content_file": "html/ch14-02-publishing-to-crates-io-02.html"
+            },
+            {
+              "id": "ch14-02-publishing-to-crates-io-03",
+              "title": "Setting Up a Crates.io Account",
+              "start_line": 268,
+              "end_line": 289,
+              "word_count": 150,
+              "lesson_id": "ch14-02-publishing-to-crates-io",
+              "lesson_title": "Publishing a Crate to Crates.io",
+              "content_file": "html/ch14-02-publishing-to-crates-io-03.html"
+            },
+            {
+              "id": "ch14-02-publishing-to-crates-io-04",
+              "title": "Adding Metadata to a New Crate",
+              "start_line": 290,
+              "end_line": 381,
+              "word_count": 567,
+              "lesson_id": "ch14-02-publishing-to-crates-io",
+              "lesson_title": "Publishing a Crate to Crates.io",
+              "content_file": "html/ch14-02-publishing-to-crates-io-04.html"
+            },
+            {
+              "id": "ch14-02-publishing-to-crates-io-05",
+              "title": "Publishing to Crates.io",
+              "start_line": 382,
+              "end_line": 424,
+              "word_count": 246,
+              "lesson_id": "ch14-02-publishing-to-crates-io",
+              "lesson_title": "Publishing a Crate to Crates.io",
+              "content_file": "html/ch14-02-publishing-to-crates-io-05.html"
+            },
+            {
+              "id": "ch14-02-publishing-to-crates-io-06",
+              "title": "Publishing a New Version of an Existing Crate",
+              "start_line": 425,
+              "end_line": 437,
+              "word_count": 73,
+              "lesson_id": "ch14-02-publishing-to-crates-io",
+              "lesson_title": "Publishing a Crate to Crates.io",
+              "content_file": "html/ch14-02-publishing-to-crates-io-06.html"
+            },
+            {
+              "id": "ch14-02-publishing-to-crates-io-07",
+              "title": "Deprecating Versions from Crates.io",
+              "start_line": 438,
+              "end_line": 481,
+              "word_count": 237,
+              "lesson_id": "ch14-02-publishing-to-crates-io",
+              "lesson_title": "Publishing a Crate to Crates.io",
+              "content_file": "html/ch14-02-publishing-to-crates-io-07.html"
+            }
+          ]
+        },
+        {
+          "id": "ch14-03-cargo-workspaces",
+          "title": "Cargo Workspaces",
+          "micro_lessons": [
+            {
+              "id": "ch14-03-cargo-workspaces-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 7,
+              "word_count": 64,
+              "lesson_id": "ch14-03-cargo-workspaces",
+              "lesson_title": "Cargo Workspaces",
+              "content_file": "html/ch14-03-cargo-workspaces-00.html"
+            },
+            {
+              "id": "ch14-03-cargo-workspaces-01",
+              "title": "Creating a Workspace",
+              "start_line": 8,
+              "end_line": 86,
+              "word_count": 434,
+              "lesson_id": "ch14-03-cargo-workspaces",
+              "lesson_title": "Cargo Workspaces",
+              "content_file": "html/ch14-03-cargo-workspaces-01.html"
+            },
+            {
+              "id": "ch14-03-cargo-workspaces-02",
+              "title": "Creating the Second Package in the Workspace",
+              "start_line": 87,
+              "end_line": 202,
+              "word_count": 407,
+              "lesson_id": "ch14-03-cargo-workspaces",
+              "lesson_title": "Cargo Workspaces",
+              "content_file": "html/ch14-03-cargo-workspaces-02.html"
+            },
+            {
+              "id": "ch14-03-cargo-workspaces-03",
+              "title": "Depending on an External Package",
+              "start_line": 203,
+              "end_line": 293,
+              "word_count": 511,
+              "lesson_id": "ch14-03-cargo-workspaces",
+              "lesson_title": "Cargo Workspaces",
+              "content_file": "html/ch14-03-cargo-workspaces-03.html"
+            },
+            {
+              "id": "ch14-03-cargo-workspaces-04",
+              "title": "Adding a Test to a Workspace",
+              "start_line": 294,
+              "end_line": 389,
+              "word_count": 467,
+              "lesson_id": "ch14-03-cargo-workspaces",
+              "lesson_title": "Cargo Workspaces",
+              "content_file": "html/ch14-03-cargo-workspaces-04.html"
+            }
+          ]
+        },
+        {
+          "id": "ch14-04-installing-binaries",
+          "title": "Installing Binaries with `cargo install`",
+          "micro_lessons": [
+            {
+              "id": "ch14-04-installing-binaries-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 48,
+              "word_count": 324,
+              "lesson_id": "ch14-04-installing-binaries",
+              "lesson_title": "Installing Binaries with `cargo install`",
+              "content_file": "html/ch14-04-installing-binaries-00.html"
+            }
+          ]
+        },
+        {
+          "id": "ch14-05-extending-cargo",
+          "title": "Extending Cargo with Custom Commands",
+          "micro_lessons": [
+            {
+              "id": "ch14-05-extending-cargo-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 17,
+              "word_count": 159,
+              "lesson_id": "ch14-05-extending-cargo",
+              "lesson_title": "Extending Cargo with Custom Commands",
+              "content_file": "html/ch14-05-extending-cargo-00.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "ch14-00-more-about-cargo-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 14,
+          "word_count": 109,
+          "lesson_id": "ch14-00-more-about-cargo",
+          "lesson_title": "More about Cargo and Crates.io",
+          "content_file": "html/ch14-00-more-about-cargo-00.html"
+        }
+      ]
+    },
+    {
+      "id": "ch15-00-smart-pointers",
+      "title": "Smart Pointers",
+      "lessons": [
+        {
+          "id": "ch15-01-box",
+          "title": "Using `Box<T>` to Point to Data on the Heap",
+          "micro_lessons": [
+            {
+              "id": "ch15-01-box-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 32,
+              "word_count": 320,
+              "lesson_id": "ch15-01-box",
+              "lesson_title": "Using `Box<T>` to Point to Data on the Heap",
+              "exercises": [
+                "19_smart_pointers/arc1.rs"
+              ],
+              "content_file": "html/ch15-01-box-00.html"
+            },
+            {
+              "id": "ch15-01-box-01",
+              "title": "Storing Data on the Heap",
+              "start_line": 33,
+              "end_line": 61,
+              "word_count": 225,
+              "lesson_id": "ch15-01-box",
+              "lesson_title": "Using `Box<T>` to Point to Data on the Heap",
+              "exercises": [
+                "19_smart_pointers/box1.rs"
+              ],
+              "content_file": "html/ch15-01-box-01.html"
+            },
+            {
+              "id": "ch15-01-box-02",
+              "title": "Enabling Recursive Types with Boxes",
+              "start_line": 62,
+              "end_line": 263,
+              "word_count": 1586,
+              "lesson_id": "ch15-01-box",
+              "lesson_title": "Using `Box<T>` to Point to Data on the Heap",
+              "exercises": [
+                "19_smart_pointers/cow1.rs"
+              ],
+              "content_file": "html/ch15-01-box-02.html"
+            }
+          ]
+        },
+        {
+          "id": "ch15-02-deref",
+          "title": "Treating Smart Pointers Like Regular References",
+          "micro_lessons": [
+            {
+              "id": "ch15-02-deref-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 25,
+              "word_count": 176,
+              "lesson_id": "ch15-02-deref",
+              "lesson_title": "Treating Smart Pointers Like Regular References",
+              "exercises": [
+                "19_smart_pointers/rc1.rs"
+              ],
+              "content_file": "html/ch15-02-deref-00.html"
+            },
+            {
+              "id": "ch15-02-deref-01",
+              "title": "Following the Reference to the Value",
+              "start_line": 26,
+              "end_line": 58,
+              "word_count": 205,
+              "lesson_id": "ch15-02-deref",
+              "lesson_title": "Treating Smart Pointers Like Regular References",
+              "content_file": "html/ch15-02-deref-01.html"
+            },
+            {
+              "id": "ch15-02-deref-02",
+              "title": "Using `Box<T>` Like a Reference",
+              "start_line": 59,
+              "end_line": 80,
+              "word_count": 145,
+              "lesson_id": "ch15-02-deref",
+              "lesson_title": "Treating Smart Pointers Like Regular References",
+              "content_file": "html/ch15-02-deref-02.html"
+            },
+            {
+              "id": "ch15-02-deref-03",
+              "title": "Defining Our Own Smart Pointer",
+              "start_line": 81,
+              "end_line": 136,
+              "word_count": 309,
+              "lesson_id": "ch15-02-deref",
+              "lesson_title": "Treating Smart Pointers Like Regular References",
+              "content_file": "html/ch15-02-deref-03.html"
+            },
+            {
+              "id": "ch15-02-deref-04",
+              "title": "Implementing the `Deref` Trait",
+              "start_line": 137,
+              "end_line": 201,
+              "word_count": 472,
+              "lesson_id": "ch15-02-deref",
+              "lesson_title": "Treating Smart Pointers Like Regular References",
+              "content_file": "html/ch15-02-deref-04.html"
+            },
+            {
+              "id": "ch15-02-deref-05",
+              "title": "Using Deref Coercion in Functions and Methods",
+              "start_line": 202,
+              "end_line": 279,
+              "word_count": 552,
+              "lesson_id": "ch15-02-deref",
+              "lesson_title": "Treating Smart Pointers Like Regular References",
+              "content_file": "html/ch15-02-deref-05.html"
+            },
+            {
+              "id": "ch15-02-deref-06",
+              "title": "Handling Deref Coercion with Mutable References",
+              "start_line": 280,
+              "end_line": 312,
+              "word_count": 243,
+              "lesson_id": "ch15-02-deref",
+              "lesson_title": "Treating Smart Pointers Like Regular References",
+              "content_file": "html/ch15-02-deref-06.html"
+            }
+          ]
+        },
+        {
+          "id": "ch15-03-drop",
+          "title": "Running Code on Cleanup with the `Drop` Trait",
+          "micro_lessons": [
+            {
+              "id": "ch15-03-drop-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 146,
+              "word_count": 1092,
+              "lesson_id": "ch15-03-drop",
+              "lesson_title": "Running Code on Cleanup with the `Drop` Trait",
+              "content_file": "html/ch15-03-drop-00.html"
+            }
+          ]
+        },
+        {
+          "id": "ch15-04-rc",
+          "title": "`Rc<T>`, the Reference Counted Smart Pointer",
+          "micro_lessons": [
+            {
+              "id": "ch15-04-rc-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 34,
+              "word_count": 324,
+              "lesson_id": "ch15-04-rc",
+              "lesson_title": "`Rc<T>`, the Reference Counted Smart Pointer",
+              "content_file": "html/ch15-04-rc-00.html"
+            },
+            {
+              "id": "ch15-04-rc-01",
+              "title": "Sharing Data",
+              "start_line": 35,
+              "end_line": 122,
+              "word_count": 726,
+              "lesson_id": "ch15-04-rc",
+              "lesson_title": "`Rc<T>`, the Reference Counted Smart Pointer",
+              "content_file": "html/ch15-04-rc-01.html"
+            },
+            {
+              "id": "ch15-04-rc-02",
+              "title": "Cloning to Increase the Reference Count",
+              "start_line": 123,
+              "end_line": 176,
+              "word_count": 371,
+              "lesson_id": "ch15-04-rc",
+              "lesson_title": "`Rc<T>`, the Reference Counted Smart Pointer",
+              "content_file": "html/ch15-04-rc-02.html"
+            }
+          ]
+        },
+        {
+          "id": "ch15-05-interior-mutability",
+          "title": "`RefCell<T>` and the Interior Mutability Pattern",
+          "micro_lessons": [
+            {
+              "id": "ch15-05-interior-mutability-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 21,
+              "word_count": 171,
+              "lesson_id": "ch15-05-interior-mutability",
+              "lesson_title": "`RefCell<T>` and the Interior Mutability Pattern",
+              "content_file": "html/ch15-05-interior-mutability-00.html"
+            },
+            {
+              "id": "ch15-05-interior-mutability-01",
+              "title": "Enforcing Borrowing Rules at Runtime",
+              "start_line": 22,
+              "end_line": 82,
+              "word_count": 490,
+              "lesson_id": "ch15-05-interior-mutability",
+              "lesson_title": "`RefCell<T>` and the Interior Mutability Pattern",
+              "content_file": "html/ch15-05-interior-mutability-01.html"
+            },
+            {
+              "id": "ch15-05-interior-mutability-02",
+              "title": "Using Interior Mutability",
+              "start_line": 83,
+              "end_line": 302,
+              "word_count": 1699,
+              "lesson_id": "ch15-05-interior-mutability",
+              "lesson_title": "`RefCell<T>` and the Interior Mutability Pattern",
+              "content_file": "html/ch15-05-interior-mutability-02.html"
+            },
+            {
+              "id": "ch15-05-interior-mutability-03",
+              "title": "Allowing Multiple Owners of Mutable Data",
+              "start_line": 303,
+              "end_line": 361,
+              "word_count": 452,
+              "lesson_id": "ch15-05-interior-mutability",
+              "lesson_title": "`RefCell<T>` and the Interior Mutability Pattern",
+              "content_file": "html/ch15-05-interior-mutability-03.html"
+            }
+          ]
+        },
+        {
+          "id": "ch15-06-reference-cycles",
+          "title": "Reference Cycles Can Leak Memory",
+          "micro_lessons": [
+            {
+              "id": "ch15-06-reference-cycles-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 10,
+              "word_count": 100,
+              "lesson_id": "ch15-06-reference-cycles",
+              "lesson_title": "Reference Cycles Can Leak Memory",
+              "content_file": "html/ch15-06-reference-cycles-00.html"
+            },
+            {
+              "id": "ch15-06-reference-cycles-01",
+              "title": "Creating a Reference Cycle",
+              "start_line": 11,
+              "end_line": 112,
+              "word_count": 846,
+              "lesson_id": "ch15-06-reference-cycles",
+              "lesson_title": "Reference Cycles Can Leak Memory",
+              "content_file": "html/ch15-06-reference-cycles-01.html"
+            },
+            {
+              "id": "ch15-06-reference-cycles-02",
+              "title": "Preventing Reference Cycles Using `Weak<T>`",
+              "start_line": 113,
+              "end_line": 323,
+              "word_count": 1611,
+              "lesson_id": "ch15-06-reference-cycles",
+              "lesson_title": "Reference Cycles Can Leak Memory",
+              "content_file": "html/ch15-06-reference-cycles-02.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "ch15-00-smart-pointers-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 46,
+          "word_count": 437,
+          "lesson_id": "ch15-00-smart-pointers",
+          "lesson_title": "Smart Pointers",
+          "content_file": "html/ch15-00-smart-pointers-00.html"
+        }
+      ]
+    },
+    {
+      "id": "ch16-00-concurrency",
+      "title": "Fearless Concurrency",
+      "lessons": [
+        {
+          "id": "ch16-01-threads",
+          "title": "Using Threads to Run Code Simultaneously",
+          "micro_lessons": [
+            {
+              "id": "ch16-01-threads-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 34,
+              "word_count": 298,
+              "lesson_id": "ch16-01-threads",
+              "lesson_title": "Using Threads to Run Code Simultaneously",
+              "exercises": [
+                "20_threads/threads1.rs"
+              ],
+              "content_file": "html/ch16-01-threads-00.html"
+            },
+            {
+              "id": "ch16-01-threads-01",
+              "title": "Creating a New Thread with `spawn`",
+              "start_line": 35,
+              "end_line": 86,
+              "word_count": 353,
+              "lesson_id": "ch16-01-threads",
+              "lesson_title": "Using Threads to Run Code Simultaneously",
+              "exercises": [
+                "20_threads/threads2.rs"
+              ],
+              "content_file": "html/ch16-01-threads-01.html"
+            },
+            {
+              "id": "ch16-01-threads-02",
+              "title": "Waiting for All Threads to Finish",
+              "start_line": 87,
+              "end_line": 175,
+              "word_count": 553,
+              "lesson_id": "ch16-01-threads",
+              "lesson_title": "Using Threads to Run Code Simultaneously",
+              "exercises": [
+                "20_threads/threads3.rs"
+              ],
+              "content_file": "html/ch16-01-threads-02.html"
+            },
+            {
+              "id": "ch16-01-threads-03",
+              "title": "Using `move` Closures with Threads",
+              "start_line": 176,
+              "end_line": 284,
+              "word_count": 742,
+              "lesson_id": "ch16-01-threads",
+              "lesson_title": "Using Threads to Run Code Simultaneously",
+              "content_file": "html/ch16-01-threads-03.html"
+            }
+          ]
+        },
+        {
+          "id": "ch16-02-message-passing",
+          "title": "Transfer Data Between Threads with Message Passing",
+          "micro_lessons": [
+            {
+              "id": "ch16-02-message-passing-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 136,
+              "word_count": 1044,
+              "lesson_id": "ch16-02-message-passing",
+              "lesson_title": "Transfer Data Between Threads with Message Passing",
+              "content_file": "html/ch16-02-message-passing-00.html"
+            },
+            {
+              "id": "ch16-02-message-passing-01",
+              "title": "Transferring Ownership Through Channels",
+              "start_line": 137,
+              "end_line": 174,
+              "word_count": 244,
+              "lesson_id": "ch16-02-message-passing",
+              "lesson_title": "Transfer Data Between Threads with Message Passing",
+              "content_file": "html/ch16-02-message-passing-01.html"
+            },
+            {
+              "id": "ch16-02-message-passing-02",
+              "title": "Sending Multiple Values",
+              "start_line": 175,
+              "end_line": 222,
+              "word_count": 260,
+              "lesson_id": "ch16-02-message-passing",
+              "lesson_title": "Transfer Data Between Threads with Message Passing",
+              "content_file": "html/ch16-02-message-passing-02.html"
+            },
+            {
+              "id": "ch16-02-message-passing-03",
+              "title": "Creating Multiple Producers",
+              "start_line": 223,
+              "end_line": 267,
+              "word_count": 240,
+              "lesson_id": "ch16-02-message-passing",
+              "lesson_title": "Transfer Data Between Threads with Message Passing",
+              "content_file": "html/ch16-02-message-passing-03.html"
+            }
+          ]
+        },
+        {
+          "id": "ch16-03-shared-state",
+          "title": "Shared-State Concurrency",
+          "micro_lessons": [
+            {
+              "id": "ch16-03-shared-state-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 23,
+              "word_count": 183,
+              "lesson_id": "ch16-03-shared-state",
+              "lesson_title": "Shared-State Concurrency",
+              "content_file": "html/ch16-03-shared-state-00.html"
+            },
+            {
+              "id": "ch16-03-shared-state-01",
+              "title": "Controlling Access with Mutexes",
+              "start_line": 24,
+              "end_line": 230,
+              "word_count": 1571,
+              "lesson_id": "ch16-03-shared-state",
+              "lesson_title": "Shared-State Concurrency",
+              "content_file": "html/ch16-03-shared-state-01.html"
+            },
+            {
+              "id": "ch16-03-shared-state-02",
+              "title": "Comparing `RefCell<T>`/`Rc<T>` and `Mutex<T>`/`Arc<T>`",
+              "start_line": 231,
+              "end_line": 255,
+              "word_count": 212,
+              "lesson_id": "ch16-03-shared-state",
+              "lesson_title": "Shared-State Concurrency",
+              "content_file": "html/ch16-03-shared-state-02.html"
+            }
+          ]
+        },
+        {
+          "id": "ch16-04-extensible-concurrency-sync-and-send",
+          "title": "Extensible Concurrency with `Send` and `Sync`",
+          "micro_lessons": [
+            {
+              "id": "ch16-04-extensible-concurrency-sync-and-send-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 19,
+              "word_count": 110,
+              "lesson_id": "ch16-04-extensible-concurrency-sync-and-send",
+              "lesson_title": "Extensible Concurrency with `Send` and `Sync`",
+              "content_file": "html/ch16-04-extensible-concurrency-sync-and-send-00.html"
+            },
+            {
+              "id": "ch16-04-extensible-concurrency-sync-and-send-01",
+              "title": "Transferring Ownership Between Threads",
+              "start_line": 20,
+              "end_line": 44,
+              "word_count": 184,
+              "lesson_id": "ch16-04-extensible-concurrency-sync-and-send",
+              "lesson_title": "Extensible Concurrency with `Send` and `Sync`",
+              "content_file": "html/ch16-04-extensible-concurrency-sync-and-send-01.html"
+            },
+            {
+              "id": "ch16-04-extensible-concurrency-sync-and-send-02",
+              "title": "Accessing from Multiple Threads",
+              "start_line": 45,
+              "end_line": 61,
+              "word_count": 143,
+              "lesson_id": "ch16-04-extensible-concurrency-sync-and-send",
+              "lesson_title": "Extensible Concurrency with `Send` and `Sync`",
+              "content_file": "html/ch16-04-extensible-concurrency-sync-and-send-02.html"
+            },
+            {
+              "id": "ch16-04-extensible-concurrency-sync-and-send-03",
+              "title": "Implementing `Send` and `Sync` Manually Is Unsafe",
+              "start_line": 62,
+              "end_line": 101,
+              "word_count": 299,
+              "lesson_id": "ch16-04-extensible-concurrency-sync-and-send",
+              "lesson_title": "Extensible Concurrency with `Send` and `Sync`",
+              "content_file": "html/ch16-04-extensible-concurrency-sync-and-send-03.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "ch16-00-concurrency-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 49,
+          "word_count": 450,
+          "lesson_id": "ch16-00-concurrency",
+          "lesson_title": "Fearless Concurrency",
+          "content_file": "html/ch16-00-concurrency-00.html"
+        }
+      ]
+    },
+    {
+      "id": "ch17-00-async-await",
+      "title": "Fundamentals of Asynchronous Programming: Async, Await, Futures, and Streams",
+      "lessons": [
+        {
+          "id": "ch17-01-futures-and-syntax",
+          "title": "Futures and the Async Syntax",
+          "micro_lessons": [
+            {
+              "id": "ch17-01-futures-and-syntax-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 73,
+              "word_count": 677,
+              "lesson_id": "ch17-01-futures-and-syntax",
+              "lesson_title": "Futures and the Async Syntax",
+              "content_file": "html/ch17-01-futures-and-syntax-00.html"
+            },
+            {
+              "id": "ch17-01-futures-and-syntax-01",
+              "title": "Defining the page_title Function",
+              "start_line": 74,
+              "end_line": 196,
+              "word_count": 990,
+              "lesson_id": "ch17-01-futures-and-syntax",
+              "lesson_title": "Futures and the Async Syntax",
+              "content_file": "html/ch17-01-futures-and-syntax-01.html"
+            },
+            {
+              "id": "ch17-01-futures-and-syntax-02",
+              "title": "Executing an Async Function with a Runtime",
+              "start_line": 197,
+              "end_line": 337,
+              "word_count": 982,
+              "lesson_id": "ch17-01-futures-and-syntax",
+              "lesson_title": "Futures and the Async Syntax",
+              "content_file": "html/ch17-01-futures-and-syntax-02.html"
+            },
+            {
+              "id": "ch17-01-futures-and-syntax-03",
+              "title": "Racing Two URLs Against Each Other Concurrently",
+              "start_line": 338,
+              "end_line": 405,
+              "word_count": 442,
+              "lesson_id": "ch17-01-futures-and-syntax",
+              "lesson_title": "Futures and the Async Syntax",
+              "content_file": "html/ch17-01-futures-and-syntax-03.html"
+            }
+          ]
+        },
+        {
+          "id": "ch17-02-concurrency-with-async",
+          "title": "Applying Concurrency with Async",
+          "micro_lessons": [
+            {
+              "id": "ch17-02-concurrency-with-async-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 20,
+              "word_count": 125,
+              "lesson_id": "ch17-02-concurrency-with-async",
+              "lesson_title": "Applying Concurrency with Async",
+              "content_file": "html/ch17-02-concurrency-with-async-00.html"
+            },
+            {
+              "id": "ch17-02-concurrency-with-async-01",
+              "title": "Creating a New Task with `spawn_task`",
+              "start_line": 21,
+              "end_line": 186,
+              "word_count": 1187,
+              "lesson_id": "ch17-02-concurrency-with-async",
+              "lesson_title": "Applying Concurrency with Async",
+              "content_file": "html/ch17-02-concurrency-with-async-01.html"
+            },
+            {
+              "id": "ch17-02-concurrency-with-async-02",
+              "title": "Sending Data Between Two Tasks Using Message Passing",
+              "start_line": 187,
+              "end_line": 421,
+              "word_count": 1770,
+              "lesson_id": "ch17-02-concurrency-with-async",
+              "lesson_title": "Applying Concurrency with Async",
+              "content_file": "html/ch17-02-concurrency-with-async-02.html"
+            }
+          ]
+        },
+        {
+          "id": "ch17-03-more-futures",
+          "title": "Working With Any Number of Futures",
+          "micro_lessons": [
+            {
+              "id": "ch17-03-more-futures-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 4,
+              "word_count": 13,
+              "lesson_id": "ch17-03-more-futures",
+              "lesson_title": "Working With Any Number of Futures",
+              "content_file": "html/ch17-03-more-futures-00.html"
+            },
+            {
+              "id": "ch17-03-more-futures-01",
+              "title": "Yielding Control to the Runtime",
+              "start_line": 5,
+              "end_line": 157,
+              "word_count": 978,
+              "lesson_id": "ch17-03-more-futures",
+              "lesson_title": "Working With Any Number of Futures",
+              "content_file": "html/ch17-03-more-futures-01.html"
+            },
+            {
+              "id": "ch17-03-more-futures-02",
+              "title": "Building Our Own Async Abstractions",
+              "start_line": 158,
+              "end_line": 249,
+              "word_count": 568,
+              "lesson_id": "ch17-03-more-futures",
+              "lesson_title": "Working With Any Number of Futures",
+              "content_file": "html/ch17-03-more-futures-02.html"
+            }
+          ]
+        },
+        {
+          "id": "ch17-04-streams",
+          "title": "Streams: Futures in Sequence",
+          "micro_lessons": [
+            {
+              "id": "ch17-04-streams-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 112,
+              "word_count": 743,
+              "lesson_id": "ch17-04-streams",
+              "lesson_title": "Streams: Futures in Sequence",
+              "content_file": "html/ch17-04-streams-00.html"
+            }
+          ]
+        },
+        {
+          "id": "ch17-05-traits-for-async",
+          "title": "A Closer Look at the Traits for Async",
+          "micro_lessons": [
+            {
+              "id": "ch17-05-traits-for-async-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 18,
+              "word_count": 129,
+              "lesson_id": "ch17-05-traits-for-async",
+              "lesson_title": "A Closer Look at the Traits for Async",
+              "content_file": "html/ch17-05-traits-for-async-00.html"
+            },
+            {
+              "id": "ch17-05-traits-for-async-01",
+              "title": "The `Future` Trait",
+              "start_line": 19,
+              "end_line": 128,
+              "word_count": 682,
+              "lesson_id": "ch17-05-traits-for-async",
+              "lesson_title": "A Closer Look at the Traits for Async",
+              "content_file": "html/ch17-05-traits-for-async-01.html"
+            },
+            {
+              "id": "ch17-05-traits-for-async-02",
+              "title": "The `Pin` Type and the `Unpin` Trait",
+              "start_line": 129,
+              "end_line": 439,
+              "word_count": 2833,
+              "lesson_id": "ch17-05-traits-for-async",
+              "lesson_title": "A Closer Look at the Traits for Async",
+              "content_file": "html/ch17-05-traits-for-async-02.html"
+            },
+            {
+              "id": "ch17-05-traits-for-async-03",
+              "title": "The `Stream` Trait",
+              "start_line": 440,
+              "end_line": 542,
+              "word_count": 705,
+              "lesson_id": "ch17-05-traits-for-async",
+              "lesson_title": "A Closer Look at the Traits for Async",
+              "content_file": "html/ch17-05-traits-for-async-03.html"
+            }
+          ]
+        },
+        {
+          "id": "ch17-06-futures-tasks-threads",
+          "title": "Futures, Tasks, and Threads",
+          "micro_lessons": [
+            {
+              "id": "ch17-06-futures-tasks-threads-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 105,
+              "word_count": 875,
+              "lesson_id": "ch17-06-futures-tasks-threads",
+              "lesson_title": "Futures, Tasks, and Threads",
+              "content_file": "html/ch17-06-futures-tasks-threads-00.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "ch17-00-async-await-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 167,
+          "word_count": 1642,
+          "lesson_id": "ch17-00-async-await",
+          "lesson_title": "Fundamentals of Asynchronous Programming: Async, Await, Futures, and Streams",
+          "content_file": "html/ch17-00-async-await-00.html"
+        }
+      ]
+    },
+    {
+      "id": "ch18-00-oop",
+      "title": "Object Oriented Programming Features",
+      "lessons": [
+        {
+          "id": "ch18-01-what-is-oo",
+          "title": "Characteristics of Object-Oriented Languages",
+          "micro_lessons": [
+            {
+              "id": "ch18-01-what-is-oo-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 9,
+              "word_count": 73,
+              "lesson_id": "ch18-01-what-is-oo",
+              "lesson_title": "Characteristics of Object-Oriented Languages",
+              "content_file": "html/ch18-01-what-is-oo-00.html"
+            },
+            {
+              "id": "ch18-01-what-is-oo-01",
+              "title": "Objects Contain Data and Behavior",
+              "start_line": 10,
+              "end_line": 25,
+              "word_count": 119,
+              "lesson_id": "ch18-01-what-is-oo",
+              "lesson_title": "Characteristics of Object-Oriented Languages",
+              "content_file": "html/ch18-01-what-is-oo-01.html"
+            },
+            {
+              "id": "ch18-01-what-is-oo-02",
+              "title": "Encapsulation That Hides Implementation Details",
+              "start_line": 26,
+              "end_line": 93,
+              "word_count": 549,
+              "lesson_id": "ch18-01-what-is-oo",
+              "lesson_title": "Characteristics of Object-Oriented Languages",
+              "content_file": "html/ch18-01-what-is-oo-02.html"
+            },
+            {
+              "id": "ch18-01-what-is-oo-03",
+              "title": "Inheritance as a Type System and as Code Sharing",
+              "start_line": 94,
+              "end_line": 149,
+              "word_count": 495,
+              "lesson_id": "ch18-01-what-is-oo",
+              "lesson_title": "Characteristics of Object-Oriented Languages",
+              "content_file": "html/ch18-01-what-is-oo-03.html"
+            }
+          ]
+        },
+        {
+          "id": "ch18-02-trait-objects",
+          "title": "Using Trait Objects to Abstract over Shared Behavior",
+          "micro_lessons": [
+            {
+              "id": "ch18-02-trait-objects-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 40,
+              "word_count": 414,
+              "lesson_id": "ch18-02-trait-objects",
+              "lesson_title": "Using Trait Objects to Abstract over Shared Behavior",
+              "content_file": "html/ch18-02-trait-objects-00.html"
+            },
+            {
+              "id": "ch18-02-trait-objects-01",
+              "title": "Defining a Trait for Common Behavior",
+              "start_line": 41,
+              "end_line": 126,
+              "word_count": 612,
+              "lesson_id": "ch18-02-trait-objects",
+              "lesson_title": "Using Trait Objects to Abstract over Shared Behavior",
+              "content_file": "html/ch18-02-trait-objects-01.html"
+            },
+            {
+              "id": "ch18-02-trait-objects-02",
+              "title": "Implementing the Trait",
+              "start_line": 127,
+              "end_line": 225,
+              "word_count": 670,
+              "lesson_id": "ch18-02-trait-objects",
+              "lesson_title": "Using Trait Objects to Abstract over Shared Behavior",
+              "content_file": "html/ch18-02-trait-objects-02.html"
+            },
+            {
+              "id": "ch18-02-trait-objects-03",
+              "title": "Performing Dynamic Dispatch",
+              "start_line": 226,
+              "end_line": 255,
+              "word_count": 268,
+              "lesson_id": "ch18-02-trait-objects",
+              "lesson_title": "Using Trait Objects to Abstract over Shared Behavior",
+              "content_file": "html/ch18-02-trait-objects-03.html"
+            }
+          ]
+        },
+        {
+          "id": "ch18-03-oo-design-patterns",
+          "title": "Implementing an Object-Oriented Design Pattern",
+          "micro_lessons": [
+            {
+              "id": "ch18-03-oo-design-patterns-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 41,
+              "word_count": 346,
+              "lesson_id": "ch18-03-oo-design-patterns",
+              "lesson_title": "Implementing an Object-Oriented Design Pattern",
+              "content_file": "html/ch18-03-oo-design-patterns-00.html"
+            },
+            {
+              "id": "ch18-03-oo-design-patterns-01",
+              "title": "Attempting Traditional Object-Oriented Style",
+              "start_line": 42,
+              "end_line": 403,
+              "word_count": 2877,
+              "lesson_id": "ch18-03-oo-design-patterns",
+              "lesson_title": "Implementing an Object-Oriented Design Pattern",
+              "content_file": "html/ch18-03-oo-design-patterns-01.html"
+            },
+            {
+              "id": "ch18-03-oo-design-patterns-02",
+              "title": "Encoding States and Behavior as Types",
+              "start_line": 404,
+              "end_line": 546,
+              "word_count": 1085,
+              "lesson_id": "ch18-03-oo-design-patterns",
+              "lesson_title": "Implementing an Object-Oriented Design Pattern",
+              "content_file": "html/ch18-03-oo-design-patterns-02.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "ch18-00-oop-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 17,
+          "word_count": 142,
+          "lesson_id": "ch18-00-oop",
+          "lesson_title": "Object Oriented Programming Features",
+          "content_file": "html/ch18-00-oop-00.html"
+        }
+      ]
+    },
+    {
+      "id": "ch19-00-patterns",
+      "title": "Patterns and Matching",
+      "lessons": [
+        {
+          "id": "ch19-01-all-the-places-for-patterns",
+          "title": "All the Places Patterns Can Be Used",
+          "micro_lessons": [
+            {
+              "id": "ch19-01-all-the-places-for-patterns-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 5,
+              "word_count": 38,
+              "lesson_id": "ch19-01-all-the-places-for-patterns",
+              "lesson_title": "All the Places Patterns Can Be Used",
+              "content_file": "html/ch19-01-all-the-places-for-patterns-00.html"
+            },
+            {
+              "id": "ch19-01-all-the-places-for-patterns-01",
+              "title": "`match` Arms",
+              "start_line": 6,
+              "end_line": 48,
+              "word_count": 264,
+              "lesson_id": "ch19-01-all-the-places-for-patterns",
+              "lesson_title": "All the Places Patterns Can Be Used",
+              "content_file": "html/ch19-01-all-the-places-for-patterns-01.html"
+            },
+            {
+              "id": "ch19-01-all-the-places-for-patterns-02",
+              "title": "`let` Statements",
+              "start_line": 49,
+              "end_line": 123,
+              "word_count": 453,
+              "lesson_id": "ch19-01-all-the-places-for-patterns",
+              "lesson_title": "All the Places Patterns Can Be Used",
+              "content_file": "html/ch19-01-all-the-places-for-patterns-02.html"
+            },
+            {
+              "id": "ch19-01-all-the-places-for-patterns-03",
+              "title": "Conditional `if let` Expressions",
+              "start_line": 124,
+              "end_line": 173,
+              "word_count": 415,
+              "lesson_id": "ch19-01-all-the-places-for-patterns",
+              "lesson_title": "All the Places Patterns Can Be Used",
+              "content_file": "html/ch19-01-all-the-places-for-patterns-03.html"
+            },
+            {
+              "id": "ch19-01-all-the-places-for-patterns-04",
+              "title": "`while let` Conditional Loops",
+              "start_line": 174,
+              "end_line": 196,
+              "word_count": 167,
+              "lesson_id": "ch19-01-all-the-places-for-patterns",
+              "lesson_title": "All the Places Patterns Can Be Used",
+              "content_file": "html/ch19-01-all-the-places-for-patterns-04.html"
+            },
+            {
+              "id": "ch19-01-all-the-places-for-patterns-05",
+              "title": "`for` Loops",
+              "start_line": 197,
+              "end_line": 226,
+              "word_count": 142,
+              "lesson_id": "ch19-01-all-the-places-for-patterns",
+              "lesson_title": "All the Places Patterns Can Be Used",
+              "content_file": "html/ch19-01-all-the-places-for-patterns-05.html"
+            },
+            {
+              "id": "ch19-01-all-the-places-for-patterns-06",
+              "title": "Function Parameters",
+              "start_line": 227,
+              "end_line": 266,
+              "word_count": 203,
+              "lesson_id": "ch19-01-all-the-places-for-patterns",
+              "lesson_title": "All the Places Patterns Can Be Used",
+              "content_file": "html/ch19-01-all-the-places-for-patterns-06.html"
+            }
+          ]
+        },
+        {
+          "id": "ch19-02-refutability",
+          "title": "Refutability: Whether a Pattern Might Fail to Match",
+          "micro_lessons": [
+            {
+              "id": "ch19-02-refutability-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 93,
+              "word_count": 622,
+              "lesson_id": "ch19-02-refutability",
+              "lesson_title": "Refutability: Whether a Pattern Might Fail to Match",
+              "content_file": "html/ch19-02-refutability-00.html"
+            }
+          ]
+        },
+        {
+          "id": "ch19-03-pattern-syntax",
+          "title": "Pattern Syntax",
+          "micro_lessons": [
+            {
+              "id": "ch19-03-pattern-syntax-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 4,
+              "word_count": 28,
+              "lesson_id": "ch19-03-pattern-syntax",
+              "lesson_title": "Pattern Syntax",
+              "content_file": "html/ch19-03-pattern-syntax-00.html"
+            },
+            {
+              "id": "ch19-03-pattern-syntax-01",
+              "title": "Matching Literals",
+              "start_line": 5,
+              "end_line": 17,
+              "word_count": 54,
+              "lesson_id": "ch19-03-pattern-syntax",
+              "lesson_title": "Pattern Syntax",
+              "content_file": "html/ch19-03-pattern-syntax-01.html"
+            },
+            {
+              "id": "ch19-03-pattern-syntax-02",
+              "title": "Matching Named Variables",
+              "start_line": 18,
+              "end_line": 69,
+              "word_count": 454,
+              "lesson_id": "ch19-03-pattern-syntax",
+              "lesson_title": "Pattern Syntax",
+              "content_file": "html/ch19-03-pattern-syntax-02.html"
+            },
+            {
+              "id": "ch19-03-pattern-syntax-03",
+              "title": "Matching Multiple Patterns",
+              "start_line": 70,
+              "end_line": 84,
+              "word_count": 71,
+              "lesson_id": "ch19-03-pattern-syntax",
+              "lesson_title": "Pattern Syntax",
+              "content_file": "html/ch19-03-pattern-syntax-03.html"
+            },
+            {
+              "id": "ch19-03-pattern-syntax-04",
+              "title": "Matching Ranges of Values with `..=`",
+              "start_line": 85,
+              "end_line": 113,
+              "word_count": 180,
+              "lesson_id": "ch19-03-pattern-syntax",
+              "lesson_title": "Pattern Syntax",
+              "content_file": "html/ch19-03-pattern-syntax-04.html"
+            },
+            {
+              "id": "ch19-03-pattern-syntax-05",
+              "title": "Destructuring to Break Apart Values",
+              "start_line": 114,
+              "end_line": 277,
+              "word_count": 1073,
+              "lesson_id": "ch19-03-pattern-syntax",
+              "lesson_title": "Pattern Syntax",
+              "content_file": "html/ch19-03-pattern-syntax-05.html"
+            },
+            {
+              "id": "ch19-03-pattern-syntax-06",
+              "title": "Ignoring Values in a Pattern",
+              "start_line": 278,
+              "end_line": 487,
+              "word_count": 1312,
+              "lesson_id": "ch19-03-pattern-syntax",
+              "lesson_title": "Pattern Syntax",
+              "content_file": "html/ch19-03-pattern-syntax-06.html"
+            },
+            {
+              "id": "ch19-03-pattern-syntax-07",
+              "title": "Adding Conditionals with Match Guards",
+              "start_line": 488,
+              "end_line": 592,
+              "word_count": 771,
+              "lesson_id": "ch19-03-pattern-syntax",
+              "lesson_title": "Pattern Syntax",
+              "content_file": "html/ch19-03-pattern-syntax-07.html"
+            },
+            {
+              "id": "ch19-03-pattern-syntax-08",
+              "title": "Using `@` Bindings",
+              "start_line": 593,
+              "end_line": 639,
+              "word_count": 383,
+              "lesson_id": "ch19-03-pattern-syntax",
+              "lesson_title": "Pattern Syntax",
+              "content_file": "html/ch19-03-pattern-syntax-08.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "ch19-00-patterns-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 29,
+          "word_count": 238,
+          "lesson_id": "ch19-00-patterns",
+          "lesson_title": "Patterns and Matching",
+          "content_file": "html/ch19-00-patterns-00.html"
+        }
+      ]
+    },
+    {
+      "id": "ch20-00-advanced-features",
+      "title": "Advanced Features",
+      "lessons": [
+        {
+          "id": "ch20-01-unsafe-rust",
+          "title": "Unsafe Rust",
+          "micro_lessons": [
+            {
+              "id": "ch20-01-unsafe-rust-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 28,
+              "word_count": 255,
+              "lesson_id": "ch20-01-unsafe-rust",
+              "lesson_title": "Unsafe Rust",
+              "content_file": "html/ch20-01-unsafe-rust-00.html"
+            },
+            {
+              "id": "ch20-01-unsafe-rust-01",
+              "title": "Performing Unsafe Superpowers",
+              "start_line": 29,
+              "end_line": 70,
+              "word_count": 355,
+              "lesson_id": "ch20-01-unsafe-rust",
+              "lesson_title": "Unsafe Rust",
+              "content_file": "html/ch20-01-unsafe-rust-01.html"
+            },
+            {
+              "id": "ch20-01-unsafe-rust-02",
+              "title": "Dereferencing a Raw Pointer",
+              "start_line": 71,
+              "end_line": 161,
+              "word_count": 666,
+              "lesson_id": "ch20-01-unsafe-rust",
+              "lesson_title": "Unsafe Rust",
+              "content_file": "html/ch20-01-unsafe-rust-02.html"
+            },
+            {
+              "id": "ch20-01-unsafe-rust-03",
+              "title": "Calling an Unsafe Function or Method",
+              "start_line": 162,
+              "end_line": 386,
+              "word_count": 1641,
+              "lesson_id": "ch20-01-unsafe-rust",
+              "lesson_title": "Unsafe Rust",
+              "content_file": "html/ch20-01-unsafe-rust-03.html"
+            },
+            {
+              "id": "ch20-01-unsafe-rust-04",
+              "title": "Accessing or Modifying a Mutable Static Variable",
+              "start_line": 387,
+              "end_line": 459,
+              "word_count": 543,
+              "lesson_id": "ch20-01-unsafe-rust",
+              "lesson_title": "Unsafe Rust",
+              "content_file": "html/ch20-01-unsafe-rust-04.html"
+            },
+            {
+              "id": "ch20-01-unsafe-rust-05",
+              "title": "Implementing an Unsafe Trait",
+              "start_line": 460,
+              "end_line": 489,
+              "word_count": 203,
+              "lesson_id": "ch20-01-unsafe-rust",
+              "lesson_title": "Unsafe Rust",
+              "content_file": "html/ch20-01-unsafe-rust-05.html"
+            },
+            {
+              "id": "ch20-01-unsafe-rust-06",
+              "title": "Accessing Fields of a Union",
+              "start_line": 490,
+              "end_line": 498,
+              "word_count": 77,
+              "lesson_id": "ch20-01-unsafe-rust",
+              "lesson_title": "Unsafe Rust",
+              "content_file": "html/ch20-01-unsafe-rust-06.html"
+            },
+            {
+              "id": "ch20-01-unsafe-rust-07",
+              "title": "Using Miri to Check Unsafe Code",
+              "start_line": 499,
+              "end_line": 548,
+              "word_count": 430,
+              "lesson_id": "ch20-01-unsafe-rust",
+              "lesson_title": "Unsafe Rust",
+              "content_file": "html/ch20-01-unsafe-rust-07.html"
+            },
+            {
+              "id": "ch20-01-unsafe-rust-08",
+              "title": "Using Unsafe Code Correctly",
+              "start_line": 549,
+              "end_line": 572,
+              "word_count": 131,
+              "lesson_id": "ch20-01-unsafe-rust",
+              "lesson_title": "Unsafe Rust",
+              "content_file": "html/ch20-01-unsafe-rust-08.html"
+            }
+          ]
+        },
+        {
+          "id": "ch20-02-advanced-traits",
+          "title": "Advanced Traits",
+          "micro_lessons": [
+            {
+              "id": "ch20-02-advanced-traits-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 11,
+              "word_count": 56,
+              "lesson_id": "ch20-02-advanced-traits",
+              "lesson_title": "Advanced Traits",
+              "content_file": "html/ch20-02-advanced-traits-00.html"
+            },
+            {
+              "id": "ch20-02-advanced-traits-01",
+              "title": "Defining Traits with Associated Types",
+              "start_line": 12,
+              "end_line": 94,
+              "word_count": 570,
+              "lesson_id": "ch20-02-advanced-traits",
+              "lesson_title": "Advanced Traits",
+              "content_file": "html/ch20-02-advanced-traits-01.html"
+            },
+            {
+              "id": "ch20-02-advanced-traits-02",
+              "title": "Using Default Generic Parameters and Operator Overloading",
+              "start_line": 95,
+              "end_line": 190,
+              "word_count": 639,
+              "lesson_id": "ch20-02-advanced-traits",
+              "lesson_title": "Advanced Traits",
+              "content_file": "html/ch20-02-advanced-traits-02.html"
+            },
+            {
+              "id": "ch20-02-advanced-traits-03",
+              "title": "Disambiguating Between Identically Named Methods",
+              "start_line": 191,
+              "end_line": 345,
+              "word_count": 941,
+              "lesson_id": "ch20-02-advanced-traits",
+              "lesson_title": "Advanced Traits",
+              "content_file": "html/ch20-02-advanced-traits-03.html"
+            },
+            {
+              "id": "ch20-02-advanced-traits-04",
+              "title": "Using Supertraits",
+              "start_line": 346,
+              "end_line": 428,
+              "word_count": 413,
+              "lesson_id": "ch20-02-advanced-traits",
+              "lesson_title": "Advanced Traits",
+              "content_file": "html/ch20-02-advanced-traits-04.html"
+            },
+            {
+              "id": "ch20-02-advanced-traits-05",
+              "title": "Implementing External Traits with the Newtype Pattern",
+              "start_line": 429,
+              "end_line": 482,
+              "word_count": 451,
+              "lesson_id": "ch20-02-advanced-traits",
+              "lesson_title": "Advanced Traits",
+              "content_file": "html/ch20-02-advanced-traits-05.html"
+            }
+          ]
+        },
+        {
+          "id": "ch20-03-advanced-types",
+          "title": "Advanced Types",
+          "micro_lessons": [
+            {
+              "id": "ch20-03-advanced-types-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 11,
+              "word_count": 75,
+              "lesson_id": "ch20-03-advanced-types",
+              "lesson_title": "Advanced Types",
+              "content_file": "html/ch20-03-advanced-types-00.html"
+            },
+            {
+              "id": "ch20-03-advanced-types-01",
+              "title": "Type Safety and Abstraction with the Newtype Pattern",
+              "start_line": 12,
+              "end_line": 42,
+              "word_count": 254,
+              "lesson_id": "ch20-03-advanced-types",
+              "lesson_title": "Advanced Types",
+              "content_file": "html/ch20-03-advanced-types-01.html"
+            },
+            {
+              "id": "ch20-03-advanced-types-02",
+              "title": "Type Synonyms and Type Aliases",
+              "start_line": 43,
+              "end_line": 137,
+              "word_count": 521,
+              "lesson_id": "ch20-03-advanced-types",
+              "lesson_title": "Advanced Types",
+              "content_file": "html/ch20-03-advanced-types-02.html"
+            },
+            {
+              "id": "ch20-03-advanced-types-03",
+              "title": "The Never Type That Never Returns",
+              "start_line": 138,
+              "end_line": 213,
+              "word_count": 497,
+              "lesson_id": "ch20-03-advanced-types",
+              "lesson_title": "Advanced Types",
+              "content_file": "html/ch20-03-advanced-types-03.html"
+            },
+            {
+              "id": "ch20-03-advanced-types-04",
+              "title": "Dynamically Sized Types and the `Sized` Trait",
+              "start_line": 214,
+              "end_line": 303,
+              "word_count": 712,
+              "lesson_id": "ch20-03-advanced-types",
+              "lesson_title": "Advanced Types",
+              "content_file": "html/ch20-03-advanced-types-04.html"
+            }
+          ]
+        },
+        {
+          "id": "ch20-04-advanced-functions-and-closures",
+          "title": "Advanced Functions and Closures",
+          "micro_lessons": [
+            {
+              "id": "ch20-04-advanced-functions-and-closures-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 4,
+              "word_count": 22,
+              "lesson_id": "ch20-04-advanced-functions-and-closures",
+              "lesson_title": "Advanced Functions and Closures",
+              "content_file": "html/ch20-04-advanced-functions-and-closures-00.html"
+            },
+            {
+              "id": "ch20-04-advanced-functions-and-closures-01",
+              "title": "Function Pointers",
+              "start_line": 5,
+              "end_line": 101,
+              "word_count": 680,
+              "lesson_id": "ch20-04-advanced-functions-and-closures",
+              "lesson_title": "Advanced Functions and Closures",
+              "content_file": "html/ch20-04-advanced-functions-and-closures-01.html"
+            },
+            {
+              "id": "ch20-04-advanced-functions-and-closures-02",
+              "title": "Returning Closures",
+              "start_line": 102,
+              "end_line": 178,
+              "word_count": 470,
+              "lesson_id": "ch20-04-advanced-functions-and-closures",
+              "lesson_title": "Advanced Functions and Closures",
+              "content_file": "html/ch20-04-advanced-functions-and-closures-02.html"
+            }
+          ]
+        },
+        {
+          "id": "ch20-05-macros",
+          "title": "Macros",
+          "micro_lessons": [
+            {
+              "id": "ch20-05-macros-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 15,
+              "word_count": 111,
+              "lesson_id": "ch20-05-macros",
+              "lesson_title": "Macros",
+              "exercises": [
+                "21_macros/macros1.rs"
+              ],
+              "content_file": "html/ch20-05-macros-00.html"
+            },
+            {
+              "id": "ch20-05-macros-01",
+              "title": "The Difference Between Macros and Functions",
+              "start_line": 16,
+              "end_line": 49,
+              "word_count": 275,
+              "lesson_id": "ch20-05-macros",
+              "lesson_title": "Macros",
+              "exercises": [
+                "21_macros/macros2.rs"
+              ],
+              "content_file": "html/ch20-05-macros-01.html"
+            },
+            {
+              "id": "ch20-05-macros-02",
+              "title": "Declarative Macros for General Metaprogramming",
+              "start_line": 50,
+              "end_line": 154,
+              "word_count": 818,
+              "lesson_id": "ch20-05-macros",
+              "lesson_title": "Macros",
+              "exercises": [
+                "21_macros/macros3.rs"
+              ],
+              "content_file": "html/ch20-05-macros-02.html"
+            },
+            {
+              "id": "ch20-05-macros-03",
+              "title": "Procedural Macros for Generating Code from Attributes",
+              "start_line": 155,
+              "end_line": 198,
+              "word_count": 294,
+              "lesson_id": "ch20-05-macros",
+              "lesson_title": "Macros",
+              "exercises": [
+                "21_macros/macros4.rs"
+              ],
+              "content_file": "html/ch20-05-macros-03.html"
+            },
+            {
+              "id": "ch20-05-macros-04",
+              "title": "Custom `derive` Macros",
+              "start_line": 199,
+              "end_line": 450,
+              "word_count": 1697,
+              "lesson_id": "ch20-05-macros",
+              "lesson_title": "Macros",
+              "content_file": "html/ch20-05-macros-04.html"
+            },
+            {
+              "id": "ch20-05-macros-05",
+              "title": "Attribute-Like Macros",
+              "start_line": 451,
+              "end_line": 481,
+              "word_count": 193,
+              "lesson_id": "ch20-05-macros",
+              "lesson_title": "Macros",
+              "content_file": "html/ch20-05-macros-05.html"
+            },
+            {
+              "id": "ch20-05-macros-06",
+              "title": "Function-Like Macros",
+              "start_line": 482,
+              "end_line": 530,
+              "word_count": 272,
+              "lesson_id": "ch20-05-macros",
+              "lesson_title": "Macros",
+              "content_file": "html/ch20-05-macros-06.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "ch20-00-advanced-features-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 22,
+          "word_count": 197,
+          "lesson_id": "ch20-00-advanced-features",
+          "lesson_title": "Advanced Features",
+          "content_file": "html/ch20-00-advanced-features-00.html"
+        }
+      ]
+    },
+    {
+      "id": "ch21-00-final-project-a-web-server",
+      "title": "Final Project: Building a Multithreaded Web Server",
+      "lessons": [
+        {
+          "id": "ch21-01-single-threaded",
+          "title": "Building a Single-Threaded Web Server",
+          "micro_lessons": [
+            {
+              "id": "ch21-01-single-threaded-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 19,
+              "word_count": 184,
+              "lesson_id": "ch21-01-single-threaded",
+              "lesson_title": "Building a Single-Threaded Web Server",
+              "content_file": "html/ch21-01-single-threaded-00.html"
+            },
+            {
+              "id": "ch21-01-single-threaded-01",
+              "title": "Listening to the TCP Connection",
+              "start_line": 20,
+              "end_line": 124,
+              "word_count": 847,
+              "lesson_id": "ch21-01-single-threaded",
+              "lesson_title": "Building a Single-Threaded Web Server",
+              "content_file": "html/ch21-01-single-threaded-01.html"
+            },
+            {
+              "id": "ch21-01-single-threaded-02",
+              "title": "Reading the Request",
+              "start_line": 125,
+              "end_line": 219,
+              "word_count": 594,
+              "lesson_id": "ch21-01-single-threaded",
+              "lesson_title": "Building a Single-Threaded Web Server",
+              "content_file": "html/ch21-01-single-threaded-02.html"
+            },
+            {
+              "id": "ch21-01-single-threaded-03",
+              "title": "Looking More Closely at an HTTP Request",
+              "start_line": 220,
+              "end_line": 260,
+              "word_count": 316,
+              "lesson_id": "ch21-01-single-threaded",
+              "lesson_title": "Building a Single-Threaded Web Server",
+              "content_file": "html/ch21-01-single-threaded-03.html"
+            },
+            {
+              "id": "ch21-01-single-threaded-04",
+              "title": "Writing a Response",
+              "start_line": 261,
+              "end_line": 311,
+              "word_count": 313,
+              "lesson_id": "ch21-01-single-threaded",
+              "lesson_title": "Building a Single-Threaded Web Server",
+              "content_file": "html/ch21-01-single-threaded-04.html"
+            },
+            {
+              "id": "ch21-01-single-threaded-05",
+              "title": "Returning Real HTML",
+              "start_line": 312,
+              "end_line": 360,
+              "word_count": 310,
+              "lesson_id": "ch21-01-single-threaded",
+              "lesson_title": "Building a Single-Threaded Web Server",
+              "content_file": "html/ch21-01-single-threaded-05.html"
+            },
+            {
+              "id": "ch21-01-single-threaded-06",
+              "title": "Validating the Request and Selectively Responding",
+              "start_line": 361,
+              "end_line": 433,
+              "word_count": 489,
+              "lesson_id": "ch21-01-single-threaded",
+              "lesson_title": "Building a Single-Threaded Web Server",
+              "content_file": "html/ch21-01-single-threaded-06.html"
+            },
+            {
+              "id": "ch21-01-single-threaded-07",
+              "title": "Refactoring",
+              "start_line": 434,
+              "end_line": 473,
+              "word_count": 323,
+              "lesson_id": "ch21-01-single-threaded",
+              "lesson_title": "Building a Single-Threaded Web Server",
+              "content_file": "html/ch21-01-single-threaded-07.html"
+            }
+          ]
+        },
+        {
+          "id": "ch21-02-multithreaded",
+          "title": "From Single-Threaded to Multithreaded Server",
+          "micro_lessons": [
+            {
+              "id": "ch21-02-multithreaded-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 18,
+              "word_count": 125,
+              "lesson_id": "ch21-02-multithreaded",
+              "lesson_title": "From Single-Threaded to Multithreaded Server",
+              "content_file": "html/ch21-02-multithreaded-00.html"
+            },
+            {
+              "id": "ch21-02-multithreaded-01",
+              "title": "Simulating a Slow Request",
+              "start_line": 19,
+              "end_line": 56,
+              "word_count": 268,
+              "lesson_id": "ch21-02-multithreaded",
+              "lesson_title": "From Single-Threaded to Multithreaded Server",
+              "content_file": "html/ch21-02-multithreaded-01.html"
+            },
+            {
+              "id": "ch21-02-multithreaded-02",
+              "title": "Improving Throughput with a Thread Pool",
+              "start_line": 57,
+              "end_line": 728,
+              "word_count": 4731,
+              "lesson_id": "ch21-02-multithreaded",
+              "lesson_title": "From Single-Threaded to Multithreaded Server",
+              "content_file": "html/ch21-02-multithreaded-02.html"
+            }
+          ]
+        },
+        {
+          "id": "ch21-03-graceful-shutdown-and-cleanup",
+          "title": "Graceful Shutdown and Cleanup",
+          "micro_lessons": [
+            {
+              "id": "ch21-03-graceful-shutdown-and-cleanup-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 20,
+              "word_count": 192,
+              "lesson_id": "ch21-03-graceful-shutdown-and-cleanup",
+              "lesson_title": "Graceful Shutdown and Cleanup",
+              "content_file": "html/ch21-03-graceful-shutdown-and-cleanup-00.html"
+            },
+            {
+              "id": "ch21-03-graceful-shutdown-and-cleanup-01",
+              "title": "Implementing the `Drop` Trait on `ThreadPool`",
+              "start_line": 21,
+              "end_line": 88,
+              "word_count": 480,
+              "lesson_id": "ch21-03-graceful-shutdown-and-cleanup",
+              "lesson_title": "Graceful Shutdown and Cleanup",
+              "content_file": "html/ch21-03-graceful-shutdown-and-cleanup-01.html"
+            },
+            {
+              "id": "ch21-03-graceful-shutdown-and-cleanup-02",
+              "title": "Signaling to the Threads to Stop Listening for Jobs",
+              "start_line": 89,
+              "end_line": 238,
+              "word_count": 906,
+              "lesson_id": "ch21-03-graceful-shutdown-and-cleanup",
+              "lesson_title": "Graceful Shutdown and Cleanup",
+              "content_file": "html/ch21-03-graceful-shutdown-and-cleanup-02.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "ch21-00-final-project-a-web-server-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 41,
+          "word_count": 355,
+          "lesson_id": "ch21-00-final-project-a-web-server",
+          "lesson_title": "Final Project: Building a Multithreaded Web Server",
+          "content_file": "html/ch21-00-final-project-a-web-server-00.html"
+        }
+      ]
+    },
+    {
+      "id": "appendix-00",
+      "title": "Appendix",
+      "lessons": [
+        {
+          "id": "appendix-01-keywords",
+          "title": "A - Keywords",
+          "micro_lessons": [
+            {
+              "id": "appendix-01-keywords-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 10,
+              "word_count": 65,
+              "lesson_id": "appendix-01-keywords",
+              "lesson_title": "A - Keywords",
+              "content_file": "html/appendix-01-keywords-00.html"
+            },
+            {
+              "id": "appendix-01-keywords-01",
+              "title": "Keywords Currently in Use",
+              "start_line": 11,
+              "end_line": 62,
+              "word_count": 359,
+              "lesson_id": "appendix-01-keywords",
+              "lesson_title": "A - Keywords",
+              "content_file": "html/appendix-01-keywords-01.html"
+            },
+            {
+              "id": "appendix-01-keywords-02",
+              "title": "Keywords Reserved for Future Use",
+              "start_line": 63,
+              "end_line": 82,
+              "word_count": 46,
+              "lesson_id": "appendix-01-keywords",
+              "lesson_title": "A - Keywords",
+              "content_file": "html/appendix-01-keywords-02.html"
+            },
+            {
+              "id": "appendix-01-keywords-03",
+              "title": "Raw Identifiers",
+              "start_line": 83,
+              "end_line": 140,
+              "word_count": 312,
+              "lesson_id": "appendix-01-keywords",
+              "lesson_title": "A - Keywords",
+              "content_file": "html/appendix-01-keywords-03.html"
+            }
+          ]
+        },
+        {
+          "id": "appendix-02-operators",
+          "title": "B - Operators and Symbols",
+          "micro_lessons": [
+            {
+              "id": "appendix-02-operators-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 5,
+              "word_count": 38,
+              "lesson_id": "appendix-02-operators",
+              "lesson_title": "B - Operators and Symbols",
+              "content_file": "html/appendix-02-operators-00.html"
+            },
+            {
+              "id": "appendix-02-operators-01",
+              "title": "Operators",
+              "start_line": 6,
+              "end_line": 73,
+              "word_count": 773,
+              "lesson_id": "appendix-02-operators",
+              "lesson_title": "B - Operators and Symbols",
+              "content_file": "html/appendix-02-operators-01.html"
+            },
+            {
+              "id": "appendix-02-operators-02",
+              "title": "Non-operator Symbols",
+              "start_line": 74,
+              "end_line": 206,
+              "word_count": 960,
+              "lesson_id": "appendix-02-operators",
+              "lesson_title": "B - Operators and Symbols",
+              "content_file": "html/appendix-02-operators-02.html"
+            }
+          ]
+        },
+        {
+          "id": "appendix-03-derivable-traits",
+          "title": "C - Derivable Traits",
+          "micro_lessons": [
+            {
+              "id": "appendix-03-derivable-traits-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 37,
+              "word_count": 342,
+              "lesson_id": "appendix-03-derivable-traits",
+              "lesson_title": "C - Derivable Traits",
+              "content_file": "html/appendix-03-derivable-traits-00.html"
+            },
+            {
+              "id": "appendix-03-derivable-traits-01",
+              "title": "`Debug` for Programmer Output",
+              "start_line": 38,
+              "end_line": 51,
+              "word_count": 92,
+              "lesson_id": "appendix-03-derivable-traits",
+              "lesson_title": "C - Derivable Traits",
+              "content_file": "html/appendix-03-derivable-traits-01.html"
+            },
+            {
+              "id": "appendix-03-derivable-traits-02",
+              "title": "`PartialEq` and `Eq` for Equality Comparisons",
+              "start_line": 52,
+              "end_line": 75,
+              "word_count": 206,
+              "lesson_id": "appendix-03-derivable-traits",
+              "lesson_title": "C - Derivable Traits",
+              "content_file": "html/appendix-03-derivable-traits-02.html"
+            },
+            {
+              "id": "appendix-03-derivable-traits-03",
+              "title": "`PartialOrd` and `Ord` for Ordering Comparisons",
+              "start_line": 76,
+              "end_line": 109,
+              "word_count": 293,
+              "lesson_id": "appendix-03-derivable-traits",
+              "lesson_title": "C - Derivable Traits",
+              "content_file": "html/appendix-03-derivable-traits-03.html"
+            },
+            {
+              "id": "appendix-03-derivable-traits-04",
+              "title": "`Clone` and `Copy` for Duplicating Values",
+              "start_line": 110,
+              "end_line": 148,
+              "word_count": 306,
+              "lesson_id": "appendix-03-derivable-traits",
+              "lesson_title": "C - Derivable Traits",
+              "content_file": "html/appendix-03-derivable-traits-04.html"
+            },
+            {
+              "id": "appendix-03-derivable-traits-05",
+              "title": "`Hash` for Mapping a Value to a Value of Fixed Size",
+              "start_line": 149,
+              "end_line": 159,
+              "word_count": 87,
+              "lesson_id": "appendix-03-derivable-traits",
+              "lesson_title": "C - Derivable Traits",
+              "content_file": "html/appendix-03-derivable-traits-05.html"
+            },
+            {
+              "id": "appendix-03-derivable-traits-06",
+              "title": "`Default` for Default Values",
+              "start_line": 160,
+              "end_line": 185,
+              "word_count": 154,
+              "lesson_id": "appendix-03-derivable-traits",
+              "lesson_title": "C - Derivable Traits",
+              "content_file": "html/appendix-03-derivable-traits-06.html"
+            }
+          ]
+        },
+        {
+          "id": "appendix-04-useful-development-tools",
+          "title": "D - Useful Development Tools",
+          "micro_lessons": [
+            {
+              "id": "appendix-04-useful-development-tools-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 5,
+              "word_count": 38,
+              "lesson_id": "appendix-04-useful-development-tools",
+              "lesson_title": "D - Useful Development Tools",
+              "exercises": [
+                "22_clippy/clippy1.rs"
+              ],
+              "content_file": "html/appendix-04-useful-development-tools-00.html"
+            },
+            {
+              "id": "appendix-04-useful-development-tools-01",
+              "title": "Automatic Formatting with `rustfmt`",
+              "start_line": 6,
+              "end_line": 25,
+              "word_count": 124,
+              "lesson_id": "appendix-04-useful-development-tools",
+              "lesson_title": "D - Useful Development Tools",
+              "exercises": [
+                "22_clippy/clippy2.rs"
+              ],
+              "content_file": "html/appendix-04-useful-development-tools-01.html"
+            },
+            {
+              "id": "appendix-04-useful-development-tools-02",
+              "title": "Fix Your Code with `rustfix`",
+              "start_line": 26,
+              "end_line": 87,
+              "word_count": 227,
+              "lesson_id": "appendix-04-useful-development-tools",
+              "lesson_title": "D - Useful Development Tools",
+              "exercises": [
+                "22_clippy/clippy3.rs"
+              ],
+              "content_file": "html/appendix-04-useful-development-tools-02.html"
+            },
+            {
+              "id": "appendix-04-useful-development-tools-03",
+              "title": "More Lints with Clippy",
+              "start_line": 88,
+              "end_line": 148,
+              "word_count": 238,
+              "lesson_id": "appendix-04-useful-development-tools",
+              "lesson_title": "D - Useful Development Tools",
+              "content_file": "html/appendix-04-useful-development-tools-03.html"
+            },
+            {
+              "id": "appendix-04-useful-development-tools-04",
+              "title": "IDE Integration Using `rust-analyzer`",
+              "start_line": 149,
+              "end_line": 169,
+              "word_count": 104,
+              "lesson_id": "appendix-04-useful-development-tools",
+              "lesson_title": "D - Useful Development Tools",
+              "content_file": "html/appendix-04-useful-development-tools-04.html"
+            }
+          ]
+        },
+        {
+          "id": "appendix-05-editions",
+          "title": "E - Editions",
+          "micro_lessons": [
+            {
+              "id": "appendix-05-editions-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 59,
+              "word_count": 495,
+              "lesson_id": "appendix-05-editions",
+              "lesson_title": "E - Editions",
+              "content_file": "html/appendix-05-editions-00.html"
+            }
+          ]
+        },
+        {
+          "id": "appendix-06-translation",
+          "title": "F - Translations of the Book",
+          "micro_lessons": [
+            {
+              "id": "appendix-06-translation-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 32,
+              "word_count": 96,
+              "lesson_id": "appendix-06-translation",
+              "lesson_title": "F - Translations of the Book",
+              "content_file": "html/appendix-06-translation-00.html"
+            }
+          ]
+        },
+        {
+          "id": "appendix-07-nightly-rust",
+          "title": "G - How Rust is Made and \u201cNightly Rust\u201d",
+          "micro_lessons": [
+            {
+              "id": "appendix-07-nightly-rust-00",
+              "title": "Introduction",
+              "start_line": 0,
+              "end_line": 4,
+              "word_count": 28,
+              "lesson_id": "appendix-07-nightly-rust",
+              "lesson_title": "G - How Rust is Made and \u201cNightly Rust\u201d",
+              "content_file": "html/appendix-07-nightly-rust-00.html"
+            },
+            {
+              "id": "appendix-07-nightly-rust-01",
+              "title": "Stability Without Stagnation",
+              "start_line": 5,
+              "end_line": 17,
+              "word_count": 114,
+              "lesson_id": "appendix-07-nightly-rust",
+              "lesson_title": "G - How Rust is Made and \u201cNightly Rust\u201d",
+              "content_file": "html/appendix-07-nightly-rust-01.html"
+            },
+            {
+              "id": "appendix-07-nightly-rust-02",
+              "title": "Choo, Choo! Release Channels and Riding the Trains",
+              "start_line": 18,
+              "end_line": 115,
+              "word_count": 696,
+              "lesson_id": "appendix-07-nightly-rust",
+              "lesson_title": "G - How Rust is Made and \u201cNightly Rust\u201d",
+              "content_file": "html/appendix-07-nightly-rust-02.html"
+            },
+            {
+              "id": "appendix-07-nightly-rust-03",
+              "title": "Maintenance time",
+              "start_line": 116,
+              "end_line": 121,
+              "word_count": 34,
+              "lesson_id": "appendix-07-nightly-rust",
+              "lesson_title": "G - How Rust is Made and \u201cNightly Rust\u201d",
+              "content_file": "html/appendix-07-nightly-rust-03.html"
+            },
+            {
+              "id": "appendix-07-nightly-rust-04",
+              "title": "Unstable Features",
+              "start_line": 122,
+              "end_line": 142,
+              "word_count": 196,
+              "lesson_id": "appendix-07-nightly-rust",
+              "lesson_title": "G - How Rust is Made and \u201cNightly Rust\u201d",
+              "content_file": "html/appendix-07-nightly-rust-04.html"
+            },
+            {
+              "id": "appendix-07-nightly-rust-05",
+              "title": "Rustup and the Role of Rust Nightly",
+              "start_line": 143,
+              "end_line": 179,
+              "word_count": 198,
+              "lesson_id": "appendix-07-nightly-rust",
+              "lesson_title": "G - How Rust is Made and \u201cNightly Rust\u201d",
+              "content_file": "html/appendix-07-nightly-rust-05.html"
+            },
+            {
+              "id": "appendix-07-nightly-rust-06",
+              "title": "The RFC Process and Teams",
+              "start_line": 180,
+              "end_line": 206,
+              "word_count": 248,
+              "lesson_id": "appendix-07-nightly-rust",
+              "lesson_title": "G - How Rust is Made and \u201cNightly Rust\u201d",
+              "content_file": "html/appendix-07-nightly-rust-06.html"
+            }
+          ]
+        }
+      ],
+      "intro_lessons": [
+        {
+          "id": "appendix-00-00",
+          "title": "Introduction",
+          "start_line": 0,
+          "end_line": 4,
+          "word_count": 16,
+          "lesson_id": "appendix-00",
+          "lesson_title": "Appendix",
+          "content_file": "html/appendix-00-00.html"
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "total_modules": 22,
+    "total_lessons": 86,
+    "total_micro_lessons": 386,
+    "total_exercises": 84,
+    "total_words": 178462,
+    "estimated_reading_hours": 14.9,
+    "estimated_total_hours": 21.9
+  }
+}

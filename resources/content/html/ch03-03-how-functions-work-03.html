@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Functions with Return Values</title>
+</head>
+<body>
+<h1>Functions with Return Values</h1>
+<p>Functions can return values to the code that calls them. We don’t name return
+values, but we must declare their type after an arrow (<code>-&gt;</code>). In Rust, the
+return value of the function is synonymous with the value of the final
+expression in the block of the body of a function. You can return early from a
+function by using the <code>return</code> keyword and specifying a value, but most
+functions return the last expression implicitly. Here’s an example of a
+function that returns a value:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-21-function-return-values/src/main.rs}}
+</code></pre>
+<p>There are no function calls, macros, or even <code>let</code> statements in the <code>five</code>
+function—just the number <code>5</code> by itself. That’s a perfectly valid function in
+Rust. Note that the function’s return type is specified too, as <code>-&gt; i32</code>. Try
+running this code; the output should look like this:</p>
+<pre><code class="language-console">{{#include ../listings/ch03-common-programming-concepts/no-listing-21-function-return-values/output.txt}}
+</code></pre>
+<p>The <code>5</code> in <code>five</code> is the function’s return value, which is why the return type
+is <code>i32</code>. Let’s examine this in more detail. There are two important bits:
+First, the line <code>let x = five();</code> shows that we’re using the return value of a
+function to initialize a variable. Because the function <code>five</code> returns a <code>5</code>,
+that line is the same as the following:</p>
+<pre><code class="language-rust">let x = 5;
+</code></pre>
+<p>Second, the <code>five</code> function has no parameters and defines the type of the
+return value, but the body of the function is a lonely <code>5</code> with no semicolon
+because it’s an expression whose value we want to return.</p>
+<p>Let’s look at another example:</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<pre><code class="language-rust">{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-22-function-parameter-and-return/src/main.rs}}
+</code></pre>
+<p>Running this code will print <code>The value of x is: 6</code>. But what happens if we
+place a semicolon at the end of the line containing <code>x + 1</code>, changing it from
+an expression to a statement?</p>
+<p><span class="filename">Filename: src/main.rs</span></p>
+<p>```rust,ignore,does_not_compile
+{{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-23-statements-dont-return-values/src/main.rs}}</p>
+<pre><code>
+Compiling this code will produce an error, as follows:
+
+```console
+{{#include ../listings/ch03-common-programming-concepts/no-listing-23-statements-dont-return-values/output.txt}}
+</code></pre>
+<p>The main error message, <code>mismatched types</code>, reveals the core issue with this
+code. The definition of the function <code>plus_one</code> says that it will return an
+<code>i32</code>, but statements don’t evaluate to a value, which is expressed by <code>()</code>,
+the unit type. Therefore, nothing is returned, which contradicts the function
+definition and results in an error. In this output, Rust provides a message to
+possibly help rectify this issue: It suggests removing the semicolon, which
+would fix the error.</p>
+</body>
+</html>
