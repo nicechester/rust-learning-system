@@ -158,6 +158,6 @@ If you encounter build errors:
 3. Clear node modules and reinstall: `npm run clean:all && npm install`
 4. Check Tauri documentation for platform-specific issues: https://tauri.app/v1/guides/getting-started/prerequisites
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
